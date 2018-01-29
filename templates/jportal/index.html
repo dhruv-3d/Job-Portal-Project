@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Sample Page</title>
+
+</head>
+<body>
+    <h3>Sample Page</h3>
+
+    <a href="{% url 'employer_register' %}">Employer Register Here</a>
+    <br />
+    <br />
+    <a href="{% url 'jobseeker_register' %}">JobSeeker Register Here</a>
+    <br />
+    <br />
+    <a href="/login/">Login Here</a>
+    <br />
+    <br />
+    <a href="/logout/">Logout</a>
+</body>
+</html>
