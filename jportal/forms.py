@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 from jportal.models import Job
-from jportal.models import Category, SubCategory, JobForm
+from jportal.models import Category, SubCategory, JobR
 
 from captcha.fields import CaptchaField
 import datetime
@@ -24,6 +24,14 @@ CITIES = [
 GENDER = [
     ('male','Male'), ('female','Female'),
 ]
+
+catlist = []
+
+cat = Category.objects.all()
+for i in range(0, len(cat)):
+    catlist.append((i,cat[i]))
+
+print(catlist)
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -74,5 +82,5 @@ class JobSeekerForm(forms.ModelForm):
 #karishma's form
 class JobForm(forms.ModelForm):
     class Meta:
-       model = JobForm
-       exclude=['posted_date','employer']
+       model = JobR
+       exclude = ('posted_date','employer',)

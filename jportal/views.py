@@ -7,10 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
 from jportal.models import Category, SubCategory
-from jportal.models import Education, Job, JobForm
+from jportal.models import Education, Job
 from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
-from jportal.models import Job
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm
 from jportal.forms import EmployerProfileForm
@@ -176,26 +175,11 @@ def detail_employer(request):
 
     return render(request, 'jportal/detail_employer.html', context_dict)
 
-#----karishma's
-def add_job(request):
-    form=JobForm()
-    if request.method == 'POST':
-        form = JobForm(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
-            return redirect('/jportal/employer_page/')
-        else:
-            print(form.errors)
-    return render(request, 'jportal/add_job.html', {'form': form})
-    
-def manage_job(request):
-    return render(request, 'jportal/managejob.html') 
-
 #testing remaining..
 def job_listing(request):
 
     try:
-        category = Category.objects.get(slug=category_name_slug)
+        category = Category.objects.get()
         context_dict['category'] = category
     except Category.DoesNotExist:
         context_dict['category'] = None
@@ -253,3 +237,27 @@ def suggest_job(request):
         starts_with = request.POST['suggestion']   
         job_list = get_job_list(8, starts_with)
     return render(request, 'jportal/.html', {'jobs': job_list })
+
+#----karishma's Okay Up and running
+def add_job(request):
+    print(request.user)
+
+    emp = Employer.objects.get(user_id=request.user.id)
+    form=JobForm()
+    if request.method == 'POST':
+        form = JobForm(request.POST)
+        print(form)
+        print(form.is_valid())
+        if form.is_valid():
+            a = form.save(commit=False) 
+            a.employer = emp
+            a.posted_date = datetime.now()
+            a.save()
+
+            return index(request)
+        else:
+            print(form.errors)
+    return render(request, 'jportal/add_job.html', {'form': form})
+
+def manage_job(request):
+    return render(request, 'jportal/managejob.html') 

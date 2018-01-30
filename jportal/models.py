@@ -100,7 +100,7 @@ class Appliers(models.Model):
     date_apply = models.DateField()
     status = models.CharField(max_length=50)
 
-class JobForm(models.Model):
+class JobR(models.Model):
     category=models.ForeignKey(Category)
     subcategory= ChainedForeignKey(
         SubCategory,
@@ -111,9 +111,8 @@ class JobForm(models.Model):
         sort=True)
     title=models.CharField(max_length=100,blank=False)
     employer = models.ForeignKey(Employer)
-    last_date = models.DateField(blank=False)
+    last_date = models.DateField(blank=True)
     salary = models.PositiveIntegerField(blank=True)
     Job_responsibility = models.TextField(blank=False)
     candidate_profile = models.TextField(blank=False)
-    posted_date= models.DateTimeField(auto_now=True)
-    
+    posted_date= models.DateTimeField(auto_now=True, blank=True)

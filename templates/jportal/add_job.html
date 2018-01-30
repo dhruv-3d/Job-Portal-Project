@@ -7,27 +7,32 @@
 {% block body_block %}
     <h2>JOB FORM</h2>
     <form method="post" action=".">
-        <input type='hidden' name='csrfmiddlewaretoken' value='Fu2pslu1ujd3nA4Kbc9p6GLCL99PzombmCnNetoSUJzvveNY4S37TNMImspSEkWC' />
+        {% csrf_token %}
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
         <script type="text/javascript" src="/static/smart-selects/admin/js/chainedfk.js"></script>
         <script type="text/javascript" src="/static/smart-selects/admin/js/bindfields.js"></script>
         <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
         <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+
+        {{ form.as_p }}
+        {{ form.media.js }}
+        <!-- 
         <p>
             <label for="id_category">Category:</label>
-            <select name="category" required id="id_category">
-                <option value="" selected>---------</option>
+           <select name="category" required id="id_category">
+                <option value="" selected></option>
                 <option value="1">Computer Science</option>
                 <option value="2">Business</option>
                 <option value="4">Management</option>
                 <option value="5">Designing</option>
-            </select>
+            </select>  
         </p>
+    
         <p>
             <label for="id_subcategory">Subcategory:</label>
             <select name="subcategory" required id="id_subcategory" data-chainfield="category"
-                    data-url="/chaining/filter/jportal/SubCategory/category/jportal/JobForm/subcategory" 
-                    data-value="null" data-auto_choose="true" data-empty_label="--------" name="subcategory" class="chained-fk">
+                    data-url="/chaining/filter/jportal/SubCategory/category/jportal/JobR/subcategory" 
+                    data-value="null" data-auto_choose="true" data-empty_label="#" name="subcategory" class="chained-fk">
             </select>
         </p>
         <p>
@@ -54,10 +59,11 @@
             <label for="id_posted_date">Posted date:</label> 
             <input type="datetime-local" name="bdaytime">
             
-            <!--  <input type="text" name="posted_date" class="vDateField" size="10" required id="id_posted_date" /> -->
+            <input type="text" name="posted_date" class="vDateField" size="10" required id="id_posted_date" /> 
         </p>
+        
         <p>
+            -->
             <input type="submit" value="Submit">
-        </p>
     </form>
 {% endblock %}
