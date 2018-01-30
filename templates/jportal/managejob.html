@@ -1,11 +1,11 @@
-<!DOCType html>
-<html>
-    <head>
-        <title>Manage Job</title>
-    </head>
-    <body>
-        <a href="{% url 'job' %}">
-        <button type="submit" value="ADD JOB">ADD JOB</button>
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Job Search - Manage Job
+{% endblock %}
+{% block body_block %}
+    <a href="{% url 'add_job' %}">
+    <button type="submit" value="ADD JOB">ADD JOB</button>
     </a>
-    </body>
-</html>
+{% endblock %}

@@ -186,9 +186,11 @@ def add_job(request):
             return redirect('/jportal/employer_page/')
         else:
             print(form.errors)
-    return render(request, 'jportal/job.html', {'form': form}) 
+    return render(request, 'jportal/add_job.html', {'form': form})
+    
+def manage_job(request):
+    return render(request, 'jportal/managejob.html') 
 
-#----vidushi's
 #testing remaining..
 def job_listing(request):
 
@@ -199,6 +201,7 @@ def job_listing(request):
         context_dict['category'] = None
     return render(request, 'jportal/job.html', context_dict)
 
+#vidushi's
 #testing remaining..
 def show_appliers(request):
     context_dict={}

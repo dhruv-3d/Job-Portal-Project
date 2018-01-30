@@ -6,7 +6,7 @@ from django.shortcuts import render
 urlpatterns = [
     url(r'^$', views.index, name='index'),
 
-    url(r'^job/$',views.add_job,name='job'),
+    url(r'^add_job/$',views.add_job,name='add_job'),
     url(r'^managejob/$',views.manage_job,name='managejob'),
     url(r'^job_listing/',views.job_listing,name='job_listing'),
 

@@ -1,17 +1,10 @@
-<!DOCTYPE html>
+{% extends 'jportal/base.html' %}
 {% load staticfiles %}
 
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Parmaatma">
-
-    <title>Employer Detail Page</title>
-
-</head>
-<body>
+{% block title_block %}
+	Job Search - Employer Detail Pages
+{% endblock %}
+{% block body_block %}
     <h2>Employer Detail Page</h2>
         <br />
         <hr />
@@ -48,5 +41,4 @@
         <br />
         <a href="/logout/">Logout</a>
     {% endif %}
-</body>
-</html>
+{% endblock %}
