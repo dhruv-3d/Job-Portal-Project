@@ -100,7 +100,7 @@ class Appliers(models.Model):
     date_apply = models.DateField()
     status = models.CharField(max_length=50)
 
-class JobR(models.Model):
+class AddJob(models.Model):
     category=models.ForeignKey(Category)
     subcategory= ChainedForeignKey(
         SubCategory,
