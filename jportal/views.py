@@ -17,7 +17,7 @@ from jportal.forms import EmployerProfileForm
 
 from datetime import datetime
 
-#index for testing purpose...
+#index for testing purpose...!!!
 def index(request):
     print(request.user)
 
