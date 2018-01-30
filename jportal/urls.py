@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^jobseeker_register/$', views.jobseeker_reg, name='jobseeker_register'),
 
     url(r'^employer_page/$', views.employer_page, name='employer_page'),
+    url(r'^jobseeker_page/$', views.jobseeker_page, name='jobseeker_page'),
     url(r'^detail_employer/$', views.detail_employer, name='detail_employer'),
     url(r'^employer_profile/(?P<username>[\w\@\.]+)/$', views.employer_profile, name='employer_profile'),
 ]

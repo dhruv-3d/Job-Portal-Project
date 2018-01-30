@@ -43,9 +43,9 @@ def index(request):
             e = JobSeekers.objects.get(user_id=u) 
             if e:
                 print("JobSeeker")
-                #ahiya job seeker page aavse
+                return render(request, 'jportal/jobseeker_page.html', context_dict)
         except e.DoesNotExist:
-            pass        
+            pass
 
     return render(request, 'jportal/index.html', {'content':'YO'})
 
@@ -176,6 +176,11 @@ def detail_employer(request):
         context_dict['emp_data'] = emp_data
 
     return render(request, 'jportal/detail_employer.html', context_dict)
+
+def jobseeker_page(request):
+    print(request)
+
+    return render(request, 'jportal/jobseeker_page.html', {'user': request.user })
 
 #----karishma's
 def add_job(request):
