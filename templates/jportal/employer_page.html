@@ -17,7 +17,7 @@
     <br />
     <br />
     <!-- ahiya thi baaki...passing parameters in url ################################### -->
-    <a href="{% url 'employer_profile' %}">My Profile</a>
+    <a href="{% url 'employer_profile' user.username %}">My Profile</a>
     {% if user.is_authenticated %}
         <a href="/logout/">Logout</a>
     {% endif %}

@@ -88,7 +88,6 @@ def employer_reg(request):
 
     return render(request, 'registration/employer_register.html', context_dict)
 
-
 #--------------------JOB SEEKER REGISTRATION
 def jobseeker_reg(request):
 
@@ -123,31 +122,33 @@ def jobseeker_reg(request):
 
     return render(request, 'registration/jobseeker_register.html', context_dict)
 
-def employer_profile(request):
+def employer_profile(request, username):
     context_dict = {}
-    print(request)
-    usid = request.user.id
+    print(request.user)
     try:
-        user = Employer.objects.get(user_id=usid)
+        user = User.objects.get(username=username)
+        euser = Employer.objects.get(user_id=user.id)
     except Employer.DoesNotExist:
         return redirect('/employer_page/')
 
-    emp = EmployerProfile.objects.get_or_create(employer=user)[0]
+    emp = EmployerProfile.objects.get_or_create(employer_id=euser.id)[0]
     e_profile = EmployerProfileForm({'company_name':emp.company_name, 'description':emp.description, 'address':emp.address })
-    
+
     if request.method == 'POST':
-        e_profile = EmployerProfileForm(request.POST, request.FILES)
+        e_profile = EmployerProfileForm(request.POST)
         if e_profile.is_valid():
             emp_prof = e_profile.save(commit=False)
-            emp_prof.employer_id = emp.employer_id
-            emp_prof.save()
+            emp.company_name = emp_prof.company_name
+            emp.description = emp_prof.description
+            emp.address = emp_prof.address
+            emp.save()
 
-            return redirect('/jportal/employer_profile/')
+            return redirect('employer_profile', user.username)
         else:
             print(e_profile.errors)
 
     context_dict['e_profile'] = e_profile
-    context_dict['user'] = user
+    context_dict['selected_user'] = user
     context_dict['emp_profile'] = emp
 
     return render(request, 'jportal/employer_profile.html', context_dict)
@@ -250,3 +251,6 @@ def suggest_job(request):
         starts_with = request.POST['suggestion']   
         job_list = get_job_list(8, starts_with)
     return render(request, 'jportal/.html', {'jobs': job_list })
+
+def manage_job(request):
+    pass

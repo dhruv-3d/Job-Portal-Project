@@ -7,15 +7,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Sample Employer Page</title>
+    <title>{{ selected_user.username }} Profile</title>
 
 </head>
 <body>
-    <h3>Employer's Own Profile Page</h3>
-    <form method="post" action="." enctype="multipart/form-data" >   
-        {% csrf_token %}
-        {{ e_profile.as_p }}
-        <input type="submit" name="submit" value="Save Changes">
-    </form>
+    <h3>{{ selected_user.username }} Profile</h3>
+    {% if selected_user.username == user.username %}
+        <form method="post" action="." enctype="multipart/form-data" >   
+            {% csrf_token %}
+            {{ e_profile.as_p }}
+            <input type="submit" name="submit" value="Save Changes">
+        </form>
+    {% else %}
+        <p><strong>Company Name</strong>{{ e_profile.company_name }}/p>
+    {% endif %}
 </body>
 </html>
