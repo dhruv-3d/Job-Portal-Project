@@ -6,9 +6,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" type="text/css" media="screen"
+     href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+		<link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
     <title>
 		Job Hunt - {% block  title_block %}{% endblock %} 
 	</title>
@@ -35,10 +38,13 @@
 							<li><a href="#">About Us</a></li>
 							<li><a href="#">Sevices</a></li>
 							<li><a href="#">Contact Us</a></li>
-							<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> LogIn</a></li>
+							{% if user.is_authenticated %}
+							<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">{{user.username}}</a></p>
+							{%else%}
+							<li><a href="/login/"><span class="glyphicon glyphicon-log-in"></span> LogIn</a></li>
+							{% endif %}
 						</ul>
 					</div>
-					<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">Mark Otto</a></p>
 				</nav>    
 			</div>
 	{% block body_block %}

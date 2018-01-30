@@ -7,12 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
 from jportal.models import Category, SubCategory
-from jportal.models import Education, Job, JobForm
+from jportal.models import Education, Job, AddJob
 from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 from jportal.models import Job
 
-from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm
+from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm
 from jportal.forms import EmployerProfileForm
 
 from datetime import datetime
@@ -178,22 +178,29 @@ def detail_employer(request):
 
 #----karishma's
 def add_job(request):
+    print(request.user)
+    emp = Employer.objects.get(user_id=request.user.id)
     form=JobForm()
     if request.method == 'POST':
         form = JobForm(request.POST)
+        print(form)
+        print(form.is_valid())
         if form.is_valid():
-            form.save(commit=True)
-            return redirect('/jportal/employer_page/')
+            job = form.save(commit=False) 
+            job.employer = emp
+            job.posted_date = datetime.now()
+            job.save()
+
+            return index(request)
         else:
             print(form.errors)
     return render(request, 'jportal/add_job.html', {'form': form})
     
 def manage_job(request):
-    return render(request, 'jportal/managejob.html') 
+    return render(request, 'jportal/managejob.html')
 
 #testing remaining..
 def job_listing(request):
-
     try:
         category = Category.objects.get(slug=category_name_slug)
         context_dict['category'] = category
