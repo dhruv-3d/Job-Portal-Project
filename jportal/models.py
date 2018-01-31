@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from smart_selects.db_fields import ChainedForeignKey
+from django.template.defaultfilters import slugify
 
 class Category(models.Model):
     title = models.CharField(max_length=50)
@@ -109,10 +110,19 @@ class AddJob(models.Model):
         show_all=False,
         auto_choose=True,
         sort=True)
-    title=models.CharField(max_length=100,blank=False)
+    title=models.CharField(max_length=100,blank=False,unique=True)
     employer = models.ForeignKey(Employer)
     last_date = models.DateField(blank=True)
     salary = models.PositiveIntegerField(blank=True)
     Job_responsibility = models.TextField(blank=False)
     candidate_profile = models.TextField(blank=False)
     posted_date= models.DateTimeField(auto_now=True, blank=True)
+    slug=models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title) 
+        super(AddJob, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
 from jportal.models import Category, SubCategory
-from jportal.models import Education, Job
+from jportal.models import Education, Job , AddJob
 from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 
@@ -260,4 +260,44 @@ def add_job(request):
     return render(request, 'jportal/add_job.html', {'form': form})
 
 def manage_job(request):
-    return render(request, 'jportal/managejob.html') 
+    print(request.user)
+    try:
+        emp = Employer.objects.get(user_id=request.user.id)
+        jobs = AddJob.objects.filter(employer_id=emp.id)
+        print(jobs)
+    except AddJob.DoesNotExist:
+        print("Kassu nathi")
+        return redirect('index.html')
+        
+    context_dict={'job_title': jobs}
+    return render(request, 'jportal/managejob.html', context_dict) 
+
+def edit_job(request,addjob_title_slug):
+    context_dict = {}
+    try:
+        j_title = AddJob.objects.get(slug=addjob_title_slug)
+    except AddJob.DoesNotExist:
+        return redirect('add_job.html')
+    
+    ejob = AddJob.objects.get(slug=addjob_title_slug)
+    print(ejob)
+    e_job = JobForm({'category':ejob.category, 'subcategory':ejob.subcategory, 'title':ejob.title,'last_date':ejob.last_date,'Job_responsibility':ejob.Job_responsibility,'candidate_profile':ejob.candidate_profile})
+    
+    if request.method == 'POST':
+        e_job = JobForm(request.POST)
+        if e_job.is_valid():
+            adde_job = e_job.save(commit=False)
+            e_job = adde_job
+            e_job.save()
+
+            return redirect('/jportal/managejob/')
+        else:
+            print(e_job.errors)
+
+    context_dict['e_job'] = e_job
+    return render(request, 'jportal/edit_job.html', context_dict)
+
+
+
+
+
