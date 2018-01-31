@@ -1,16 +1,11 @@
-<!DOCTYPE html>
+{% extends 'jportal/base.html' %}
 {% load staticfiles %}
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Employer Registration</title>
+{% block title_block %}
+	Employer Registration
+{% endblock %}
 
-</head>
-<body>
+{% block body_block %}
     <h2>Employer Registration</h2>
     <form method="post" action="." enctype="multipart/form-data" >   
             {% csrf_token %}
@@ -18,5 +13,4 @@
             {{ employer_form.as_p }}
             <input type="submit" name="submit" value="Register">
     </form>
-</body>
-</html>
+{% endblock %}

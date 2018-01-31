@@ -11,7 +11,6 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
-
 class SubCategory(models.Model):
     category = models.ForeignKey(Category)
     name = models.CharField(max_length=50)

@@ -17,6 +17,7 @@ from jportal.forms import EmployerProfileForm
 
 from datetime import datetime
 
+
 #index for testing purpose...!!!
 def index(request):
     print(request.user)
@@ -176,6 +177,7 @@ def detail_employer(request):
         context_dict['emp_data'] = emp_data
 
     return render(request, 'jportal/detail_employer.html', context_dict)
+
 
 def jobseeker_page(request):
     print(request)
