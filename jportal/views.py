@@ -20,7 +20,7 @@ from datetime import datetime
 #index for testing purpose...
 def index(request):
     print(request.user)
-
+    usertype=''
     context_dict = {}
     #checking the type of user. i.e Employer or JobSeeker
     #Lame Logic -_-
@@ -31,10 +31,8 @@ def index(request):
             e=Employer()
             e = Employer.objects.get(user_id=u) 
             if e:
-                print("Employer")
-
-                return render(request, 'jportal/employer_page.html', context_dict)
-
+                usertype='e'
+                print("Employer: ",usertype)
         except e.DoesNotExist:
             pass
 
@@ -42,12 +40,12 @@ def index(request):
             e=JobSeekers()
             e = JobSeekers.objects.get(user_id=u) 
             if e:
-                print("JobSeeker")
-                #ahiya job seeker page aavse
+                usertype='j'
+                print("JobSeeker: ",usertype)
         except e.DoesNotExist:
             pass        
 
-    return render(request, 'jportal/index.html', {'content':'YO'})
+    return render(request, 'jportal/index.html', {'usertype':usertype})
 
 def about(request):
     return HttpResponse("About Page")
