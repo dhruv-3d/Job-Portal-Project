@@ -1,0 +1,46 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Registration
+{% endblock %}
+{% block body_block %}
+    <center>
+        <div class="jumbotron">
+            <h2 class="display-3">Job Hunt Registration</h2>
+        </div>
+        <div class="container">
+
+            <ul class="nav nav-tabs" >
+                    <li class="btn btn-lg btn-primary" class="active"><a data-toggle="tab" href="#empReg">Register as Employer</a></li>
+                    <li class="btn btn-lg btn-primary"><a data-toggle="tab" href="#seekReg">Register as Jobseeker</a></li>
+            </ul>
+            <div class="tab-content">
+
+                <div id="empReg" class="tab-pane fade in active">
+                    {% include "registration/employer_register.html" %}
+                </div>
+                <div id="seekReg" class="tab-pane fade">
+                    {% include "registration/jobseeker_register.html" %}
+                </div>
+
+            </div>
+        </div>
+
+    <!--
+        <div>
+            <a href="{% url 'employer_register' %}">
+                <button class="btn btn-lg btn-primary">Register as Employer</button>
+            </a>
+            <br />
+            <br />
+            Or
+            <br />
+            <br />
+            <a href="{% url 'jobseeker_register' %}">
+                <button class="btn btn-lg btn-primary">Register as Jobseeker</button>
+            </a>
+        </div>
+    -->
+    </center>
+{% endblock %}

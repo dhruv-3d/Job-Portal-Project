@@ -53,6 +53,7 @@ def index(request):
 def about(request):
     return HttpResponse("About Page")
 
+
 #---------------------EMPLOYER REGISTRATION
 def employer_reg(request):
     
@@ -87,7 +88,7 @@ def employer_reg(request):
     
     context_dict = {'employer_form':employer_form, 'user_form':user_form, }
 
-    return render(request, 'registration/employer_register.html', context_dict)
+    return context_dict
 
 #--------------------JOB SEEKER REGISTRATION
 def jobseeker_reg(request):
@@ -121,28 +122,71 @@ def jobseeker_reg(request):
  
     context_dict = {'job_seek':job_seek, 'user_form':user_form, }
 
-    return render(request, 'registration/jobseeker_register.html', context_dict)
+    return context_dict
 
-def employer_profile(request, username):
+def register(request):
+
+    context_dict = {}
+    context_dict['e'] = employer_reg(request)
+    context_dict['js'] =  jobseeker_reg(request)
+    return render(request, 'registration/register.html', context_dict)
+
+def employer_profile(request):
     context_dict = {}
     print(request.user)
+
+    if request.method == 'GET':
+        emp_usr = User.objects.get(id=request.user.id)
+        print(emp_usr.username)
+
+        emp_data = Employer.objects.get(user_id=emp_usr.id)
+    
+        context_dict['emp_usr'] = emp_usr
+        context_dict['emp_data'] = emp_data
+
+    return render(request, 'jportal/employer_profile.html', context_dict)
+
+def edit_emp_prof(request, username):
+    context_dict = {}
+    print(request.user)
+
     try:
         user = User.objects.get(username=username)
         euser = Employer.objects.get(user_id=user.id)
     except Employer.DoesNotExist:
         return redirect('/employer_page/')
 
+    #-----Retriving data of EmployerProfile
     emp = EmployerProfile.objects.get_or_create(employer_id=euser.id)[0]
     e_profile = EmployerProfileForm({'company_name':emp.company_name, 'description':emp.description, 'address':emp.address })
+
+    #-----Retriving data of EmployerProfile
+    emp_updt = EmployerForm({''})
+
+    #-----Retriving data of EmployerProfile
+    usr_updt = UserForm({''})
 
     if request.method == 'POST':
         e_profile = EmployerProfileForm(request.POST)
         if e_profile.is_valid():
+
+            #EmployerProfile ma update thai che ahiya--------
             emp_prof = e_profile.save(commit=False)
             emp.company_name = emp_prof.company_name
             emp.description = emp_prof.description
             emp.address = emp_prof.address
             emp.save()
+
+            #Employer ma Update thai che-------
+            em_ui = emp_updt.save(commit=False)
+            euser.profile_img  = em_ui.profile_img
+            euser.save()
+
+            #User ma update thai che-------
+            ui = usr_ipdt.save(commit=False)
+            user.first_name = ui.first_name
+            user.last_name = ui.last_name
+            user.save()
 
             return redirect('employer_profile', user.username)
         else:
@@ -152,7 +196,7 @@ def employer_profile(request, username):
     context_dict['selected_user'] = user
     context_dict['emp_profile'] = emp
 
-    return render(request, 'jportal/employer_profile.html', context_dict)
+    return render(request, 'jportal/edit_emp_prof.html', context_dict)
 
 #Employer dashboard implementation
 def employer_page(request):
@@ -160,6 +204,7 @@ def employer_page(request):
     print(request)
 
     return render(request, 'jportal/employer_page.html', {'user': request.user })
+
 
 def detail_employer(request):
     print(request)    
@@ -177,7 +222,6 @@ def detail_employer(request):
         context_dict['emp_data'] = emp_data
 
     return render(request, 'jportal/detail_employer.html', context_dict)
-
 
 def jobseeker_page(request):
     print(request)

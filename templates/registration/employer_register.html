@@ -4,13 +4,15 @@
 {% block title_block %}
 	Employer Registration
 {% endblock %}
-
+{% block nav_block %}
+    
+{% endblock %}
 {% block body_block %}
     <h2>Employer Registration</h2>
     <form method="post" action="." enctype="multipart/form-data" >   
             {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ employer_form.as_p }}
+            {{ e.user_form.as_p }}
+            {{ e.employer_form.as_p }}
             <input type="submit" name="submit" value="Register">
     </form>
 {% endblock %}

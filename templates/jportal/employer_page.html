@@ -6,11 +6,8 @@
 {% endblock %}
 {% block body_block %}
     <h3>Sample Employer Page</h3>
-
-    <a href="{% url 'detail_employer' %}">Detailed Employer Profile</a>
-    <br />
-
-    <a href="{% url 'employer_profile' user.username %}">My Profile</a>
+    
+    <a href="{% url 'employer_profile' %}">My Profile</a>
     <br />
     <a href="{% url 'managejob' %}">ManageJob</a>
     {% if user.is_authenticated %}

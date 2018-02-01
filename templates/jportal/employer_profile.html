@@ -1,25 +1,53 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="Parmaatma">
 
-    <title>{{ selected_user.username }} Profile</title>
+    <title>Employer Detail Page</title>
 
 </head>
 <body>
-    <h3>{{ selected_user.username }} Profile</h3>
-    {% if selected_user.username == user.username %}
-        <form method="post" action="." enctype="multipart/form-data" >   
-            {% csrf_token %}
-            {{ e_profile.as_p }}
-            <input type="submit" name="submit" value="Save Changes">
-        </form>
-    {% else %}
-        <p><strong>Company Name</strong>{{ e_profile.company_name }}/p>
+    <h2>Employer Profile</h2>
+        <br />
+        <br />
+        <div>
+            <h4> {{ emp_usr.username }} </h4>
+            <p>Company name</p>
+            <p>{{ emp_data.city }}, {{ emp_data.state }}</p>
+            <br />
+            <!-- image of the employer-->
+            <img src="{{ MEDIA_URL }}{{emp_data.profile_img }}" height="150px" width="150px"/>
+            <hr />
+            <div>
+                <b><p>Contact Information</p></b>
+                    <p>{{ emp_usr.email }}</p>
+                    <p>{{ emp_data.con_no }}</p>
+
+                <a href="#">
+                    <button>Message {{ emp_usr.first_name }}</button>
+                </a>
+            </div>
+            <hr />
+
+            <p>Designation: Employer's Designation</p>
+            <p>Work Experience or Skill: </p>
+        </div>
+        <hr />
+
+        <div>
+            <!---ahiya job offered by the employer nu list aavse je karishma banave che -->
+        </div>
+
+    {% if user.is_authenticated %}
+        <br />
+        <a href="{% url 'edit_emp_prof' emp_usr.username %}">Edit Details</a>
+        <br />
+        <a href="/logout/">Logout</a>
     {% endif %}
 </body>
 </html>
