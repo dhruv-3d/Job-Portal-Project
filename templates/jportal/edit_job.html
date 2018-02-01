@@ -8,7 +8,8 @@
     <div>
     <form method="POST" action=".">
         {% csrf_token %}
-        {{ e_job.as_p }}
+        {{ form.as_p }}
+        {{ form.media.js }}
     </div>
     <div>
         <button type="submit" value="submit">Submit</button>

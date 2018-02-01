@@ -86,3 +86,9 @@ class JobForm(forms.ModelForm):
        exclude = ('posted_date','employer','slug',)
 
 
+class EditJobForm(forms.ModelForm):
+    class Meta:
+       model = AddJob
+       exclude = ('posted_date','employer','slug',)
+
+
