@@ -1264,8 +1264,8 @@ General Styles - Owlcarousel
 
 .navbar-custom .navbar-brand {
   letter-spacing: 4px;
-  font-weight: 400;
-  font-size: 22px;
+  font-weight: 500;
+  font-size: 25px;
   color: #fff;
 }
 
@@ -1318,7 +1318,7 @@ General Styles - Owlcarousel
   top: 50%;
   margin-top: -6px;
   font: normal normal normal 14px/1 FontAwesome;
-  font-size: 9px;
+  font-size: 15px;
   content: "\f107";
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -1331,7 +1331,7 @@ General Styles - Owlcarousel
 
 .dropdown-menu {
   min-width: 180px;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 

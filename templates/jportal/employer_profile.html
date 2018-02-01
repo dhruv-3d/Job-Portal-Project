@@ -2,13 +2,43 @@
 {% load staticfiles %}
 
 {% block title_block %}
-	Job Search - Employer Profile
+	Job Search - Employer Detail Pages
 {% endblock %}
 {% block body_block %}
-    <h3>Employer's Own Profile Page</h3>
-    <form method="post" action="." enctype="multipart/form-data" >   
-        {% csrf_token %}
-        {{ e_profile.as_p }}
-        <input type="submit" name="submit" value="Save Changes">
-    </form>
+    <h2>Employer Detail Page</h2>
+        <br />
+        <hr />
+        <br />
+        <div>
+            <h4> {{ emp_usr.username }} </h4>
+            <p>Company name</p>
+            <p>{{ emp_data.city }}, {{ emp_data.state }}</p>
+            <br />
+            <!-- image of the employer-->
+            <img src="{{ MEDIA_URL }}{{emp_data.profile_img }}" height="150px" width="150px"/>
+            <hr />
+            <div>
+                <b><p>Contact Information</p></b>
+                    <p>{{ emp_usr.email }}</p>
+                    <p>{{ emp_data.con_no }}</p>
+
+                <a href="#">
+                    <button>Message {{ emp_usr.first_name }}</button>
+                </a>
+            </div>
+            <hr />
+
+            <p>Designation: Employer's Designation</p>
+            <p>Work Experience or Skill: </p>
+        </div>
+        <hr />
+
+        <div>
+            <!---ahiya job offered by the employer nu list aavse je karishma banave che -->
+        </div>
+
+    {% if user.is_authenticated %}
+        <br />
+        <a href="/logout/">Logout</a>
+    {% endif %}
 {% endblock %}

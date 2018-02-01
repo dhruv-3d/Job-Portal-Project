@@ -258,3 +258,16 @@ def suggest_job(request):
         starts_with = request.POST['suggestion']   
         job_list = get_job_list(8, starts_with)
     return render(request, 'jportal/.html', {'jobs': job_list })
+
+@login_required
+def employer_profile(request): 
+    context_dict={}
+    if request.method == 'GET':
+        emp_usr = User.objects.get(id=request.user.id)
+        print(emp_usr.username)
+        emp_data = Employer.objects.get(user_id=emp_usr.id)
+        
+        context_dict['emp_usr'] = emp_usr
+        context_dict['emp_data'] = emp_data
+
+    return render(request, 'jportal/employer_profile.html', context_dict)

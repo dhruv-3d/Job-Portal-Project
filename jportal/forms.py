@@ -32,7 +32,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'confirm_password',)
+        fields = ('first_name', 'last_name','email', 'password', 'confirm_password',)
 
 class EmployerForm(forms.ModelForm):
 
