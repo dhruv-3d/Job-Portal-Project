@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-from jportal.models import Employer, EmployerProfile
+from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 from jportal.models import Job
 from jportal.models import Category, SubCategory, AddJob
@@ -50,10 +50,10 @@ class EmployerForm(forms.ModelForm):
         model = Employer
         fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
 
-class EmployerProfileForm(forms.ModelForm):
+class EmployerCompanyProfileForm(forms.ModelForm):
     class Meta:
-        model = EmployerProfile
-        exclude = ('employer','logo',)
+        model = EmployerCompanyProfile
+        exclude = ('employer',)
 
 class JobSeekerForm(forms.ModelForm):
         

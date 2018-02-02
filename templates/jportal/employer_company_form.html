@@ -1,0 +1,16 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Job Search - Company_details_form
+{% endblock %}
+{% block body_block %}
+<div class="container">
+    <h2>Company Details</h2>
+    <form method="post" action="." enctype="multipart/form-data" >   
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" name="submit" value="Confirm">
+    </form>
+</div>
+{% endblock %}

@@ -57,18 +57,18 @@
 									</ul>
 								</div>
 								{% elif usertype == "j" %}
-								<li class="navbar-text navbar-right dropdown">Signed in as <a class="dropdown-toggle" href="#" data-toggle="dropdown" style="display:inline;font-style:italic; color:royalblue;">{{user.username}}</a>
+								<div class="navbar-text navbar-right dropdown">Signed in as <a class="dropdown-toggle" href="#" data-toggle="dropdown" style="display:inline; font-style:italic; color:royalblue;">{{user.username}}</a>
 									<ul class="dropdown-menu">
-										<li><a href="{% url 'jobseeker_profile' user.username %}">My Profile</a></li>
-										<li><a href="#">Resume</a></li>
-										<li><a href="#">Jobs Applied</a></li>
+										<li><a href="#"><i class="glyphicon glyphicon-user"></i> My Profile</a></li>
+										<li><a href="#"><i class="glyphicon glyphicon-cog"></i> Resume</a></li>
+										<li><a href="#"><i class="glyphicon glyphicon-wrench"></i> Jobs Applied</a></li>
 										<li class="divider"></li>
-										<li><a href="#">Change Password</a></li>
-										<li><a href="/logout/">Logout</a></li>
+										<li><a href="{% url 'password_change' %}"><i class="glyphicon glyphicon-lock"></i> Change Password</a></li>
+										<li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
 									</ul>
-								</li>
+								</div>
 								{% else %}
-								<li><a href="/logout/">Logout</a></li>
+								<li><a href="{% url 'logout' %}">Logout</a></li>
 								<li class="navbar-text navbar-right">Signed in as <span style="font-style:italic; color:black;">{{user.username}}</span></li>
 								{% endif %}
 							{% endif %}
@@ -81,5 +81,6 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU&callback=myMap"></script>
   </body>
 </html>

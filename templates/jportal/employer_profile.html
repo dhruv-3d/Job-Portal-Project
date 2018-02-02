@@ -5,40 +5,38 @@
 	Job Search - Employer Detail Pages
 {% endblock %}
 {% block body_block %}
-    <h2>Employer Detail Page</h2>
-        <br />
-        <hr />
-        <br />
-        <div>
-            <h4> {{ emp_usr.username }} </h4>
-            <p>Company name</p>
-            <p>{{ emp_data.city }}, {{ emp_data.state }}</p>
-            <br />
-            <!-- image of the employer-->
-            <img src="{{ MEDIA_URL }}{{emp_data.profile_img }}" height="150px" width="150px"/>
-            <hr />
-            <div>
-                <b><p>Contact Information</p></b>
-                    <p>{{ emp_usr.email }}</p>
-                    <p>{{ emp_data.con_no }}</p>
 
-                <a href="#">
-                    <button>Message {{ emp_usr.first_name }}</button>
-                </a>
+    <div class="container">
+        <div class="row">
+            <div class="page-header"><h3>Profile Details</h3></div>
+            <div class="jumbotron">
+                <div class="col-md-4 col-lg-4">
+                    <img src="{{ MEDIA_URL }} {{emp_data.profile_img}}" class="img-thumbnail img-responsive" style="width:100%">
+                </div>
+                <div class="col-md-8 col-lg-8">
+                    <h3 class="work-details-title font-alt">{{user.first_name}} {{user.last_name}}</h3>
+                    <h4><b>Assistant HR</b></h4>
+                    <h5>Company Name</h5>
+                    <h5><span class="glyphicon glyphicon-earphone"></span> : {{emp_data.con_no}} </h5>
+                    <h5><span class="glyphicon glyphicon-envelope"></span> : {{emp_usr.email }} </h5>
+                    <h5><span class="glyphicon glyphicon-map-marker color-primary"></span> : {{emp_data.city}}, {{emp_data.state}}</h5>
+                </div>
             </div>
-            <hr />
-
-            <p>Designation: Employer's Designation</p>
-            <p>Work Experience or Skill: </p>
         </div>
-        <hr />
-
-        <div>
-            <!---ahiya job offered by the employer nu list aavse je karishma banave che -->
+        <div class="row">
+            <div class="page-header"><h3>Company Details</h3></div>
+                <div class="jumbotron">
+                    <div class="col-md-8 col-lg-8">
+                        <h3 class="work-details-title font-alt">{{company_data.company_name}}Narola Infotech Pvt. Ltd.</h3>
+                        <p>{{company_data.description}}</p>
+                        <address>{{company_data.address}}</address>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <img src="{{ MEDIA_URL }} {{company_data.logo}}" class="img-thumbnail img-responsive" style="width:100%">
+                    </div>
+                </div>
+            </div>
         </div>
-
-    {% if user.is_authenticated %}
-        <br />
-        <a href="/logout/">Logout</a>
-    {% endif %}
+    </div>
+    
 {% endblock %}

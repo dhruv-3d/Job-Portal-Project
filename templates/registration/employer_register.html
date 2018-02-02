@@ -6,7 +6,7 @@
 {% endblock %}
 {% block body_block %}
     <div class="container">
-        <h2>Employer Registration</h2>
+        <h2>Personal Details</h2>
         <form method="post" action="." enctype="multipart/form-data" >   
                 {% csrf_token %}
                 {{ user_form.as_p }}
