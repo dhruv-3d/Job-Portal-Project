@@ -1,11 +1,53 @@
-<!DOCType html>
-<html>
-    <head>
-        <title>Manage Job</title>
-    </head>
-    <body>
-        <a href="{% url 'job' %}">
-        <button type="submit" value="ADD JOB">ADD JOB</button>
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Job Search - Manage Job
+{% endblock %}
+{% block body_block %}
+<style>
+        #content {
+      display: none;
+    }
+    input[type="text"]{
+        color: transparent;
+        text-shadow: 0 0 0 #000;
+        padding: 6px 12px;
+        width: 60px;
+        cursor: pointer;
+    }
+    input[type="text"]:focus{
+        outline: none;
+    }
+    input:focus + div#content {
+      display: block;
+    }
+</style>
+    
+    <a href="{% url 'add_job' %}">
+    <button type="submit" value="ADD JOB">ADD JOB</button>
     </a>
-    </body>
-</html>
+    
+    <div>
+        {% for i in job %}
+        <br />
+            <div> 
+                {{ i.title }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="{% url 'edit_job' i.slug %}">
+                    <button type="submmit" value="Edit Jobs">Edit Jobs</button></a>
+                    <a href="{% url 'delete_job' i.slug %}"><button type="submit" value="Delete">Delete</button></a>
+                    <input type="text" value="show">               
+                    <div id="content">
+
+                        {{i.title}} <br/>
+                        {{i.posted_date}}  <br/>
+                        {{i.category}}  <br/>
+                        {{i.subcategory}}  <br/>
+                        {{i.last_date}}   <br/>
+                        {{i.salary}}   <br/>
+                        {{i.employer}}   <br/>
+                    </div>
+                    
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

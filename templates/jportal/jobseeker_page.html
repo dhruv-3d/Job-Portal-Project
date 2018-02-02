@@ -12,7 +12,8 @@
 </head>
 <body>
     <h3>Sample JobSeeker Page</h3>
-    
+    <a href="{% url 'jobseeker_edit' %}">Edit Profile</a>
+
     <a href="#">My Profile</a>
     {% if user.is_authenticated %}
         <a href="/logout/">Logout</a>

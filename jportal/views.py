@@ -7,13 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
 from jportal.models import Category, SubCategory
-from jportal.models import Education, Job, JobForm
+from jportal.models import Education, Job, AddJob
 from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 from jportal.models import Job
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm
-from jportal.forms import EmployerProfileForm
+from jportal.forms import EmployerProfileForm, Resume
 
 from datetime import datetime
 
@@ -53,7 +53,6 @@ def index(request):
 def about(request):
     return HttpResponse("About Page")
 
-
 #---------------------EMPLOYER REGISTRATION
 def employer_reg(request):
     
@@ -61,9 +60,9 @@ def employer_reg(request):
     employer_form = EmployerForm()
     
     print(request.user)
-    if request.method == 'POST':
+    if request.method == 'POST' and employer_form.sub == True:
         user_form = UserForm(request.POST)
-        employer_form = EmployerForm(request.POST)
+        employer_form = EmployerForm(request.POST, request.FILES)
         
         if employer_form.is_valid() and user_form.is_valid():    
             user = user_form.save(commit=False)
@@ -97,21 +96,22 @@ def jobseeker_reg(request):
     job_seek = JobSeekerForm()
 
     print(request)
-    if request.method == 'POST':
+    if request.method == 'POST' and employer_form.sub == False:
         user_form = UserForm(request.POST)
         job_seek = JobSeekerForm(request.POST)
         if user_form.is_valid() and job_seek.is_valid():
             user = user_form.save(commit=False)
+            seeker_user = job_seek.save(commit=False)
+
             user.username = user.email
             user.password = user_form.cleaned_data.get('password')
             user.password = make_password(user.password)
-            print(user.password)
+            
             user.save()
             usr_obj = User.objects.get(username=user.username)
             print("aa user obj:",usr_obj)
             
-            seeker_user = job_seek.save(commit=False)
-            seeker_user.user = usr_obj
+            seeker_user.user_id = usr_obj.id
             seeker_user.save()
 
             return redirect('/jportal/')
@@ -124,9 +124,37 @@ def jobseeker_reg(request):
 
     return context_dict
 
+#------------Job seeker (by karishma)
+def jobseeker_edit(request):
+    form = JobSeekerForm()
+    try:
+        b = JobSeekers.objects.get(user_id=request.user.id)   
+    except JobSeekers.DoesNotExist():
+        b = None
+    print(b.state)
+    
+    if b:
+        print('pass')
+        form = JobSeekerForm({'state':b.state,'city':b.city,'profile_img':b.profile_img,'gender':b.gender,'dob':b.dob,'contact_no':b.con_no})
+        if request.method == 'POST':
+            form = JobSeekerForm(request.POST, request.FILES)
+            if form.is_valid():
+                print('valid che')
+                c = form.save(commit=False)                
+                b.user_id = request.user.id
+                b = c
+                b.save()
+                return redirect('index')
+                
+            else:
+                print(form.errors)
+
+    return render(request, 'jportal/jobseeker_edit.html', {'form':form})
+
 def register(request):
 
     context_dict = {}
+
     context_dict['e'] = employer_reg(request)
     context_dict['js'] =  jobseeker_reg(request)
     return render(request, 'registration/register.html', context_dict)
@@ -172,6 +200,7 @@ def edit_emp_prof(request, username):
 
             #EmployerProfile ma update thai che ahiya--------
             emp_prof = e_profile.save(commit=False)
+
             emp.company_name = emp_prof.company_name
             emp.description = emp_prof.description
             emp.address = emp_prof.address
@@ -228,17 +257,40 @@ def jobseeker_page(request):
 
     return render(request, 'jportal/jobseeker_page.html', {'user': request.user })
 
-#----karishma's
+#----karishma's Okay Up and running
 def add_job(request):
+    print(request.user)
+
+    emp = Employer.objects.get(user_id=request.user.id)
     form=JobForm()
     if request.method == 'POST':
         form = JobForm(request.POST)
+        print(form)
+        print(form.is_valid())
         if form.is_valid():
-            form.save(commit=True)
-            return redirect('/jportal/employer_page/')
+            a = form.save(commit=False) 
+            a.employer = emp
+            a.posted_date = datetime.now()
+            a.save()
+
+            return redirect('managejob')
         else:
             print(form.errors)
-    return render(request, 'jportal/job.html', {'form': form}) 
+    return render(request, 'jportal/add_job.html', {'form': form})
+
+def resume(request):
+    user = request.user.id
+    form = ResumeForm()
+    if request.method == 'POST':
+        form = ResumeForm(request.POST)
+        if form.is_valid():
+            a = form.save(commit=False) 
+            a.jobseeker_id = user
+            a.save()
+            return redirect('index')
+        else:
+            print(form.errors)
+    return render(request, 'jportal/resume.html', {'form': form})
 
 #----vidushi's
 #testing remaining..
@@ -304,4 +356,14 @@ def suggest_job(request):
     return render(request, 'jportal/.html', {'jobs': job_list })
 
 def manage_job(request):
-    pass
+    print(request.user)
+    try:
+        emp = Employer.objects.get(user_id=request.user.id)
+        jobs = AddJob.objects.filter(employer_id=emp.id)
+        print(jobs)
+    except AddJob.DoesNotExist:
+        print("Kassu nathi")
+        return redirect('index.html')
+        
+    context_dict={'job': jobs}
+    return render(request, 'jportal/managejob.html', context_dict) 

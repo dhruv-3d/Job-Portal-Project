@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from smart_selects.db_fields import ChainedForeignKey
+from django.template.defaultfilters import slugify
 
 class Category(models.Model):
     title = models.CharField(max_length=50)
@@ -23,7 +24,6 @@ class SubCategory(models.Model):
 
 class Education(models.Model):
     education = models.CharField(max_length=100)
-
 
 class Employer(models.Model):
     user = models.ForeignKey(User)
@@ -63,7 +63,7 @@ class JobSeekers(models.Model):
     def __str__(self):
         return self.user.username
 
-class  JobSeekersProfile(models.Model):
+class JobSeekersProfile(models.Model):
     user = models.OneToOneField(JobSeekers)
     pref_job_loc = models.CharField(max_length=100, blank=True)
     resume = models.FileField(blank=True)
@@ -99,7 +99,7 @@ class Appliers(models.Model):
     date_apply = models.DateField()
     status = models.CharField(max_length=50)
 
-class JobForm(models.Model):
+class AddJob(models.Model):
     category=models.ForeignKey(Category)
     subcategory= ChainedForeignKey(
         SubCategory,
@@ -108,11 +108,38 @@ class JobForm(models.Model):
         show_all=False,
         auto_choose=True,
         sort=True)
-    title=models.CharField(max_length=100,blank=False)
+    title=models.CharField(max_length=100,blank=False,unique=True)
     employer = models.ForeignKey(Employer)
-    last_date = models.DateField(blank=False)
+    last_date = models.DateField(blank=True)
     salary = models.PositiveIntegerField(blank=True)
     Job_responsibility = models.TextField(blank=False)
     candidate_profile = models.TextField(blank=False)
-    posted_date= models.DateTimeField(auto_now=True)
-    
+    posted_date= models.DateTimeField(auto_now=True, blank=True)
+    slug=models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title) 
+        super(AddJob, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+class Resume(models.Model):
+    resumetitle = models.CharField(max_length=120,blank=False)
+    preffered_job_location = models.CharField(max_length=120,blank=False)
+    state = models.CharField(max_length=120,blank=False)
+    city = models.CharField(max_length=120,blank=False)
+    category = models.ForeignKey(Category)
+    subcategory= ChainedForeignKey(
+        SubCategory,
+        chained_field="category",
+        chained_model_field="category",
+        show_all=False,
+        auto_choose=True,
+        sort=True)
+    totalexp = models.TextField(blank=False)
+    currentsalary = models.PositiveIntegerField(blank=False)
+    jobseeker = models.ForeignKey(JobSeekers)
+
+    def __str__(self):
+        return self.resumetitle
