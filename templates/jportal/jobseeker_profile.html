@@ -1,0 +1,29 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Job Search - Jobseeker Profile
+{% endblock %}
+{% block body_block %}
+    <div>
+    <h1>Jobseeker Profile</h1>
+    <br/>
+    {{ job_usr.username }}
+    <br/>
+    {{ job_usr.email }}
+    <br/>
+    {{ job_data.state }}
+    <br/>
+    {{ job_data.city }}
+    <br/>
+    {{ job_data.profile_img }}
+    <br/>
+    {{ job_data.gender }}
+    <br/>
+    {{ job_data.dob }}
+    <br/>
+    {{ job_data.con_no }}
+    <br/>
+    </div>
+</form>
+{% endblock %}

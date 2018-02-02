@@ -160,6 +160,21 @@ def jobseeker_edit(request):
                 print(form.errors)
 
     return render(request, 'jportal/jobseeker_edit.html', {'form':form})
+
+def jobseeker_profile(request):
+    context_dict = {}
+    print(request.user)
+
+    if request.method == 'GET':
+        job_usr = User.objects.get(id=request.user.id)
+        print(job_usr.username)
+
+        job_data = JobSeekers.objects.get(user_id=job_usr.id)
+        print(job_data)
+        context_dict['job_usr'] = job_usr
+        context_dict['job_data'] = job_data
+    
+    return render(request,'jportal/jobseeker_profile.html',context_dict)
     
 
 
@@ -426,6 +441,8 @@ def resume_edit(request):
                 return redirect('index')
     
     return render(request, 'jportal/resume_edit.html', {'form':form})
+
+
 
 
 
