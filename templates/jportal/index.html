@@ -30,10 +30,18 @@
 <br />
 <a href="/jportal/jobseeker_registration/">JobSeeker Register Here</a>
 <br />
+
 {% if user.is_authenticated %}
+	<br/>
 	<a href="{% url 'jobseeker_edit' %}">Jobseeker Edit Details</a>
 	<br />
-{% endif %}
+	<br/>
+	<a href="{% url 'resume' %}">Resume</a>
+	<br/>
+	<br/>
+	<a href="{% url 'resume_edit' %}">Resume Edit</a>
+	<br/>
+	{% endif %}
 <br />
 <a href="/login/">Login Here</a>
 <br />

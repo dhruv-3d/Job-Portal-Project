@@ -14,6 +14,8 @@ urlpatterns = [
 
     url(r'^jobseeker_registration/$',views.jobseeker_reg,name='jobseeker_registration'),
     url(r'^jobseeker_edit/$',views.jobseeker_edit,name='jobseeker_edit'),
+    url(r'^resume/$',views.resume,name='resume'),
+    url(r'^resume_edit/$',views.resume_edit,name='resume_edit'),
 
     url(r'^employer_register/$', views.employer_reg, name='employer_register'),
     url(r'^employer_page/$', views.employer_page, name='employer_page'),

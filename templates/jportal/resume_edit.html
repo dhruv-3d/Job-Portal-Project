@@ -1,0 +1,21 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Job Search - Resume Edit Form
+{% endblock %}
+{% block body_block %}
+    <div>
+    <h1>Resume Edit Form</h1>
+    <form method="POST" action=".">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ form.media.js }}
+    </div>
+    <div>
+        <button type="submit" value="submit">Submit</button>
+        <br/>
+    
+    </div>
+</form>
+{% endblock %}

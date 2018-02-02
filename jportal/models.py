@@ -126,3 +126,22 @@ class AddJob(models.Model):
     def __str__(self):
         return self.title
 
+class Resume(models.Model):
+    resumetitle = models.CharField(max_length=120,blank=False)
+    preffered_job_location = models.CharField(max_length=120,blank=False)
+    state = models.CharField(max_length=120,blank=False)
+    city = models.CharField(max_length=120,blank=False)
+    category = models.ForeignKey(Category)
+    subcategory= ChainedForeignKey(
+        SubCategory,
+        chained_field="category",
+        chained_model_field="category",
+        show_all=False,
+        auto_choose=True,
+        sort=True)
+    totalexp = models.TextField(blank=False)
+    currentsalary = models.PositiveIntegerField(blank=False)
+    jobseeker = models.ForeignKey(JobSeekers)
+
+    def __str__(self):
+        return self.resumetitle

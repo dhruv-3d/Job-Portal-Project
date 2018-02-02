@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 from jportal.models import Job
-from jportal.models import Category, SubCategory, AddJob
+from jportal.models import Category, SubCategory, AddJob, Resume
 
 from captcha.fields import CaptchaField
 import datetime
@@ -77,7 +77,7 @@ class JobSeekerForm(forms.ModelForm):
     class Meta:
         model = JobSeekers
         fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
-        
+
 #------
 #karishma's form
 class JobForm(forms.ModelForm):
@@ -91,4 +91,11 @@ class EditJobForm(forms.ModelForm):
        model = AddJob
        exclude = ('posted_date','employer','slug',)
 
+class ResumeForm(forms.ModelForm):
+    preffered_job_location = forms.CharField(widget=forms.Select(choices=CITIES),required=True)
+    state = forms.CharField(widget=forms.Select(choices=STATES),required=True)
+    city = forms.CharField(widget=forms.Select(choices=CITIES),required=True)
+    class Meta:
+        model = Resume
+        fields = ('resumetitle','preffered_job_location','state','city','category','subcategory','totalexp','currentsalary',)
 

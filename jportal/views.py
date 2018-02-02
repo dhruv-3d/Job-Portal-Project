@@ -7,11 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
 from jportal.models import Category, SubCategory
-from jportal.models import Education, Job , AddJob
+from jportal.models import Education, Job, AddJob, Resume
 from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 
-from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm
+
+from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm, ResumeForm
 from jportal.forms import EmployerProfileForm, EditJobForm, JobSeekerForm
 
 from datetime import datetime
@@ -373,9 +374,58 @@ def delete_job(request,addjob_title_slug):
     
     return redirect('managejob')
 
-def view_details(request,addjob_title_slug):
+def resume(request):
+    user = request.user.id
+    form = ResumeForm()
+    if request.method == 'POST':
+        form = ResumeForm(request.POST)
+        if form.is_valid():
+            a = form.save(commit=False) 
+            a.jobseeker_id = user
+            a.save()
+            return redirect('index')
+        else:
+            print(form.errors)
+    return render(request, 'jportal/resume.html', {'form': form})
 
-    return redirect('index')
+def resume_edit(request):
+    form = ResumeForm()
+    try:
+        a = JobSeekers.objects.get(user_id=request.user.id)
+        b = Resume.objects.get(jobseeker_id = a.user.id)   
+    except Resume.DoesNotExist:
+        b = None
+    print(b)
+    
+    if b:
+        print('pass')
+        form = ResumeForm({'resumetitle':b.resumetitle,'preffered_job_location':b.preffered_job_location,'state':b.state,'city':b.state,'category':b.category,'subcategory':b.subcategory,'totalexp':b.totalexp,'currentsalary':b.currentsalary})
+        if request.method == 'POST':
+            form = ResumeForm(request.POST, request.FILES)
+            if form.is_valid():
+                print('valid che')
+                c = form.save(commit=False)
+                if c.resumetitle:
+                    b.resumetitle = c.resumetitle
+                if c.preffered_job_location:
+                    b.preffered_job_location = c.preffered_job_location
+                if c.state:
+                    b.state = c.state
+                if c.city:
+                    b.city = c.city
+                if c.category:
+                    b.category = c.category
+                if c.subcategory:
+                    b.subcategory = c.subcategory
+                if c.totalexp:
+                    b.totalexp = c.totalexp
+                if c.currentsalary:
+                    b.currentsalary = c.currentsalary
+                b.user_id = request.user.id
+                b.save()
+                return redirect('index')
+    
+    return render(request, 'jportal/resume_edit.html', {'form':form})
 
 
 
