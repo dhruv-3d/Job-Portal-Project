@@ -77,7 +77,7 @@ class JobSeekerForm(forms.ModelForm):
     class Meta:
         model = JobSeekers
         fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
-
+        
 #------
 #karishma's form
 class JobForm(forms.ModelForm):

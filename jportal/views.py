@@ -12,7 +12,7 @@ from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm
-from jportal.forms import EmployerProfileForm, EditJobForm
+from jportal.forms import EmployerProfileForm, EditJobForm, JobSeekerForm
 
 from datetime import datetime
 
@@ -118,10 +118,63 @@ def jobseeker_reg(request):
             print(user_form.errors)
             print(job_seek.errors)
  
-    context_dict = {'job_seek':job_seek, 'user_form':user_form, }
+    context_dict = {'job_seek':job_seek, 'user_form':user_form}
 
-    return render(request, 'registration/jobseeker_register.html', context_dict)
+    return render(request, 'registration/jobseeker_registration.html', context_dict)
 
+#------------Job seeker (by karishma)
+def jobseeker_edit(request):
+    form = JobSeekerForm()
+    try:
+        b = JobSeekers.objects.get(user_id=request.user.id)   
+    except JobSeekers.DoesNotExist():
+        b = None
+    print(b.state)
+    
+    if b:
+        print('pass')
+        form = JobSeekerForm({'state':b.state,'city':b.city,'profile_img':b.profile_img,'gender':b.gender,'dob':b.dob,'contact_no':b.con_no})
+        if request.method == 'POST':
+            form = JobSeekerForm(request.POST, request.FILES)
+            if form.is_valid():
+                print('valid che')
+                c = form.save(commit=False)
+                if c.state:
+                    b.state = c.state
+                if c.city:
+                    b.city = c.city
+                if c.profile_img:
+                    b.profile_img = c.profile_img
+                if c.gender:
+                    b.gender = c.gender
+                if c.dob:
+                    b.dob = c.dob
+                if c.con_no:
+                    b.con_no = c.con_no
+                b.user_id = request.user.id
+                b.save()
+                return redirect('index')
+                
+            else:
+                print(form.errors)
+
+    return render(request, 'jportal/jobseeker_edit.html', {'form':form})
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#-----------Employer (by vidushi)
 def employer_profile(request):
     context_dict = {}
     print(request)
