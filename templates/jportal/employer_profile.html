@@ -39,9 +39,14 @@
         </div>
         <hr />
 
+        <!--- TO SHOW EMPLOYER"S JOBS -->
         <div>
-            <!---ahiya job offered by the employer nu list aavse je karishma banave che -->
+            <button type="button" data-toggle="collapse" data-target="#showjobs">Show Posted Jobs</button>
+            <div id="showjobs" class="collapse">
+                {% include 'jportal/job_listing.html'%}
+            </div>
         </div>
+
 
     {% if user.is_authenticated %}
         <br />

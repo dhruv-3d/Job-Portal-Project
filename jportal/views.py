@@ -60,7 +60,7 @@ def employer_reg(request):
     employer_form = EmployerForm()
     
     print(request.user)
-    if request.method == 'POST' and employer_form.sub == True:
+    if request.method == 'POST' and 'emp_submit' in request.POST:
         user_form = UserForm(request.POST)
         employer_form = EmployerForm(request.POST, request.FILES)
         
@@ -96,9 +96,9 @@ def jobseeker_reg(request):
     job_seek = JobSeekerForm()
 
     print(request)
-    if request.method == 'POST' and employer_form.sub == False:
+    if request.method == 'POST' and 'job_submit' in request.POST:
         user_form = UserForm(request.POST)
-        job_seek = JobSeekerForm(request.POST)
+        job_seek = JobSeekerForm(request.POST, request.FILES)
         if user_form.is_valid() and job_seek.is_valid():
             user = user_form.save(commit=False)
             seeker_user = job_seek.save(commit=False)
@@ -152,11 +152,11 @@ def jobseeker_edit(request):
     return render(request, 'jportal/jobseeker_edit.html', {'form':form})
 
 def register(request):
-
     context_dict = {}
 
     context_dict['e'] = employer_reg(request)
     context_dict['js'] =  jobseeker_reg(request)
+    
     return render(request, 'registration/register.html', context_dict)
 
 def employer_profile(request):
@@ -169,8 +169,9 @@ def employer_profile(request):
 
         emp_data = Employer.objects.get(user_id=emp_usr.id)
     
-        context_dict['emp_usr'] = emp_usr
-        context_dict['emp_data'] = emp_data
+    context_dict['emp_usr'] = emp_usr
+    context_dict['emp_data'] = emp_data
+    context_dict['jobs'] = job_listing(request)
 
     return render(request, 'jportal/employer_profile.html', context_dict)
 
@@ -292,16 +293,46 @@ def resume(request):
             print(form.errors)
     return render(request, 'jportal/resume.html', {'form': form})
 
-#----vidushi's
+#----vidushi's------------------------
 #testing remaining..
-def job_listing(request):
+def job_listing(request, *args, **kwargs):
+    print(request)
+    context_dict = {}
 
-    try:
-        category = Category.objects.get(slug=category_name_slug)
-        context_dict['category'] = category
-    except Category.DoesNotExist:
-        context_dict['category'] = None
-    return render(request, 'jportal/job.html', context_dict)
+    if request.method == 'GET':
+        try:
+            emp = Employer.objects.get(user_id=request.user.id)
+            jobs = AddJob.objects.filter(employer_id=emp.id)
+        except AddJob.DoesNotExist:
+            return HttpResponse("No Jobs Posted")
+    
+    elif request.method == 'POST':
+        cat_title = kwargs('cat_title', None)
+        subcat_name = kwargs('subcat_name', None)
+        job_title = kwargs('job_title', None)
+        #emp_id = kwargs('emp_id', None)
+        try:
+            if cat_title:
+                cat = Category.objects.get(title=cat_title)
+                if subcat_name:
+                    subcat = SubCategory.objects.get(name=subcat_name)
+                    #getting job as per category and subcategory
+                    jobs = AddJob.objects.filter(category_id=cat.id, subcategory_id=subcat.id)
+        except AddJob.DoesNotExist:
+            pass
+
+        try:
+            if job_title:
+                    jobs = AddJob.objects.filter(title=job_title)
+        except:
+            return HttpResponse("No Jobs Found")
+
+
+    #context_dict['category'] = cat
+    #context_dict['subcategory'] = subcat
+    context_dict['jobs'] = jobs
+
+    return jobs
 
 #testing remaining..
 def show_appliers(request):
@@ -354,7 +385,7 @@ def suggest_job(request):
         starts_with = request.POST['suggestion']   
         job_list = get_job_list(8, starts_with)
     return render(request, 'jportal/.html', {'jobs': job_list })
-
+#--------------------------------------
 def manage_job(request):
     print(request.user)
     try:
@@ -367,3 +398,51 @@ def manage_job(request):
         
     context_dict={'job': jobs}
     return render(request, 'jportal/managejob.html', context_dict) 
+
+def edit_job(request,addjob_title_slug):
+    try:
+        b = AddJob.objects.get(slug=addjob_title_slug)
+    except AddJob.DoesNotExist:
+        return redirect('add_job.html')
+    
+    b = AddJob.objects.get(slug=addjob_title_slug)
+    print(b)
+    form = EditJobForm({'category':b.category, 'subcategory':b.subcategory, 'title':b.title,'last_date':b.last_date,'Job_responsibility':b.Job_responsibility,'candidate_profile':b.candidate_profile})
+    print(form)
+    if request.method == 'POST':
+        form = EditJobForm(request.POST)
+        if form.is_valid():
+            a = form.save(commit=False)
+            if a.category:
+                b.category = a.category
+            if a.subcategory:
+                b.subcategory = a.subcategory
+            if a.last_date:
+                b.last_date = a.last_date
+            if a.salary:
+                b.salary = a.salary
+            if a.title:
+                b.title = a.title
+            if a.Job_responsibility:
+                b.Job_responsibility = a.Job_responsibility            
+            if a.candidate_profile:
+                b.candidate_profile = a.candidate_profile
+  
+            b.save()
+            return redirect('/jportal/managejob/')
+            
+        else:
+            print(form.errors)
+
+    return render(request, 'jportal/edit_job.html', {'form':form})
+
+def delete_job(request,addjob_title_slug):
+    try:
+        a = AddJob.objects.get(slug=addjob_title_slug)
+    except AddJob.DoesNotExist:
+        return redirect('index.html')
+    
+    if a:
+        AddJob.objects.get(slug=addjob_title_slug).delete()
+    
+    return redirect('managejob')

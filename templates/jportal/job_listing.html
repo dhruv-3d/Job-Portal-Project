@@ -1,0 +1,16 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Job Listing
+{% endblock %}
+
+{% block body_block %}
+    {% if jobs %}
+        {% for job in jobs %}
+        <ul>
+            <li><h3>{{job.title}}</h3></li>
+        </ul>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

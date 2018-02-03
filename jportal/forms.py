@@ -45,7 +45,6 @@ class EmployerForm(forms.ModelForm):
     captcha = CaptchaField()
     tc = forms.BooleanField(widget=forms.CheckboxInput(), required=True)
     admin_approval = False
-    sub = True
 
     class Meta:
         model = Employer
@@ -66,7 +65,7 @@ class JobSeekerForm(forms.ModelForm):
     contact_no = forms.CharField(max_length=10, required=True)
     captcha = CaptchaField()
     tc = forms.BooleanField(widget=forms.CheckboxInput(), required=True)
-    sub = False
+    phone_verify = False
     
     class Meta:
         model = JobSeekers
@@ -78,7 +77,6 @@ class JobForm(forms.ModelForm):
     class Meta:
        model = AddJob
        exclude = ('posted_date','employer','slug',)
-
 
 class EditJobForm(forms.ModelForm):
     class Meta:
