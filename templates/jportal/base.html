@@ -40,6 +40,7 @@
 								<li><a href="#">Sevices</a></li>
 								<li><a href="#">Contact Us</a></li>
 								{% if user.is_authenticated %}
+								<li><a href=/logout/>Logout</a></li>
 								<p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">{{user.username}}</a></p>
 								{%else%}
 								<li><a href="/login/"><span class="glyphicon glyphicon-log-in"></span> LogIn</a></li>

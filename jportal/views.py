@@ -48,7 +48,9 @@ def index(request):
         except e.DoesNotExist:
             pass
 
-    return render(request, 'jportal/index.html', {'content':'YO'})
+    context_dict['jobs'] = job_listing(request)
+
+    return render(request, 'jportal/index.html', context_dict)
 
 def about(request):
     return HttpResponse("About Page")
@@ -79,7 +81,7 @@ def employer_reg(request):
 
             emp_user.save()
 
-            return redirect('/jportal/')
+            return index(request)
 
         else:
             print(employer_form.errors)
@@ -96,7 +98,7 @@ def jobseeker_reg(request):
     job_seek = JobSeekerForm()
 
     print(request)
-    if request.method == 'POST' and 'job_submit' in request.POST:
+    if request.method == 'POST' and 'jobsubmit' in request.POST:
         user_form = UserForm(request.POST)
         job_seek = JobSeekerForm(request.POST, request.FILES)
         if user_form.is_valid() and job_seek.is_valid():
@@ -114,7 +116,7 @@ def jobseeker_reg(request):
             seeker_user.user_id = usr_obj.id
             seeker_user.save()
 
-            return redirect('/jportal/')
+            return index(request)
 
         else:
             print(user_form.errors)
@@ -294,23 +296,31 @@ def resume(request):
     return render(request, 'jportal/resume.html', {'form': form})
 
 #----vidushi's------------------------
-#testing remaining..
+#----overwritten and made it int ojob search function---
 def job_listing(request, *args, **kwargs):
     print(request)
     context_dict = {}
 
-    if request.method == 'GET':
+    if request.method == 'GET' and "showjobs" in request.GET :
         try:
             emp = Employer.objects.get(user_id=request.user.id)
             jobs = AddJob.objects.filter(employer_id=emp.id)
         except AddJob.DoesNotExist:
             return HttpResponse("No Jobs Posted")
     
-    elif request.method == 'POST':
+    elif request.method == 'GET' and "search" in request.GET:
+
+        '''
         cat_title = kwargs('cat_title', None)
         subcat_name = kwargs('subcat_name', None)
         job_title = kwargs('job_title', None)
         #emp_id = kwargs('emp_id', None)
+        '''
+
+        cat_title = None
+        subcat_name = None
+        job_title = request.GET.get('jobtitle')
+        print("aa job mailu :",job_title)
         try:
             if cat_title:
                 cat = Category.objects.get(title=cat_title)
@@ -323,16 +333,16 @@ def job_listing(request, *args, **kwargs):
 
         try:
             if job_title:
-                    jobs = AddJob.objects.filter(title=job_title)
+                jobs = AddJob.objects.filter(title=job_title)
+                return jobs
         except:
             return HttpResponse("No Jobs Found")
 
 
     #context_dict['category'] = cat
     #context_dict['subcategory'] = subcat
-    context_dict['jobs'] = jobs
 
-    return jobs
+    return HttpResponse("No Jobs Found")
 
 #testing remaining..
 def show_appliers(request):

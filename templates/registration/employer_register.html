@@ -2,17 +2,18 @@
 {% load staticfiles %}
 
 {% block title_block %}
-	Employer Registration
+    Employer Registration
 {% endblock %}
 {% block nav_block %}
     
 {% endblock %}
 {% block body_block %}
     <h2>Employer Registration</h2>
-    <form method="post" action="." enctype="multipart/form-data" >   
+    <form method="post" action="." enctype="multipart/form-data" >  
             {% csrf_token %}
             {{ e.user_form.as_p }}
             {{ e.employer_form.as_p }}
             <input type="submit" name="emp_submit" value="Register">
+
     </form>
 {% endblock %}

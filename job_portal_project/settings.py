@@ -53,14 +53,14 @@ REGISTRATION_OPEN = True
 ACCOUNT_ACTIVATION_DAYS = 7
 
 # If True, the user will be automatically logged in.
-REGISTRATION_AUTO_LOGIN = True
+REGISTRATION_AUTO_LOGIN = True   #but aa use nathi kairu
 
 # The page you want users to arrive at after they successfully log in
-LOGIN_REDIRECT_URL = '/jportal/'
+LOGIN_REDIRECT_URL = '/jportal/' #aa use kairu che
  
 # The page users are directed to if they are not logged in,
 # and are trying to access pages requiring authentication
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = '/accounts/login/' #aa pan use kairu che
 
 
 
