@@ -48,7 +48,11 @@ def index(request):
         except e.DoesNotExist:
             pass
 
-    context_dict['jobs'] = job_listing(request)
+    categories = Category.objects.all()
+    context_dict['categories'] = categories
+
+    if request.method == 'GET' and "jobtitle" in request.GET:
+        context_dict['jobs'] = job_listing(request)
 
     return render(request, 'jportal/index.html', context_dict)
 
@@ -301,15 +305,16 @@ def job_listing(request, *args, **kwargs):
     print(request)
     context_dict = {}
 
-    if request.method == 'GET' and "showjobs" in request.GET :
+    if request.method == 'GET' and "sh_jobs" in request.GET:
         try:
             emp = Employer.objects.get(user_id=request.user.id)
             jobs = AddJob.objects.filter(employer_id=emp.id)
+            return jobs
         except AddJob.DoesNotExist:
             return HttpResponse("No Jobs Posted")
     
-    elif request.method == 'GET' and "search" in request.GET:
-
+    elif request.method == 'GET'  and "jobtitle" in request.GET: 
+        
         '''
         cat_title = kwargs('cat_title', None)
         subcat_name = kwargs('subcat_name', None)
@@ -327,16 +332,22 @@ def job_listing(request, *args, **kwargs):
                 if subcat_name:
                     subcat = SubCategory.objects.get(name=subcat_name)
                     #getting job as per category and subcategory
-                    jobs = AddJob.objects.filter(category_id=cat.id, subcategory_id=subcat.id)
+                    jobs = AddJob.objects.filter(subcategory_id=subcat.id)
+
+                jobs = AddJob.objects.filter(category_id=cat.id)
+                
+                return jobs
         except AddJob.DoesNotExist:
-            pass
+            print("Category wala thi ni mailu job")
 
         try:
+            print("ehehehehe")
             if job_title:
-                jobs = AddJob.objects.filter(title=job_title)
+                job_srch = job_title.split()
+                jobs = AddJob.objects.filter(slug__icontains=job_srch[0])
                 return jobs
         except:
-            return HttpResponse("No Jobs Found")
+            print("Title thi pan ni mailu job")
 
 
     #context_dict['category'] = cat

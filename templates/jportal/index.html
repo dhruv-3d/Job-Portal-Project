@@ -22,11 +22,22 @@
 			</h4></p>
 
 			<!-- Job Search functionality -->
-		  <form name="searchjob" method="GET" action="{% url 'job_listing' %}">
+		  <form name="searchjob" method="GET" action=".">
 				<div class="form-group">
 					<input name ="jobtitle" type="text" class="form-control" placeholder="Search Jobs">
 				</div>
-				<button type="submit" name="search" class="btn btn-default">Submit</button>
+				<br>
+				<!--- Search with category remaining -->
+				<label for="id_category">Category:</label>
+					<select name="category" required id="id_category">
+							<option value="" selected>---------</option>
+							{% for opt in categories %}
+								<option value="{{ opt.title }}">{{ opt.title }}</option>
+							{% endfor %}
+					</select>
+
+				<br>
+				<button type="submit" class="btn btn-default">Submit</button>
 			</form>
 			
 		</div>

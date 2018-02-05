@@ -41,9 +41,12 @@
 
         <!--- TO SHOW EMPLOYER"S JOBS -->
         <div>
-            <button type="button" name="showjobs" data-toggle="collapse" data-target="#showjobs">Show Posted Jobs</button>
-            <div id="showjobs" class="collapse">
-                {% include 'jportal/job_listing.html'%}
+            <form method="get" action="#showjobs">
+                <button type="submit" name="sh_jobs" data-toggle="collapse" data-target="#showjobs">Show Posted Jobs</button>
+            </form>
+
+            <div id="showjobs" class="collapse" >
+                    {% include 'jportal/job_listing.html'%}
             </div>
         </div>
 
