@@ -5,7 +5,6 @@ from django.contrib.auth.forms import UserCreationForm
 
 from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile
-from jportal.models import Job
 from jportal.models import Category, SubCategory, AddJob
 
 from captcha.fields import CaptchaField
@@ -33,9 +32,9 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name','email', 'password', 'confirm_password',)
-
+ 
 class EmployerForm(forms.ModelForm):
-
+    designation = forms.CharField(max_length=30,required=True)
     state = forms.CharField(widget=forms.Select(choices=STATES), max_length=255)
     city = forms.CharField(widget=forms.Select(choices=CITIES), required=True)
     profile_img = forms.ImageField(required=False)
@@ -48,8 +47,23 @@ class EmployerForm(forms.ModelForm):
 
     class Meta:
         model = Employer
-        fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
+        fields = ('designation','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name','email')
 
+class EmployerEditForm(forms.ModelForm):
+    state = forms.CharField(widget=forms.Select(choices=STATES), max_length=255)
+    city = forms.CharField(widget=forms.Select(choices=CITIES), required=True)
+    profile_img = forms.ImageField(required=False)
+    gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
+    dob = forms.DateField(widget=forms.DateInput())
+    contact_no = forms.CharField(max_length=10, required=True)
+    class Meta:
+        model = Employer
+        fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no',)       
+        
 class EmployerCompanyProfileForm(forms.ModelForm):
     class Meta:
         model = EmployerCompanyProfile
@@ -76,3 +90,5 @@ class AddJobForm(forms.ModelForm):
     class Meta:
        model = AddJob
        fields = ('category',)
+
+

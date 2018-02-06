@@ -10,7 +10,8 @@ html {
 body {
   background: #fff;
   font: 400 12px/1.8 "Open Sans", sans-serif;
-  color: #666;
+  font-family: "Roboto", sans-serif;
+  color: #626262;
   -webkit-font-smoothing: antialiased;
 }
 

@@ -96,6 +96,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'job_portal_project.wsgi.application'
 
+
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Database

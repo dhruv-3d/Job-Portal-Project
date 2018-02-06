@@ -1,5 +1,5 @@
 from django.contrib import admin
-from jportal.models import Category, SubCategory, Education, Employer, JobSeekers,Job
+from jportal.models import Category, SubCategory, Education, Employer, JobSeekers,AddJob
 
 class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'category')
@@ -11,4 +11,4 @@ admin.site.register(SubCategory,SubCategoryAdmin)
 admin.site.register(Education)
 admin.site.register(Employer)
 admin.site.register(JobSeekers)
-admin.site.register(Job,JobAdmin)
+admin.site.register(AddJob,JobAdmin)

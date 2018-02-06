@@ -7,19 +7,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
 from jportal.models import Category, SubCategory
-from jportal.models import Education, Job, AddJob
+from jportal.models import Education, AddJob
 from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile
-from jportal.models import Job
 
-from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm
-from jportal.forms import EmployerCompanyProfileForm
+from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm
+from jportal.forms import UserEditForm, EmployerEditForm
+from django.utils import timezone
 
 from datetime import datetime
 
 def user_type(ek_req):
     usertype=''
-    context_dict = {}
     #checking the type of user. i.e Employer or JobSeeker
     #Lame Logic -_-
     if ek_req.user:
@@ -130,59 +129,76 @@ def jobseeker_reg(request):
 
     return render(request, 'registration/jobseeker_register.html', context_dict)
 
-def employer_profile(request):
+def employer_profile(request,username):
     context_dict = {}
     print(request.user)
     usertype = user_type(request)
     if request.method == 'GET':
-        emp_usr = User.objects.get(id=request.user.id)
+        emp_usr = User.objects.get(username=username)
         print(emp_usr.username)
 
         emp_data = Employer.objects.get(user_id=emp_usr.id)
-        company_data = EmployerCompanyProfile.objects.get(emp_id=emp_data.id)
-        context_dict['emp_usr'] = emp_usr
-        context_dict['emp_data'] = emp_data
-        context_dict['company_data'] = company_data
-        context_dict['usertype'] = usertype
-    return render(request, 'jportal/employer_profile.html', context_dict)
-
-def company_profile(request, username):
-    context_dict = {}
-    print(request.user)
-
-    try:
-        user = User.objects.get(username=username)
-        euser = Employer.objects.get(user_id=user.id)
-    except Employer.DoesNotExist:
-        print('No such employer')
-
-    #-----Retriving data of EmployerProfile
-    emp = EmployerCompanyProfileForm.objects.get_or_create(employer_id=euser.id)[0]
-    e_profile = EmployerCompanyProfileForm({'company_name':emp.company_name, 'description':emp.description, 'address':emp.address })
-
+        try:
+            company_data = EmployerCompanyProfile.objects.get(employer_id=emp_data.id)
+        except EmployerCompanyProfile.DoesNotExist:
+            company_data = ''
+            company_form = EmployerCompanyProfileForm()
+            context_dict['company_form'] = company_form
     if request.method == 'POST':
-        e_profile = EmployerCompanyProfileForm(request.POST)
-        if e_profile.is_valid():
-
-            #EmployerProfile ma update thai che ahiya--------
-            emp_prof = e_profile.save(commit=False)
-            emp.company_name = emp_prof.company_name
-            emp.description = emp_prof.description
-            emp.address = emp_prof.address
-            emp.save()
-            return redirect('employer_profile', user.username)
+        emp_usr = User.objects.get(username=username)
+        print(emp_usr.username)
+        emp_data = Employer.objects.get(user_id=emp_usr.id)
+        company_form = EmployerCompanyProfileForm(request.POST)
+        if company_form.is_valid():
+            company_data= company_form.save(commit=False) 
+            company_data.employer = emp_data
+            company_data.save()
+            return redirect('employer_profile',username=emp_usr.username)
         else:
-            print(e_profile.errors)
+            print(company_data.errors)
+        context_dict['company_form'] = company_form
+    context_dict['emp_usr'] = emp_usr
+    context_dict['emp_data'] = emp_data
+    context_dict['usertype'] = usertype
+    context_dict['company_data'] = company_data
+    return render(request, 'jportal/employer_profile.html', context_dict)
+def edit_employer_profile(request, username):
+    usertype = user_type(request)
+    user = User.objects.get(username=username)
+    emp = Employer.objects.get(user_id=user.id)
+    if request.method == "POST":
+        user_form = UserEditForm(request.POST, instance=user)
+        emp_form = EmployerEditForm(request.POST, instance=emp)
+        if user_form.is_valid() and emp_form.is_valid():
+            user_edit = user_form.save(commit=False)
+            user_edit.username = user_edit.email
+            user_edit.save()
+            emp_form.save(commit=True)
+            return redirect('employer_profile',username=user_edit.username)
+    else:
+        user_form = UserEditForm(instance=user)
+        emp_form = EmployerEditForm(instance=emp)
+    context_dict={'user_form':user_form, 'emp_form':emp_form,'usertype':usertype}     
+    return render(request, 'jportal/emp_edit.html', context_dict)
 
-    context_dict['e_profile'] = e_profile
-    context_dict['selected_user'] = user
-    context_dict['emp_profile'] = emp
-
-    return render(request, 'jportal/edit_emp_prof.html', context_dict)
-
+def edit_company_details(request):
+    context_dict = {}
+    usertype = user_type(request)
+    emp = Employer.objects.get(user_id=request.user.id)
+    company = EmployerCompanyProfile.objects.get(employer_id=emp.id)
+    if request.method == "POST":
+        company_form = EmployerCompanyProfileForm(request.POST, instance=company)
+        if company_form.is_valid():
+            company_form.save()
+        return redirect('employer_profile',username=request.user.username)
+    else:
+       company_form = EmployerCompanyProfileForm(instance=company)
+    context_dict = {'company_form':company_form, 'usertype':usertype}
+    return render(request, 'jportal/company_edit.html', context_dict)
 #----karishma's
 def add_job(request):
     print(request.user)
+    usertype = user_type(request)
     emp = Employer.objects.get(user_id=request.user.id)
     form=JobForm()
     if request.method == 'POST':
@@ -192,43 +208,37 @@ def add_job(request):
         if form.is_valid():
             job = form.save(commit=False) 
             job.employer = emp
-            job.posted_date = datetime.now()
+            job.posted_date = timezone.now()
             job.save()
 
             return index(request)
         else:
             print(form.errors)
-    return render(request, 'jportal/add_job.html', {'form': form})
+    return render(request, 'jportal/add_job.html', {'form': form,'usertype':usertype})
     
 def manage_job(request):
-    return render(request, 'jportal/managejob.html')
+    usertype = user_type(request)
+    return render(request, 'jportal/managejob.html',{'usertype':usertype})
 
-#testing remaining..
-def job_listing(request):
-    try:
-        category = Category.objects.get(slug=category_name_slug)
-        context_dict['category'] = category
-    except Category.DoesNotExist:
-        context_dict['category'] = None
-    return render(request, 'jportal/job.html', context_dict)
-
-#vidushi's
 #testing remaining..
 def show_appliers(request):
+    usertype = user_type(request)
     context_dict={}
     if request.method == 'GET':
         job_id = request.GET['job_id']
         appliers = Appliers.objects.filter(job_id=job_id)
-        context_dict['appliers']=appliers
+        context_dict['appliers'] = appliers
+        context_dict['usertype'] = usertype
         return render(request, 'jportal/appliers.html', context_dict)
 
 #testing remaining..
 def show_jobs_applied(request):
+    usertype = user_type(request)
     if request.method == 'GET':
         jobseeker_id = request.GET['jobseeker_id']
         job_ids= Appliers.objects.values_list('job_id',flat=True).filter(appliers_id=jobseeker_id)
         jobs_applied = Job.objects.filter(pk__in=set(job_ids))
-        return render(request, 'jportal/jobs_applied.html', {'jobs_applied':jobs_applied})
+        return render(request, 'jportal/jobs_applied.html', {'jobs_applied':jobs_applied,'usertype':usertype})
 
 #testing remaining..
 def get_employer_list(max_results=0, starts_with=''): 
@@ -241,12 +251,13 @@ def get_employer_list(max_results=0, starts_with=''):
     return emp_list
 
 def suggest_employer(request): 
+    usertype = user_type(request)
     emp_list = []
     starts_with = ''
     if request.method == 'GET':
         starts_with = request.GET['suggestion']
         emp_list = get_employer_list(8, starts_with)
-    return render(request, 'jportal/.html', {'emps': emp_list })
+    return render(request, 'jportal/.html', {'emps': emp_list,'usertype' : usertype})
 
 def get_job_list(max_results=0, starts_with=''): 
     job_list = []
@@ -258,21 +269,10 @@ def get_job_list(max_results=0, starts_with=''):
     return job_list
 
 def suggest_job(request): 
+    usertype = user_type(request)
     job_list = []
     starts_with = ''
     if request.method == 'POST':
         starts_with = request.POST['suggestion']   
         job_list = get_job_list(8, starts_with)
-    return render(request, 'jportal/.html', {'jobs': job_list })
-
-def employer_profile(request): 
-    context_dict={}
-    if request.method == 'GET':
-        emp_usr = User.objects.get(id=request.user.id)
-        print(emp_usr.username)
-        emp_data = Employer.objects.get(user_id=emp_usr.id)
-        
-        context_dict['emp_usr'] = emp_usr
-        context_dict['emp_data'] = emp_data
-
-    return render(request, 'jportal/employer_profile.html', context_dict)
+    return render(request, 'jportal/.html', {'jobs': job_list,'usertype':usertype})

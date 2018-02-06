@@ -13,7 +13,7 @@ class Category(models.Model):
 
 
 class SubCategory(models.Model):
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
     class Meta:
@@ -27,7 +27,8 @@ class Education(models.Model):
 
 
 class Employer(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    designation = models.CharField(max_length=30, blank=False)
     state = models.CharField(max_length=50, blank=False)
     city = models.CharField(max_length=50, blank=False)
     profile_img = models.ImageField(blank=True, upload_to='employer_pic')
@@ -41,7 +42,7 @@ class Employer(models.Model):
         return self.user.username
 
 class EmployerCompanyProfile(models.Model):
-    employer = models.ForeignKey(Employer)
+    employer = models.OneToOneField(Employer,on_delete=models.CASCADE)
     company_name = models.CharField(max_length=150,blank=False)
     description = models.TextField(blank=True)
     address = models.TextField(blank=False)
@@ -51,7 +52,7 @@ class EmployerCompanyProfile(models.Model):
         return self.company_name
 
 class JobSeekers(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     state = models.CharField(max_length=50, blank=False)
     city = models.CharField(max_length=50, blank=False)
     profile_img = models.ImageField(blank=True)
@@ -78,28 +79,6 @@ class  JobSeekersProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-class Job(models.Model):
-    employer = models.ForeignKey(Employer)
-    title = models.CharField(max_length=100, blank=False)
-    posted_date = models.DateField()
-    category = models.CharField(max_length=50)
-    sub_category = models.CharField(max_length=50)
-    state = models.CharField(max_length=50, blank=False)
-    city = models.CharField(max_length=50, blank=False)
-    last_date = models.DateField(blank=False)
-    salary = models.PositiveIntegerField(blank=True)
-    Job_responsibility = models.TextField(blank=False)
-    candidate_profile = models.TextField(blank=False)
-
-    def __str__(self):
-        return self.title
-
-class Appliers(models.Model):
-    applier = models.ForeignKey(JobSeekers)
-    job_id = models.ForeignKey(Job)
-    date_apply = models.DateField()
-    status = models.CharField(max_length=50)
-
 class AddJob(models.Model):
     category=models.ForeignKey(Category)
     subcategory= ChainedForeignKey(
@@ -110,10 +89,17 @@ class AddJob(models.Model):
         auto_choose=True,
         sort=True)
     title=models.CharField(max_length=100,blank=False)
-    employer = models.ForeignKey(Employer)
+    employer = models.ForeignKey(Employer,on_delete=models.CASCADE)
     last_date = models.DateField(blank=True)
     salary = models.PositiveIntegerField(blank=True)
     Job_responsibility = models.TextField(blank=False)
     candidate_profile = models.TextField(blank=False)
     posted_date= models.DateTimeField(auto_now=True)
+
+class Appliers(models.Model):
+    applier = models.ForeignKey(JobSeekers,on_delete=models.CASCADE)
+    job_id = models.ForeignKey(AddJob,on_delete=models.CASCADE)
+    date_apply = models.DateField()
+    status = models.CharField(max_length=50)
+
     
