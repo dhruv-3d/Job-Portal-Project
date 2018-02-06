@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.conf.urls import include 
+from django.conf.urls import include
+
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
@@ -34,4 +35,5 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^captcha/', include('captcha.urls')),
+    url(r'^ajax/load-cities/', views.load_cities, name='ajax_load_cities'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

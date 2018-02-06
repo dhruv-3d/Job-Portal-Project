@@ -7,7 +7,7 @@
 {% block body_block %}
     <div>
     <h1>Resume Form</h1>
-    <form method="POST" action=".">
+    <form id="form" method="POST" action="." data-cities-url="{% url 'ajax_load_cities' %}">
         {% csrf_token %}
         {{ form.as_p }}
         {{ form.media.js }}

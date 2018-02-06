@@ -3,6 +3,21 @@ from django.contrib.auth.models import User
 from smart_selects.db_fields import ChainedForeignKey
 from django.template.defaultfilters import slugify
 
+class State(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+    
+class City(models.Model):
+    state = models.ForeignKey(State,on_delete=models.CASCADE)
+    name =models.CharField(max_length=100)
+    class Meta:
+        verbose_name_plural = 'Cities'
+    def __str__(self):
+        return self.name
+
+
+
 class Category(models.Model):
     title = models.CharField(max_length=50)
 
@@ -29,8 +44,8 @@ class Education(models.Model):
 
 class Employer(models.Model):
     user = models.ForeignKey(User)
-    state = models.CharField(max_length=50, blank=False)
-    city = models.CharField(max_length=50, blank=False)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL, null=True)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
     profile_img = models.ImageField(blank=True, upload_to='employer_pic')
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
@@ -53,8 +68,8 @@ class EmployerProfile(models.Model):
 
 class JobSeekers(models.Model):
     user = models.ForeignKey(User)
-    state = models.CharField(max_length=50, blank=False)
-    city = models.CharField(max_length=50, blank=False)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL, null=True)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
     profile_img = models.ImageField(blank=True)
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
@@ -85,8 +100,8 @@ class Job(models.Model):
     posted_date = models.DateField()
     category = models.CharField(max_length=50)
     sub_category = models.CharField(max_length=50)
-    state = models.CharField(max_length=50, blank=False)
-    city = models.CharField(max_length=50, blank=False)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL, null=True)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
     last_date = models.DateField(blank=False)
     salary = models.PositiveIntegerField(blank=True)
     Job_responsibility = models.TextField(blank=False)
@@ -129,8 +144,8 @@ class AddJob(models.Model):
 class Resume(models.Model):
     resumetitle = models.CharField(max_length=120,blank=False)
     preffered_job_location = models.CharField(max_length=120,blank=False)
-    state = models.CharField(max_length=120,blank=False)
-    city = models.CharField(max_length=120,blank=False)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL, null=True)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey(Category)
     subcategory= ChainedForeignKey(
         SubCategory,

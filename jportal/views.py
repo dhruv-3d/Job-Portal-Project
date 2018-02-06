@@ -9,13 +9,19 @@ from django.contrib import messages
 from jportal.models import Category, SubCategory
 from jportal.models import Education, Job, AddJob, Resume
 from jportal.models import Employer, EmployerProfile
-from jportal.models import JobSeekers, JobSeekersProfile
-
+from jportal.models import JobSeekers, JobSeekersProfile, State, City
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm, ResumeForm
 from jportal.forms import EmployerProfileForm, EditJobForm, JobSeekerForm
 
 from datetime import datetime
+
+
+def load_cities(request):
+    state_id = request.GET.get('state')
+    cities = City.objects.filter(state_id=state_id).order_by('name')
+    return render(request, 'jportal/city_dropdown_list_options.html', {'cities': cities})
+
 
 #index for testing purpose...
 def index(request):
@@ -86,7 +92,6 @@ def employer_reg(request):
             print(user_form.errors)
     
     context_dict = {'employer_form':employer_form, 'user_form':user_form, }
-
     return render(request, 'registration/employer_register.html', context_dict)
 
 
