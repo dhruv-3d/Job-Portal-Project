@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
-
+from django.contrib import messages
 from jportal.models import Category, SubCategory
 from jportal.models import Education, Job, AddJob, Resume
 from jportal.models import Employer, EmployerProfile
@@ -61,7 +61,7 @@ def employer_reg(request):
     print(request.user)
     if request.method == 'POST':
         user_form = UserForm(request.POST)
-        employer_form = EmployerForm(request.POST)
+        employer_form = EmployerForm(request.POST,request.FILES)
         
         if employer_form.is_valid() and user_form.is_valid():    
             user = user_form.save(commit=False)
@@ -77,7 +77,8 @@ def employer_reg(request):
             emp_user.user = usr_obj
 
             emp_user.save()
-
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                                    
             return redirect('/jportal/')
 
         else:
@@ -98,7 +99,7 @@ def jobseeker_reg(request):
     print(request)
     if request.method == 'POST':
         user_form = UserForm(request.POST)
-        job_seek = JobSeekerForm(request.POST)
+        job_seek = JobSeekerForm(request.POST,request.FILES)
         if user_form.is_valid() and job_seek.is_valid():
             user = user_form.save(commit=False)
             user.username = user.email
@@ -112,6 +113,7 @@ def jobseeker_reg(request):
             seeker_user = job_seek.save(commit=False)
             seeker_user.user = usr_obj
             seeker_user.save()
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
             return redirect('/jportal/')
 
