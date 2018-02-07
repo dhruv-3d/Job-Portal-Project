@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^jobseeker_register/$', views.jobseeker_reg, name='jobseeker_register'),
     url(r'^jobseeker_edit/$',views.jobseeker_edit,name='jobseeker_edit'),
     url(r'^resume/$',views.resume,name='resume'),
+    url(r'^get_subcategory/$',views.get_subcategory, name='get_subcategory'),
 
     url(r'^(?P<addjob_title_slug>[\w\-]+)/delete_job/$',views.delete_job,name='delete_job'),
     url(r'^edit_job/(?P<addjob_title_slug>[\w\-]+)/$',views.edit_job,name='edit_job'),

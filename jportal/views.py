@@ -17,6 +17,11 @@ from jportal.forms import EmployerProfileForm, Resume
 
 from datetime import datetime
 
+def get_subcategory(request):
+    
+    subcat = SubCategory.objects.filter(category_id=request.GET['category'])
+
+    return subcat
 
 #index for testing purpose...!!!
 def index(request):
@@ -48,10 +53,10 @@ def index(request):
         except e.DoesNotExist:
             pass
 
-    categories = Category.objects.all()
-    context_dict['categories'] = categories
-
-    if request.method == 'GET' and "jobtitle" in request.GET:
+    context_dict['categories'] = Category.objects.all()
+    if request.method == 'GET' and "category" in request.GET:
+        #subcat = SubCategory.objects.filter(category_id=request.GET['category'])
+        context_dict['subcategories'] = get_subcategory(request)
         context_dict['jobs'] = job_listing(request)
 
     return render(request, 'jportal/index.html', context_dict)
@@ -301,7 +306,7 @@ def resume(request):
 
 #----vidushi's------------------------
 #----overwritten and made it int ojob search function---
-def job_listing(request, *args, **kwargs):
+def job_listing(request):
     print(request)
     context_dict = {}
 
@@ -314,29 +319,24 @@ def job_listing(request, *args, **kwargs):
             return HttpResponse("No Jobs Posted")
     
     elif request.method == 'GET'  and "jobtitle" in request.GET: 
-        
-        '''
-        cat_title = kwargs('cat_title', None)
-        subcat_name = kwargs('subcat_name', None)
-        job_title = kwargs('job_title', None)
-        #emp_id = kwargs('emp_id', None)
-        '''
 
-        cat_title = None
-        subcat_name = None
-        job_title = request.GET.get('jobtitle')
-        print("aa job mailu :",job_title)
         try:
+            cat_title = request.GET['category']
+            subcat_name = request.GET['subcategory']
+            job_title = request.GET.get('jobtitle')
+            print("aa job mailu :",job_title)
+
             if cat_title:
-                cat = Category.objects.get(title=cat_title)
+                cat = Category.objects.get(id=cat_title)
                 if subcat_name:
                     subcat = SubCategory.objects.get(name=subcat_name)
                     #getting job as per category and subcategory
                     jobs = AddJob.objects.filter(subcategory_id=subcat.id)
-
-                jobs = AddJob.objects.filter(category_id=cat.id)
+                    return jobs
                 
+                jobs = AddJob.objects.filter(category_id=cat.id)            
                 return jobs
+
         except AddJob.DoesNotExist:
             print("Category wala thi ni mailu job")
 
