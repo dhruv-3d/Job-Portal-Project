@@ -1546,22 +1546,6 @@ width: auto;
 /*--------------------------------------------------------------
 	Footer
 --------------------------------------------------------------*/
-.footer {
-  padding: 10px 0;
-}
-
-.footer .copyright {
-  margin: 0;
-}
-
-.footer .footer-social-links {
-  text-align: right;
-}
-
-.footer .footer-social-links a {
-  display: inline-block;
-  padding: 0 6px;
-}
 
 /* -------------------------------------------------------------
 Google map
@@ -2931,14 +2915,6 @@ Google map
   .post.mb-0 {
     margin-bottom: 40px !important;
   }
-  .footer {
-    text-align: center;
-  }
-  .copyright,
-  .footer-social-links {
-    text-align: center;
-    margin: 10px 0;
-  }
   /* Half-image */
   .side-image-text {
     padding-left: 15px;
@@ -2966,3 +2942,26 @@ Google map
     width: 100%;
   }
 }
+
+
+.w3-text-yellow, .w3-hover-text-yellow:hover {
+  color: #d2be0e !important
+}
+
+.w3-text-white, .w3-hover-text-white:hover {
+  color: #fff !important
+}
+
+.w3-text-black, .w3-hover-text-black:hover {
+  color: #000 !important;
+}
+
+
+.w3-xlarge {
+  font-size: 24px !important
+}
+
+.w3-margin-right {
+  margin-right: 16px !important
+}
+

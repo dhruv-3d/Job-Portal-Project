@@ -1,0 +1,34 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block body_block %}
+<div class="container">
+    <div class="jumbotron" style="height:50px;">
+            <h3 style="display:inline">{{user.first_name}} {{user.last_name}}</h3>
+            <a class="btn btn-border-d btn-round" href="#" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></a>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-lg-3">
+            <img src="{{ MEDIA_URL }}{{seeker.profile_img}}" class="img-thumbnail img-responsive" style="width:200px" />
+        </div>
+        <div class="col-md-3 col-lg-3">
+            <h3 class="work-details-title font-alt">Personal Details</h3>
+            <h4><i class="fa fa-user fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.gender}}</h4>
+            <h4><i class="glyphicon glyphicon-calendar fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.dob}}</h4>
+        </div>  
+        <div class="col-md-3 col-lg-3">
+            <h3 class="work-details-title font-alt">Contact Details</h3>
+            <h4><i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.city}}, {{seeker.state}}</h4>
+            <h4><i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Phone: {{seeker.contact_no}}</h4>
+            <h4><i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: {{user.email}}</h4>
+        </div>  
+        <div class="col-md-3 col-lg-3">
+                <h3 class="work-details-title font-alt">Education Details</h3>
+                <h4><i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.city}}, {{seeker.state}}</h4>
+                <h4><i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Phone: {{seeker.contact_no}}</h4>
+                <h4><i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: {{user.email}}</h4>
+            </div>
+    </div>
+{% endblock %}

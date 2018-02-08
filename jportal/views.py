@@ -9,7 +9,7 @@ from django.contrib.auth.hashers import make_password
 from jportal.models import Category, SubCategory
 from jportal.models import Education, AddJob
 from jportal.models import Employer, EmployerCompanyProfile
-from jportal.models import JobSeekers, JobSeekersProfile
+from jportal.models import JobSeekers, State, City
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm
 from jportal.forms import UserEditForm, EmployerEditForm
@@ -44,8 +44,11 @@ def user_type(ek_req):
 
     return usertype
 
+def load_cities(request):
+    state_id = request.GET.get('state')
+    cities = City.objects.filter(state_id=state_id).order_by('name')
+    return render(request, 'jportal/city_dropdown_list_options.html', {'cities': cities})
 
-#index for testing purpose...
 def index(request):
     print(request.user)
 
@@ -58,7 +61,7 @@ def about(request):
     usertype = user_type(request)
     return render(request, 'jportal/about', {'usertype':usertype})
 
-#---------------------EMPLOYER REGISTRATION
+#---------------------EMPLOYER----------------------
 def employer_reg(request):
     
     user_form = UserForm()
@@ -67,7 +70,7 @@ def employer_reg(request):
     print(request.user)
     if request.method == 'POST':
         user_form = UserForm(request.POST)
-        employer_form = EmployerForm(request.POST)
+        employer_form = EmployerForm(request.POST,request.FILES)
         
         if employer_form.is_valid() and user_form.is_valid():    
             user = user_form.save(commit=False)
@@ -83,7 +86,7 @@ def employer_reg(request):
             emp_user.user = usr_obj
 
             emp_user.save()
-
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/jportal/')
 
         else:
@@ -93,41 +96,6 @@ def employer_reg(request):
     context_dict = {'employer_form':employer_form, 'user_form':user_form, }
 
     return render(request, 'registration/employer_register.html', context_dict)
-
-
-#--------------------JOB SEEKER REGISTRATION
-def jobseeker_reg(request):
-
-    user_form = UserForm()
-    job_seek = JobSeekerForm()
-
-    print(request)
-    if request.method == 'POST' :
-        user_form = UserForm(request.POST)
-        job_seek = JobSeekerForm(request.POST)
-        if user_form.is_valid() and job_seek.is_valid():
-            user = user_form.save(commit=False)
-            user.username = user.email
-            user.password = user_form.cleaned_data.get('password')
-            user.password = make_password(user.password)
-            print(user.password)
-            user.save()
-            usr_obj = User.objects.get(username=user.username)
-            print("aa user obj:",usr_obj)
-            
-            seeker_user = job_seek.save(commit=False)
-            seeker_user.user = usr_obj
-            seeker_user.save()
-
-            return redirect('/jportal/')
-
-        else:
-            print(user_form.errors)
-            print(job_seek.errors)
- 
-    context_dict = {'job_seek':job_seek, 'user_form':user_form, }
-
-    return render(request, 'registration/jobseeker_register.html', context_dict)
 
 def employer_profile(request,username):
     context_dict = {}
@@ -148,7 +116,7 @@ def employer_profile(request,username):
         emp_usr = User.objects.get(username=username)
         print(emp_usr.username)
         emp_data = Employer.objects.get(user_id=emp_usr.id)
-        company_form = EmployerCompanyProfileForm(request.POST)
+        company_form = EmployerCompanyProfileForm(request.POST,request.FILES)
         if company_form.is_valid():
             company_data= company_form.save(commit=False) 
             company_data.employer = emp_data
@@ -162,13 +130,14 @@ def employer_profile(request,username):
     context_dict['usertype'] = usertype
     context_dict['company_data'] = company_data
     return render(request, 'jportal/employer_profile.html', context_dict)
+
 def edit_employer_profile(request, username):
     usertype = user_type(request)
     user = User.objects.get(username=username)
     emp = Employer.objects.get(user_id=user.id)
     if request.method == "POST":
-        user_form = UserEditForm(request.POST, instance=user)
-        emp_form = EmployerEditForm(request.POST, instance=emp)
+        user_form = UserEditForm(request.POST, request.FILES, instance=user)
+        emp_form = EmployerEditForm(request.POST, request.FILES, instance=emp)
         if user_form.is_valid() and emp_form.is_valid():
             user_edit = user_form.save(commit=False)
             user_edit.username = user_edit.email
@@ -187,7 +156,7 @@ def edit_company_details(request):
     emp = Employer.objects.get(user_id=request.user.id)
     company = EmployerCompanyProfile.objects.get(employer_id=emp.id)
     if request.method == "POST":
-        company_form = EmployerCompanyProfileForm(request.POST, instance=company)
+        company_form = EmployerCompanyProfileForm(request.POST,request.FILES, instance=company)
         if company_form.is_valid():
             company_form.save()
         return redirect('employer_profile',username=request.user.username)
@@ -195,7 +164,56 @@ def edit_company_details(request):
        company_form = EmployerCompanyProfileForm(instance=company)
     context_dict = {'company_form':company_form, 'usertype':usertype}
     return render(request, 'jportal/company_edit.html', context_dict)
-#----karishma's
+
+#--------------------JOB SEEKER--------------------------
+def jobseeker_reg(request):
+
+    user_form = UserForm()
+    job_seek = JobSeekerForm()
+
+    print(request)
+    if request.method == 'POST' :
+        user_form = UserForm(request.POST)
+        job_seek = JobSeekerForm(request.POST,request.FILES)
+        if user_form.is_valid() and job_seek.is_valid():
+            user = user_form.save(commit=False)
+            user.username = user.email
+            user.password = user_form.cleaned_data.get('password')
+            user.password = make_password(user.password)
+            print(user.password)
+            user.save()
+            usr_obj = User.objects.get(username=user.username)
+            print("aa user obj:",usr_obj)
+            
+            seeker_user = job_seek.save(commit=False)
+            seeker_user.user = usr_obj
+            seeker_user.save()
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('/jportal/')
+
+        else:
+            print(user_form.errors)
+            print(job_seek.errors)
+ 
+    context_dict = {'job_seek':job_seek, 'user_form':user_form, }
+
+    return render(request, 'registration/jobseeker_register.html', context_dict)
+
+def jobseeker_profile(request,username):
+    context_dict = {}
+    print(request.user)
+    usertype = user_type(request)
+    if request.method == 'GET':
+        user = User.objects.get(username=username)
+        print(user.username)
+        seeker = JobSeekers.objects.get(user_id=user.id)
+        context_dict['user'] = user
+        context_dict['seeker'] = seeker
+        context_dict['usertype'] = usertype 
+    return render(request, 'jportal/jobseeker_profile.html', context_dict)
+
+
+#-------------------------Job--------------------
 def add_job(request):
     print(request.user)
     usertype = user_type(request)

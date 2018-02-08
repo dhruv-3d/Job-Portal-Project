@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from smart_selects.db_fields import ChainedForeignKey
-
+from django.core.validators import MaxValueValidator
 class Category(models.Model):
     title = models.CharField(max_length=50)
 
@@ -21,20 +21,68 @@ class SubCategory(models.Model):
 
     def __str__(self):
         return self.name
+class Graduation(models.Model):
+    title = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = 'Graduation'
+
+    def __str__(self):
+        return self.title
+
+class Post_Graduation(models.Model):
+    title = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = 'Post Graduation'
+
+    def __str__(self):
+        return self.title
+    
+class PhD(models.Model):
+    title = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = 'PhD'
+    def __str__(self):
+        return self.title
 
 class Education(models.Model):
-    education = models.CharField(max_length=100)
+    graduation = models.ForeignKey(Graduation,on_delete=models.SET_NULL,blank=True,null=True)
+    post_graduation = models.ForeignKey(Post_Graduation,on_delete=models.SET_NULL,blank=True,null=True)
+    phd = models.ForeignKey(PhD,on_delete=models.SET_NULL,blank=True,null=True)
+    specialization = models.CharField(max_length=50,blank=True)
+    university = models.CharField(max_length=200,blank=True)
+    year = models.CharField(max_length=10,blank=True)
+    grading_system = models.CharField(max_length=50,blank=True)
+    marks = models.DecimalField(max_digits=2,decimal_places=2,default=0,blank=True)
+    school = models.CharField(max_length=200,blank=True)
+    board = models.CharField(max_length=10,blank=True)
+    medium = models.CharField(max_length=20,blank=True)
+    percentage = models.DecimalField(max_digits=2,decimal_places=2,default=0,blank=True)
+    class Meta:
+        verbose_name_plural = 'PhD'
 
+class State(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+    
+class City(models.Model):
+    state = models.ForeignKey(State,on_delete=models.CASCADE)
+    name =models.CharField(max_length=100)
+    class Meta:
+        verbose_name_plural = 'Cities'
+    def __str__(self):
+        return self.name
 
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     designation = models.CharField(max_length=30, blank=False)
-    state = models.CharField(max_length=50, blank=False)
-    city = models.CharField(max_length=50, blank=False)
+    company_name = models.CharField(max_length=150,blank=False)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL, null=True,blank=False)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True,blank=False)
     profile_img = models.ImageField(blank=True, upload_to='employer_pic')
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
-    con_no = models.CharField(max_length=10, blank=False)
+    contact_no = models.PositiveIntegerField(blank=False,validators=[MaxValueValidator(9999999999)])
     email_verify = models.BooleanField(default=False)
     approval = models.BooleanField(default=False)
 
@@ -46,41 +94,28 @@ class EmployerCompanyProfile(models.Model):
     company_name = models.CharField(max_length=150,blank=False)
     description = models.TextField(blank=True)
     address = models.TextField(blank=False)
-    logo = models.ImageField(blank=True)
+    logo = models.ImageField(blank=True, upload_to='company_logo')
 
     def __str__(self):
         return self.company_name
 
 class JobSeekers(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    state = models.CharField(max_length=50, blank=False)
-    city = models.CharField(max_length=50, blank=False)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL, null=True, blank=False)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=False)
     profile_img = models.ImageField(blank=True)
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
-    con_no = models.CharField(max_length=10, blank=False)
+    contact_no = models.PositiveIntegerField(blank=False,validators=[MaxValueValidator(9999999999)])
     email_verify = models.BooleanField(default=False)
     phone_verify = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.user.username
-
-class  JobSeekersProfile(models.Model):
-    user = models.OneToOneField(JobSeekers)
-    pref_job_loc = models.CharField(max_length=100, blank=True)
-    resume = models.FileField(blank=True)
-    category = models.CharField(max_length=50, blank=True)
-    sub_category = models.CharField(max_length=50, blank=True)
-    education =  models.CharField(max_length=50, blank=True)
-    key_skills = models.TextField(blank=False)
-    total_workexp = models.DateTimeField(blank=False)
-    current_drawn_sal = models.PositiveIntegerField(blank=True)
-
+    class Meta:
+        verbose_name_plural = 'JobSeekers'
     def __str__(self):
         return self.user.username
 
 class AddJob(models.Model):
-    category=models.ForeignKey(Category)
+    category=models.ForeignKey(Category,on_delete=models.CASCADE)
     subcategory= ChainedForeignKey(
         SubCategory,
         chained_field="category",
@@ -102,4 +137,22 @@ class Appliers(models.Model):
     date_apply = models.DateField()
     status = models.CharField(max_length=50)
 
-    
+class JobSeekersProfile(models.Model):
+    user = models.OneToOneField(JobSeekers,on_delete=models.CASCADE)
+    pref_job_loc = models.CharField(max_length=100, blank=True)
+    resume = models.FileField(blank=True)
+    category = models.ForeignKey(Category,on_delete=models.SET_NULL, null=True)
+    subcategory= ChainedForeignKey(
+        SubCategory,
+        chained_field="category",
+        chained_model_field="category",
+        show_all=False,
+        auto_choose=True,
+        sort=True)
+    education =  models.ForeignKey(Education,on_delete=models.SET_NULL, null=True)
+    key_skills = models.TextField(blank=False)
+    total_workexp = models.DateTimeField(blank=False)
+    current_drawn_sal = models.PositiveIntegerField(blank=True)
+
+    def __str__(self):
+        return self.user.username

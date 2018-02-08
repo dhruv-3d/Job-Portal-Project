@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^jobseeker_register/$', views.jobseeker_reg, name='jobseeker_register'),
 
     url(r'^employer_profile/(?P<username>[\w\@\.]+)/$', views.employer_profile, name='employer_profile'),
-
+     url(r'^jobseeker_profile/(?P<username>[\w\@\.]+)/$', views.jobseeker_profile, name='jobseeker_profile'),
     url(r'^emp_edit/(?P<username>[\w\@\.]+)/$', views.edit_employer_profile, name='emp_edit'),
     url(r'^company_edit/$', views.edit_company_details, name='company_edit'),
 ]

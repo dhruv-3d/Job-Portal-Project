@@ -5,26 +5,18 @@ from django.contrib.auth.forms import UserCreationForm
 
 from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile
-from jportal.models import Category, SubCategory, AddJob
+from jportal.models import Category, SubCategory, AddJob, City, State, Education
+from jportal.models import Graduation, Post_Graduation, PhD
 
 from captcha.fields import CaptchaField
 import datetime
 
-STATES = (("Andhra Pradesh","Andhra Pradesh"),("Arunachal Pradesh ","Arunachal Pradesh "),("Assam","Assam"),("Bihar","Bihar"),("Chhattisgarh","Chhattisgarh"),("Goa","Goa"),("Gujarat","Gujarat"),("Haryana","Haryana"),("Himachal Pradesh","Himachal Pradesh"),("Jammu and Kashmir ","Jammu and Kashmir "),("Jharkhand","Jharkhand"),("Karnataka","Karnataka"),("Kerala","Kerala"),("Madhya Pradesh","Madhya Pradesh"),("Maharashtra","Maharashtra"),("Manipur","Manipur"),("Meghalaya","Meghalaya"),("Mizoram","Mizoram"),("Nagaland","Nagaland"),("Odisha","Odisha"),("Punjab","Punjab"),("Rajasthan","Rajasthan"),("Sikkim","Sikkim"),("Tamil Nadu","Tamil Nadu"),("Telangana","Telangana"),("Tripura","Tripura"),("Uttar Pradesh","Uttar Pradesh"),("Uttarakhand","Uttarakhand"),("West Bengal","West Bengal"),("Andaman and Nicobar Islands","Andaman and Nicobar Islands"),("Chandigarh","Chandigarh"),("Dadra and Nagar Haveli","Dadra and Nagar Haveli"),("Daman and Diu","Daman and Diu"),("Lakshadweep","Lakshadweep"),("National Capital Territory of Delhi","National Capital Territory of Delhi"),("Puducherry","Puducherry"))
-
-CITIES = [
-    ('Surat','Surat'),
-    ('Ahmedabad','Ahmedabad'),    
-    ('Pune', 'Pune'),
-    ('Mumbai','Mumbai'),
-    ('Jaipur','Jaipur'),
-]
-
 GENDER = [
-    ('male','Male'), ('female','Female'),
+    ('Male','Male'), ('Female','Female'),
 ]
 
 class UserForm(forms.ModelForm):
+    email = forms.EmailField(widget=forms.EmailInput,required=True)
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput())
     username = ''
@@ -35,34 +27,58 @@ class UserForm(forms.ModelForm):
  
 class EmployerForm(forms.ModelForm):
     designation = forms.CharField(max_length=30,required=True)
-    state = forms.CharField(widget=forms.Select(choices=STATES), max_length=255)
-    city = forms.CharField(widget=forms.Select(choices=CITIES), required=True)
+    company_name = forms.CharField(max_length=30,required=True )
     profile_img = forms.ImageField(required=False)
     gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
     dob = forms.DateField(widget=forms.DateInput())
-    contact_no = forms.CharField(max_length=10, required=True)
     captcha = CaptchaField()
     tc = forms.BooleanField(widget=forms.CheckboxInput(), required=True)
     admin_approval = False
 
     class Meta:
         model = Employer
-        fields = ('designation','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
+        fields = ('designation','company_name','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['city'].queryset = City.objects.none()
+
+        if 'state' in self.data:
+            try:
+                state_id = int(self.data.get('state'))
+                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')
+
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name','email')
 
 class EmployerEditForm(forms.ModelForm):
-    state = forms.CharField(widget=forms.Select(choices=STATES), max_length=255)
-    city = forms.CharField(widget=forms.Select(choices=CITIES), required=True)
+    designation = forms.CharField(max_length=30,required=True)
+    company_name = forms.CharField(max_length=30,required=True )
     profile_img = forms.ImageField(required=False)
     gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
     dob = forms.DateField(widget=forms.DateInput())
-    contact_no = forms.CharField(max_length=10, required=True)
     class Meta:
         model = Employer
-        fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no',)       
+        fields = ('designation','company_name','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no',)    
+       
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['city'].queryset = City.objects.none()
+
+        if 'state' in self.data:
+            try:
+                state_id = int(self.data.get('state'))
+                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')       
         
 class EmployerCompanyProfileForm(forms.ModelForm):
     class Meta:
@@ -70,25 +86,40 @@ class EmployerCompanyProfileForm(forms.ModelForm):
         exclude = ('employer',)
 
 class JobSeekerForm(forms.ModelForm):
-        
-    state = forms.CharField(widget=forms.Select(choices=STATES), required=True)
-    city = forms.CharField(widget=forms.Select(choices=CITIES), required=True)
     profile_img = forms.ImageField(required=False)
     gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
     dob = forms.DateField(widget=forms.DateInput())
-    contact_no = forms.CharField(max_length=10, required=True)
     captcha = CaptchaField()
     tc = forms.BooleanField(widget=forms.CheckboxInput(), required=True)
 
     class Meta:
         model = JobSeekers
         fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['city'].queryset = City.objects.none()
+
+        if 'state' in self.data:
+            try:
+                state_id = int(self.data.get('state'))
+                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')
+
 
 #------
 #karishma's form
 class AddJobForm(forms.ModelForm):
     class Meta:
        model = AddJob
-       fields = ('category',)
+       exclude = ('posted_date','employer','slug',)
 
+
+class EditJobForm(forms.ModelForm):
+    class Meta:
+       model = AddJob
+       exclude = ('posted_date','employer','slug',)
 

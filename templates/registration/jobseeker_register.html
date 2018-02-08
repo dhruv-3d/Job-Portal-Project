@@ -7,7 +7,7 @@
 {% block body_block %}
 <div class="container">
     <h2>Job Seeker Registration</h2>
-    <form method="post" action="." enctype="multipart/form-data" >  
+    <form method="post" action="." enctype="multipart/form-data" id="form" data-cities-url="{% url 'ajax_load_cities' %}">  
         <div class="form-group">
             {% csrf_token %}
             {{ user_form.as_p }}
