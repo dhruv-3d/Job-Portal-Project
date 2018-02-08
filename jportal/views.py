@@ -7,21 +7,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
 from jportal.models import Category, SubCategory
-from jportal.models import Education, Job, AddJob
+from jportal.models import Education, Depend, AddJob
 from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
-from jportal.models import Job
+from jportal.models import Depend, Appliers
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm
 from jportal.forms import EmployerProfileForm, Resume
+from jportal.forms import SearchForm
 
 from datetime import datetime
 
-def get_subcategory(request):
-    
-    subcat = SubCategory.objects.filter(category_id=request.GET['category'])
-
-    return subcat
 
 #index for testing purpose...!!!
 def index(request):
@@ -49,15 +45,12 @@ def index(request):
             e = JobSeekers.objects.get(user_id=u) 
             if e:
                 print("JobSeeker")
-                return render(request, 'jportal/jobseeker_page.html', context_dict)
+                #return render(request, 'jportal/jobseeker_page.html', context_dict)
         except e.DoesNotExist:
             pass
 
-    context_dict['categories'] = Category.objects.all()
-    if request.method == 'GET' and "category" in request.GET:
-        #subcat = SubCategory.objects.filter(category_id=request.GET['category'])
-        context_dict['subcategories'] = get_subcategory(request)
-        context_dict['jobs'] = job_listing(request)
+    context_dict['searchform'] = SearchForm()
+    context_dict['jobs'] = job_listing(request)
 
     return render(request, 'jportal/index.html', context_dict)
 
@@ -305,7 +298,7 @@ def resume(request):
     return render(request, 'jportal/resume.html', {'form': form})
 
 #----vidushi's------------------------
-#----overwritten and made it int ojob search function---
+#----overwritten and was converted into job search function---
 def job_listing(request):
     print(request)
     context_dict = {}
@@ -323,14 +316,14 @@ def job_listing(request):
         try:
             cat_title = request.GET['category']
             subcat_name = request.GET['subcategory']
-            job_title = request.GET.get('jobtitle')
-            print("aa job mailu :",job_title)
+            #print("aa job mailu :",job_title)
 
-            if cat_title:
+            if cat_title:   #getting job as per category
                 cat = Category.objects.get(id=cat_title)
-                if subcat_name:
-                    subcat = SubCategory.objects.get(name=subcat_name)
-                    #getting job as per category and subcategory
+
+                if subcat_name:     #getting job as per subcategory
+                    subcat = SubCategory.objects.get(id=subcat_name)
+                    
                     jobs = AddJob.objects.filter(subcategory_id=subcat.id)
                     return jobs
                 
@@ -341,6 +334,7 @@ def job_listing(request):
             print("Category wala thi ni mailu job")
 
         try:
+            job_title = request.GET.get('jobtitle')
             print("ehehehehe")
             if job_title:
                 job_srch = job_title.split()
@@ -350,11 +344,39 @@ def job_listing(request):
             print("Title thi pan ni mailu job")
 
 
-    #context_dict['category'] = cat
-    #context_dict['subcategory'] = subcat
+    return ''  #none found
 
-    return HttpResponse("No Jobs Found")
+#-----------apply for job
+def job_details(request, jobslug_name):
+    context_dict = {}
 
+    if request.method == "GET":
+        job_info = AddJob.objects.get(slug=jobslug_name)
+        print(job_info)
+
+    context_dict['job_info'] = job_info
+
+    return render(request, 'jportal/job_details.html', context_dict)
+
+@login_required
+def job_apply(request, jobslug_name):
+    context_dict = {}
+
+    if request.method == "GET":
+        seeker = JobSeekers.objects.get(user_id=request.user.id)
+        job = AddJob.objects.get(slug=jobslug_name)
+
+        applier = Appliers()
+        applier.date_apply = datetime.now()
+        applier.status = 'pending'
+        applier.job_id = job.id
+        applier.jobseeker_id = seeker.id
+        applier.save()
+        
+    context_dict['applier'] = applier
+    return render(request, 'jportal/job_application.html', context_dict)
+
+#-------------
 #testing remaining..
 def show_appliers(request):
     context_dict={}
@@ -428,10 +450,10 @@ def edit_job(request,addjob_title_slug):
     
     b = AddJob.objects.get(slug=addjob_title_slug)
     print(b)
-    form = EditJobForm({'category':b.category, 'subcategory':b.subcategory, 'title':b.title,'last_date':b.last_date,'Job_responsibility':b.Job_responsibility,'candidate_profile':b.candidate_profile})
+    form = JobForm({'category':b.category, 'subcategory':b.subcategory, 'title':b.title,'last_date':b.last_date,'Job_responsibility':b.Job_responsibility,'candidate_profile':b.candidate_profile})
     print(form)
     if request.method == 'POST':
-        form = EditJobForm(request.POST)
+        form = JobForm(request.POST)
         if form.is_valid():
             a = form.save(commit=False)
             if a.category:

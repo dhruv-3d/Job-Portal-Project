@@ -12,7 +12,7 @@
     input[type="text"]{
         color: transparent;
         text-shadow: 0 0 0 #000;
-        padding: 6px 12px;
+        padding: 4px 8px;
         width: 60px;
         cursor: pointer;
     }
@@ -32,9 +32,13 @@
         {% for i in job %}
         <br />
             <div> 
-                {{ i.title }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="{% url 'edit_job' i.slug %}">
-                    <button type="submmit" value="Edit Jobs">Edit Jobs</button></a>
-                    <a href="{% url 'delete_job' i.slug %}"><button type="submit" value="Delete">Delete</button></a>
+                {{ i.title }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+                    <a href="{% url 'edit_job' i.slug %}">
+                        <button type="submmit" value="Edit Jobs">Edit Jobs</button>
+                    </a>
+                    <a href="{% url 'delete_job' i.slug %}">
+                        <button type="submit" value="Delete">Delete</button>
+                    </a>
                     <input type="text" value="show">               
                     <div id="content">
 

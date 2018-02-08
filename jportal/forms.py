@@ -5,9 +5,10 @@ from django.contrib.auth.forms import UserCreationForm
 
 from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
-from jportal.models import AddJob, Resume
+from jportal.models import AddJob, Resume, Depend
 from jportal.models import Category, SubCategory
 
+from smart_selects.form_fields import ChainedSelect, ChainedModelChoiceField
 from captcha.fields import CaptchaField
 import datetime
 
@@ -61,7 +62,7 @@ class JobSeekerForm(forms.ModelForm):
     city = forms.CharField(widget=forms.Select(choices=CITIES), required=True)
     profile_img = forms.ImageField(required=False)
     gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
-    dob = forms.DateField(widget=forms.DateInput())
+    dob = forms.SelectDateWidget()
     contact_no = forms.CharField(max_length=10, required=True)
     captcha = CaptchaField()
     tc = forms.BooleanField(widget=forms.CheckboxInput(), required=True)
@@ -71,6 +72,10 @@ class JobSeekerForm(forms.ModelForm):
         model = JobSeekers
         fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
 
+class SearchForm(forms.ModelForm):
+    class Meta:
+        model = Depend
+        exclude = ('id',)
 #------
 #karishma's form
 class JobForm(forms.ModelForm):

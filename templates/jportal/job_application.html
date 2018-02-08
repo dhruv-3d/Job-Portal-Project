@@ -1,0 +1,15 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Job Details
+{% endblock %}
+
+{% block nav_block %}
+{% endblock %}
+
+{% block body_block %}
+    {% if applier %}
+        <h4>{{ applier.id }}</h4>
+    {% endif %}
+{% endblock %}

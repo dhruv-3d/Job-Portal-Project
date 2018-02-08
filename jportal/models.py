@@ -77,27 +77,16 @@ class JobSeekersProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-class Job(models.Model):
-    employer = models.ForeignKey(Employer)
-    title = models.CharField(max_length=100, blank=False)
-    posted_date = models.DateField()
-    category = models.CharField(max_length=50)
-    sub_category = models.CharField(max_length=50)
-    state = models.CharField(max_length=50, blank=False)
-    city = models.CharField(max_length=50, blank=False)
-    last_date = models.DateField(blank=False)
-    salary = models.PositiveIntegerField(blank=True)
-    Job_responsibility = models.TextField(blank=False)
-    candidate_profile = models.TextField(blank=False)
+class Depend(models.Model):
 
-    def __str__(self):
-        return self.title
-
-class Appliers(models.Model):
-    applier = models.ForeignKey(JobSeekers)
-    job_id = models.ForeignKey(Job)
-    date_apply = models.DateField()
-    status = models.CharField(max_length=50)
+    category=models.ForeignKey(Category, blank=True)
+    subcategory= ChainedForeignKey(
+        SubCategory,
+        chained_field="category",
+        chained_model_field="category",
+        show_all=False,
+        auto_choose=True,
+        sort=True, blank=True)
 
 class AddJob(models.Model):
     category=models.ForeignKey(Category)
@@ -123,6 +112,12 @@ class AddJob(models.Model):
 
     def __str__(self):
         return self.title
+
+class Appliers(models.Model):
+    jobseeker = models.ForeignKey(JobSeekers)
+    job = models.ForeignKey(AddJob)
+    date_apply = models.DateField()
+    status = models.CharField(max_length=50)
 
 class Resume(models.Model):
     resumetitle = models.CharField(max_length=120,blank=False)

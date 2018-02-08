@@ -1,0 +1,45 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Job Details
+{% endblock %}
+
+{% block nav_block %}
+{% endblock %}
+
+{% block body_block %}
+    
+    {% if job_info %}
+        <h2>{{ job_info.title }}</h2>
+        <br>
+        <p>Salary: {{ job_info.salary }}</p>
+        &nbsp; &nbsp; &nbsp; &nbsp;
+        <p>Last date for application: {{ job_info.last_date }}</p>
+        &nbsp; &nbsp; &nbsp; &nbsp;
+        <p>Candidate Profile: {{ job_info.candidate_profile }}</p>
+        &nbsp; &nbsp; &nbsp; &nbsp;
+        <p>Job Responsibility: {{ job_info.job_responsibility }}</p> 
+
+        <div class="container">
+            <!-- VErify application -->
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#verify">Apply</button>
+            <!-- Modal -->
+            <div class="modal fade" id="verify" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p>Are you sure you want to apply for the job?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'job_application' job_info.slug %}">
+                                <button type="button" class="btn btn-default">Yes</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

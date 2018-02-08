@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title_block %}
-	Job Listing
+    Job Listing
 {% endblock %}
 
 {% block nav_block %}
@@ -11,9 +11,15 @@
 {% block body_block %}
     {% if jobs %}
         {% for job in jobs %}
-        <ul>
-            <li><h4>{{job.title}}</h4></li>
-        </ul>
+            <ul>
+                <li>
+                    <a href="{% url 'job_details' job.slug %}">{{job.title}}</a> 
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </li>
+            </ul>
+
         {% endfor %}
+    {% else %}
+        <h4>No Jobs Found</h4>    
     {% endif %}
 {% endblock %}
