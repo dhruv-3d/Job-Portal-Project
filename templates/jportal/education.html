@@ -1,0 +1,15 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Education{% endblock %}
+
+{% block body_block %}
+<button class="accordion" data-title="graduation">Add Graduation</button>
+<div class="panel">
+    <form method="post" action="." enctype="multipart/form-data" id="form">
+        {% csrf_token %}
+        {{ g_form.as_p }}
+        <input type="submit" name="submit" value="Register">
+    </form>
+</div>
+{% endblock %}

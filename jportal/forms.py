@@ -132,7 +132,7 @@ class EditJobForm(forms.ModelForm):
 
 class GraduationForm(forms.ModelForm):
     graduation = forms.ModelChoiceField(queryset=Graduation.objects.all(), required=True)
-    specialiazation = forms.CharField(max_length=50,required=True)
+    specialization = forms.CharField(max_length=50,required=True)
     university = forms.CharField(max_length=200,required=True)
     year = forms.ChoiceField(choices=get_years(),required=True)
     grading_system = forms.ChoiceField(choices=GRADING_SYSTEM)
@@ -142,21 +142,41 @@ class GraduationForm(forms.ModelForm):
         fields = ('graduation','specialization','university','year','grading_system','marks',)
 
 class PostGraduationForm(forms.ModelForm):
+    post_graduation = forms.ModelChoiceField(queryset=Post_Graduation.objects.all(), required=True)
+    specialization = forms.CharField(max_length=50,required=True)
+    university = forms.CharField(max_length=200,required=True)
+    year = forms.ChoiceField(choices=get_years(),required=True)
+    grading_system = forms.ChoiceField(choices=GRADING_SYSTEM)
+    marks = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
         fields = ('post_graduation','specialization','university','year','grading_system','marks',)
 
 class PhDForm(forms.ModelForm):
+    phd = forms.ModelChoiceField(queryset=PhD.objects.all(), required=True)
+    specialization = forms.CharField(max_length=50,required=True)
+    university = forms.CharField(max_length=200,required=True)
+    year = forms.ChoiceField(choices=get_years(),required=True)
+    grading_system = forms.ChoiceField(choices=GRADING_SYSTEM)
+    marks = forms.DecimalField(max_digits=2,decimal_places=2)
     class meta:
         model = Education
         fields = ('phd','specialization','university','year','grading_system','marks',)
 
 class ClassXIIForm(forms.ModelForm):
+    board = forms.CharField(max_length=50,required=True)
+    year = forms.ChoiceField(choices=get_years(),required=True)
+    medium = forms.CharField(max_length=50,required=True)
+    percentage = forms.DecimalField(max_digits=2,decimal_places=2)
     class meta:
         model = Education
         fields = ('board','year','medium','percentage',)
 
 class ClassXForm(forms.ModelForm):
+    board = forms.CharField(max_length=50,required=True)
+    year = forms.ChoiceField(choices=get_years(),required=True)
+    medium = forms.CharField(max_length=50,required=True)
+    percentage = forms.DecimalField(max_digits=2,decimal_places=2)
     class meta:
         model = Education
         fields = ('board','year','medium','percentage',)

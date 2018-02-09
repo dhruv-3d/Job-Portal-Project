@@ -11,5 +11,11 @@ $("#id_state").change(function () {
       $("#id_city").html(data);  // replace the contents of the city input with the data that came from the server
     }
   });
+});
 
+$('.accordion').click(function(){
+  var title = $(this).attr("data-title"); 
+  $.get('/jportal/education/', {title: title}, function(data){
+          $('#edu_detail').html(data);
+      });
 });

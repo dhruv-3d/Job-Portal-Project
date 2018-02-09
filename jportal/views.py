@@ -9,7 +9,7 @@ from django.contrib.auth.hashers import make_password
 from jportal.models import Category, SubCategory
 from jportal.models import Education, AddJob
 from jportal.models import Employer, EmployerCompanyProfile
-from jportal.models import JobSeekers, State, City
+from jportal.models import JobSeekers, State, City, JobSeekersProfile
 from jportal.models import Graduation, Post_Graduation, PhD
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm
@@ -297,8 +297,23 @@ def suggest_job(request):
         job_list = get_job_list(8, starts_with)
     return render(request, 'jportal/.html', {'jobs': job_list,'usertype':usertype})
 
+def add_education(request):
+    #usertype=user_type(request)
+    #user=User.objects.get(username=username)
+    #job_seek=JobSeekers.objects.get(user_id=user.id)
+    #seek_profile=JobSeekersProfile(user_id=job_seek.id)
+    if request.method=='GET':
+        cat = request.GET('title') 
+        if cat=='graduation':
+            form=GraduationForm()
+            if request.method == 'POST':
+                form=GraduationForm(request.POST)
+                 if form.is_valid():
+                     g_form=form.save(commit=False)
+                     g_form.category = cat
 
-    
+
+    return render(request,'jportal/education.html',{'g_form':g_form})
 
 
     
