@@ -1,4 +1,5 @@
-<!DOCTYPE html> {% load staticfiles %}
+<!DOCTYPE html> 
+{% load staticfiles %}
 <html lang="en">
 
 <head>
@@ -7,8 +8,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" type="text/css" media="screen" href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<link rel="stylesheet" href="{% static 'css/datepicker.css' %}">
@@ -64,7 +65,7 @@
 								<i class="glyphicon glyphicon-user"></i> My Profile</a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="{% url 'managejob' %}">
 								<i class="glyphicon glyphicon-cog"></i> Manage Jobs</a>
 						</li>
 						<li>
@@ -73,7 +74,7 @@
 						</li>
 						<li class="divider"></li>
 						<li>
-							<a href="{% url 'password_change' %}">
+							<a href="#">
 								<i class="glyphicon glyphicon-lock"></i> Change Password</a>
 						</li>
 						<li>
@@ -144,7 +145,7 @@
 	<div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up"></i></a></div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU&callback=myMap"></script>
+		
 
 </body>
 

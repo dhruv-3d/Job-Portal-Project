@@ -8,13 +8,13 @@ from django.contrib.auth.hashers import make_password
 
 from jportal.models import Category, SubCategory
 from jportal.models import Education, Depend, AddJob
-from jportal.models import Employer, EmployerProfile
+from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 from jportal.models import Depend, Appliers
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm
-from jportal.forms import EmployerProfileForm, Resume
-from jportal.forms import SearchForm
+from jportal.forms import EmployerCompanyProfileForm, Resume
+from jportal.forms import SearchForm, UserEditForm, EmployerEditForm
 
 from datetime import datetime
 
@@ -185,10 +185,12 @@ def employer_profile(request,username):
             company_data = EmployerCompanyProfile.objects.get(employer_id=emp_data.id)
         except EmployerCompanyProfile.DoesNotExist:
             company_data = ''
-            company_form = EmployerCompanyProfileForm()
-            context_dict['company_form'] = company_form
+
+    company_form = EmployerCompanyProfileForm()
+    context_dict['company_form'] = company_form
 
     if request.method == 'POST':
+
         emp_usr = User.objects.get(username=username)
         print(emp_usr.username)
         emp_data = Employer.objects.get(user_id=emp_usr.id)

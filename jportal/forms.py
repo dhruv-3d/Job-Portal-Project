@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-from jportal.models import Employer, EmployerProfile
+from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 from jportal.models import AddJob, Resume, Depend
 from jportal.models import Category, SubCategory
@@ -35,6 +35,11 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('email', 'password', 'confirm_password',)
 
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name','email')
+
 class EmployerForm(forms.ModelForm):
 
     state = forms.CharField(widget=forms.Select(choices=STATES), max_length=255)
@@ -51,9 +56,20 @@ class EmployerForm(forms.ModelForm):
         model = Employer
         fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
 
-class EmployerProfileForm(forms.ModelForm):
+class EmployerEditForm(forms.ModelForm):
+    state = forms.CharField(widget=forms.Select(choices=STATES), max_length=255)
+    city = forms.CharField(widget=forms.Select(choices=CITIES), required=True)
+    profile_img = forms.ImageField(required=False)
+    gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
+    dob = forms.DateField(widget=forms.DateInput())
+    contact_no = forms.CharField(max_length=10, required=True)
     class Meta:
-        model = EmployerProfile
+        model = Employer
+        fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no',) 
+
+class EmployerCompanyProfileForm(forms.ModelForm):
+    class Meta:
+        model = EmployerCompanyProfile
         exclude = ('employer','logo',)
 
 class JobSeekerForm(forms.ModelForm):
@@ -76,14 +92,10 @@ class SearchForm(forms.ModelForm):
     class Meta:
         model = Depend
         exclude = ('id',)
+
 #------
 #karishma's form
 class JobForm(forms.ModelForm):
-    class Meta:
-       model = AddJob
-       exclude = ('posted_date','employer','slug',)
-
-class EditJobForm(forms.ModelForm):
     class Meta:
        model = AddJob
        exclude = ('posted_date','employer','slug',)

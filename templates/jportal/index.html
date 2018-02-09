@@ -2,49 +2,34 @@
 {% load staticfiles %}
 
 {% block title_block %}
-	Job Hunt
 {% endblock %}
 
 {% block body_block %}
-<section class="bg-dark-30 showcase-page-header module parallax-bg" style="background-image: url('{{ STATIC_URL }}images/slider.jpg');">
+<section class="bg-dark-30 showcase-page-header module parallax-bg" style="background-image: url(../../static/images/slider.jpg);">
 	<div class="titan-caption">
 	  <div class="caption-content">
-		<div class="container">
-			<ol class="breadcrumb">
-					<li><a href="#">Home</a></li>
-					<li><a href="#">Library</a></li>
-					<li class="active">Data</li>
-			</ol>
-
-		  <h3 style="font-size:calc(5.65476vw + 11.90476px); font-weight:400;">
-				Your skills are in demand
-			</h3>
-		  <p>
-				<h4 style="font-size: 18px;color: #c2c2c2; font-weight:600;">
-					Over 300,000 jobs in 14,000 companies
-				</h4>
-			</p>
-
-			<!-- Job Search functionality -->
-		  <form id="searchjob" method="GET" action=".">
-				<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-				<script type="text/javascript" src="/static/smart-selects/admin/js/chainedfk.js"></script>
-				<script type="text/javascript" src="/static/smart-selects/admin/js/bindfields.js"></script>
-				{% csrf_token %}
-				<div class="form-group">
-					<input name ="jobtitle" type="text" class="form-control" placeholder="Search Jobs">
-				</div>
-				<br>
-
-				<!--- Search with category -->
+			<div class="container">
+				<h3 style="font-size:calc(5.65476vw + 11.90476px); font-weight:400;">Your skills are in demand</h3>
+				<p><h4 style="font-size: 18px;color: #c2c2c2; font-weight:600;">Over 300,000 jobs in 14,000 companies</h4></p>
+				<!-- Job Search functionality -->
 				
-				{{ searchform.as_p }}
-				<br>
-				<button id="butt" type="submit" class="btn btn-default">Submit</button>
-			</form>
-			
+				<form id="searchjob" method="GET" action=".">
+						<script type="text/javascript" src="/static/smart-selects/admin/js/chainedfk.js"></script>
+						<script type="text/javascript" src="/static/smart-selects/admin/js/bindfields.js"></script>
+						{% csrf_token %}
+						<div class="form-group">
+							<input name ="jobtitle" type="text" class="form-control" placeholder="Search Jobs">
+						</div>
+						<br>
+						<!--- Search with category & subcategory-->					
+						
+						{{ searchform.as_p }}
+						{{ searchform.media.js }}
+						<br>
+						<button id="butt" type="submit" class="btn btn-default">Submit</button>
+				</form>
+			</div>
 		</div>
-	  </div>
 	</div>
 </section>
 

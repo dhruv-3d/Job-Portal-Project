@@ -39,7 +39,7 @@ class Employer(models.Model):
     def __str__(self):
         return self.user.username
 
-class EmployerProfile(models.Model):
+class EmployerCompanyProfile(models.Model):
     employer = models.ForeignKey(Employer)
     company_name = models.CharField(max_length=150,blank=False)
     description = models.TextField(blank=True)
