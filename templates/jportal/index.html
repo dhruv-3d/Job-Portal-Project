@@ -1,8 +1,10 @@
 {% extends 'jportal/base.html' %}
 {% load staticfiles %}
+
 {% block title_block %}
 	Job Hunt
 {% endblock %}
+
 {% block body_block %}
 <section class="bg-dark-30 showcase-page-header module parallax-bg" style="background-image: url('{{ STATIC_URL }}images/slider.jpg');">
 	<div class="titan-caption">
@@ -17,9 +19,11 @@
 		  <h3 style="font-size:calc(5.65476vw + 11.90476px); font-weight:400;">
 				Your skills are in demand
 			</h3>
-		  <p><h4 style="font-size: 18px;color: #c2c2c2; font-weight:600;">
-				Over 300,000 jobs in 14,000 companies
-			</h4></p>
+		  <p>
+				<h4 style="font-size: 18px;color: #c2c2c2; font-weight:600;">
+					Over 300,000 jobs in 14,000 companies
+				</h4>
+			</p>
 
 			<!-- Job Search functionality -->
 		  <form id="searchjob" method="GET" action=".">

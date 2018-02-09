@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^employer_page/$', views.employer_page, name='employer_page'),
     url(r'^jobseeker_page/$', views.jobseeker_page, name='jobseeker_page'),
     url(r'^detail_employer/$', views.detail_employer, name='detail_employer'),
-    url(r'^employer_profile/$', views.employer_profile, name='employer_profile'),
-    url(r'^edit_emp_prof/(?P<username>[\w\@\.]+)/$', views.edit_emp_prof, name='edit_emp_prof'),
+    
+    url(r'^employer_profile/(?P<username>[\w\@\.]+)/$', views.employer_profile, name='employer_profile'),
+    url(r'^emp_edit/(?P<username>[\w\@\.]+)/$', views.edit_employer_profile, name='emp_edit'),
+    url(r'^company_edit/$', views.edit_company_details, name='company_edit'),
 ]

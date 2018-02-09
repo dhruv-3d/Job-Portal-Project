@@ -1,61 +1,64 @@
-<!DOCTYPE html>
+{% extends 'jportal/base.html' %}
 {% load staticfiles %}
 
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Parmaatma">
-
-    <title>Employer Detail Page</title>
-
-</head>
-<body>
-    <h2>Employer Profile</h2>
-        <br />
-        <br />
-        <div>
-            <h4> {{ emp_usr.username }} </h4>
-            <p>Company name</p>
-            <p>{{ emp_data.city }}, {{ emp_data.state }}</p>
-            <br />
-            <!-- image of the employer-->
-            <img src="{{ MEDIA_URL }}{{emp_data.profile_img }}" height="150px" width="150px"/>
-            <hr />
-            <div>
-                <b><p>Contact Information</p></b>
-                    <p>{{ emp_usr.email }}</p>
-                    <p>{{ emp_data.con_no }}</p>
-
-                <a href="#">
-                    <button>Message {{ emp_usr.first_name }}</button>
-                </a>
+{% block title_block %}
+	Job Search - Employer Detail Pages
+{% endblock %}
+{% block body_block %}
+    <main>
+    <div class="container">
+        <div class="row">
+            <div class="page-header">
+                <h3 style="display:inline">Profile Details </h3>
+                <a class="btn btn-border-d btn-round" href="{% url 'emp_edit' username=user.username %}" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></a>
             </div>
-            <hr />
-
-            <p>Designation: Employer's Designation</p>
-            <p>Work Experience or Skill: </p>
-        </div>
-        <hr />
-
-        <!--- TO SHOW EMPLOYER"S JOBS -->
-        <div>
-            <form method="get" action="#showjobs">
-                <button type="submit" name="sh_jobs" data-toggle="collapse" data-target="#showjobs">Show Posted Jobs</button>
-            </form>
-
-            <div id="showjobs" class="collapse" >
-                    {% include 'jportal/job_listing.html'%}
+            <div class="jumbotron">
+                <div class="col-md-4 col-lg-4">
+                    <img src="{{ MEDIA_URL }} {{emp_data.profile_img}}" class="img-thumbnail img-responsive" style="width:100%">
+                </div>
+                <div class="col-md-8 col-lg-8">
+                    <h3 class="work-details-title font-alt">{{user.first_name}} {{user.last_name}}</h3>
+                    <h4><b>{{emp_data.designation}}</b></h4>
+                    <h5>{{company_data.company_name}}</h5>
+                    <h5><span class="glyphicon glyphicon-earphone"></span> : {{emp_data.con_no}} </h5>
+                    <h5><span class="glyphicon glyphicon-envelope"></span> : {{emp_usr.email }} </h5>
+                    <h5><span class="glyphicon glyphicon-map-marker color-primary"></span> : {{emp_data.city}}, {{emp_data.state}}</h5>
+                </div>
             </div>
         </div>
-
-
-    {% if user.is_authenticated %}
-        <br />
-        <a href="{% url 'edit_emp_prof' emp_usr.username %}">Edit Details</a>
-        <br />
-        <a href="/logout/">Logout</a>
-    {% endif %}
-</body>
-</html>
+        <div class="row">
+            {% if company_data %}
+            <div class="page-header">
+                <h3 style="display:inline">Company Details </h3>
+                <a class="btn btn-border-d btn-round" href="{% url 'company_edit' %}" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></a>
+            </div>
+                <div class="jumbotron">
+                    <div class="col-md-8 col-lg-8">
+                        <h3 class="work-details-title font-alt">{{company_data.company_name}}</h3>
+                        <p>{{company_data.description|linebreaksbr }}</p>
+                        <address>{{company_data.address}}</address>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <img src="{{ MEDIA_URL }} {{company_data.logo}}" class="img-thumbnail img-responsive" style="width:100%">
+                    </div>
+                </div>
+               {% else %} 
+               <div class="page-header">
+                    <h3 style="display:inline">Company Details </h3>
+                </div>
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#company_form">Add Company Details</button>
+                <div id="company_form" class="collapse">
+                    <div class="container">
+                        <h2>Company Details</h2>
+                        <form method="post" action="." enctype="multipart/form-data" >   
+                            {% csrf_token %}
+                            {{company_form.as_p}}
+                            <input type="submit" name="submit" value="Confirm">
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>   
+    </main>
+{% endblock %}
