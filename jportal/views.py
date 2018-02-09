@@ -10,9 +10,11 @@ from jportal.models import Category, SubCategory
 from jportal.models import Education, AddJob
 from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, State, City
+from jportal.models import Graduation, Post_Graduation, PhD
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm
-from jportal.forms import UserEditForm, EmployerEditForm
+from jportal.forms import UserEditForm, EmployerEditForm, GraduationForm,PostGraduationForm,PhD
+from jportal.forms import ClassXIIForm,ClassXForm 
 from django.utils import timezone
 
 from datetime import datetime
@@ -294,3 +296,9 @@ def suggest_job(request):
         starts_with = request.POST['suggestion']   
         job_list = get_job_list(8, starts_with)
     return render(request, 'jportal/.html', {'jobs': job_list,'usertype':usertype})
+
+
+    
+
+
+    

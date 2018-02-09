@@ -45,6 +45,7 @@ class PhD(models.Model):
         return self.title
 
 class Education(models.Model):
+    category = models.CharField(max_length=30,blank=True,null=True)
     graduation = models.ForeignKey(Graduation,on_delete=models.SET_NULL,blank=True,null=True)
     post_graduation = models.ForeignKey(Post_Graduation,on_delete=models.SET_NULL,blank=True,null=True)
     phd = models.ForeignKey(PhD,on_delete=models.SET_NULL,blank=True,null=True)
