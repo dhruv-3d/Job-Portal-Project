@@ -9,7 +9,17 @@
 {% endblock %}
 
 {% block body_block %}
-    {% if applier %}
-        <h4>{{ applier.id }}</h4>
+    {% if applied_jobs %}
+        <h4>Jobs you applied for...</h4>
+        {% for applied in applied_jobs %}
+            {% for jobs in all_jobs %}
+                {% if applied.job_id == jobs.id %}
+                    <h5> {{ jobs.title }} </h5>
+                    <h5> Status: {{ applied.status }} </h5>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <h5>You haven't applied to any jobs</h5>
     {% endif %}
 {% endblock %}

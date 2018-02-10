@@ -383,6 +383,24 @@ def job_details(request, jobslug_name):
 
     return render(request, 'jportal/job_details.html', context_dict)
 
+#--------
+@login_required
+def show_jobs_applied(request):
+    print(request)
+
+    context_dict = {}
+    if request.method == 'GET':
+        seeker = JobSeekers.objects.get(user_id=request.user.id)
+        applied = Appliers.objects.filter(jobseeker_id=seeker.id)
+        job_list = AddJob.objects.values('id')
+        all_jobs  =AddJob.objects.all()
+
+        context_dict['applied_jobs'] = applied
+        context_dict['all_jobs'] = all_jobs
+        context_dict['job_list'] = job_list
+
+    return render(request, 'jportal/jobs_application.html', context_dict)
+
 @login_required
 def job_apply(request, jobslug_name):
     context_dict = {}
@@ -398,9 +416,13 @@ def job_apply(request, jobslug_name):
         applier.jobseeker_id = seeker.id
         applier.save()
 
-    context_dict['applier'] = applier
-    return render(request, 'jportal/job_application.html', context_dict)
+        return index(request)
 
+    context_dict['applier'] = applier
+    return render(request, 'index', context_dict)
+
+
+#----vidushi's------------------------
 #-------------
 #testing remaining..
 def show_appliers(request):
@@ -411,13 +433,7 @@ def show_appliers(request):
         context_dict['appliers']=appliers
         return render(request, 'jportal/appliers.html', context_dict)
 
-#testing remaining..
-def show_jobs_applied(request):
-    if request.method == 'GET':
-        jobseeker_id = request.GET['jobseeker_id']
-        job_ids= Appliers.objects.values_list('job_id',flat=True).filter(appliers_id=jobseeker_id)
-        jobs_applied = Job.objects.filter(pk__in=set(job_ids))
-        return render(request, 'jportal/jobs_applied.html', {'jobs_applied':jobs_applied})
+
 
 #testing remaining..
 def get_employer_list(max_results=0, starts_with=''): 
@@ -437,14 +453,6 @@ def suggest_employer(request):
         emp_list = get_employer_list(8, starts_with)
     return render(request, 'jportal/.html', {'emps': emp_list })
 
-def get_job_list(max_results=0, starts_with=''): 
-    job_list = []
-    if starts_with:
-        job_list = Job.objects.filter(name__istartswith=starts_with)
-    if max_results > 0:
-        if len(job_list) > max_results:
-            job_list = job_list[:max_results] 
-    return job_list
 
 def suggest_job(request): 
     job_list = []
@@ -453,6 +461,7 @@ def suggest_job(request):
         starts_with = request.POST['suggestion']   
         job_list = get_job_list(8, starts_with)
     return render(request, 'jportal/.html', {'jobs': job_list })
+
 #--------------------------------------
 def manage_job(request):
     print(request.user)

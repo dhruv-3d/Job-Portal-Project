@@ -10,18 +10,19 @@
 {% endblock %}
 
 {% block body_block %}
+    <div class="container">
     {% if jobs %}
+        <h3>Jobs Found</h3>
+        <div class="panel-group" style="width:500px;">
         {% for job in jobs %}
-        <div class="list-group">
-            <a href="{% url 'job_details' job.slug %}" class="list-group-item list-group-item-action flex-column align-items-start active">
-                <div class="d-flex w-100 justify-content-between">
-                    <h4 class="mb-1">{{ job.title }}</h4>
-                    <small>Posted on: {{ day_diff }}</small>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <a style="color:white;" href="{% url 'job_details' job.slug %}">{{ job.title }}</a>
                 </div>
-                <b class="mb-1">{{ job.Job_responsibility }}</b>
-            </a>
-        </div>
+                <div class="panel-body">{{ job.Job_responsibility }}</div>
+            </div>
         {% endfor %}
+        </div>
     {% else %}
         <h4>No Jobs Found</h4>    
     {% endif %}
