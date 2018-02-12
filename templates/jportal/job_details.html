@@ -10,36 +10,68 @@
 
 {% block body_block %}
     
-    {% if job_info %}
-        <h2>{{ job_info.title }}</h2>
-        <br>
-        <p>Salary: {{ job_info.salary }}</p>
-        &nbsp; &nbsp; &nbsp; &nbsp;
-        <p>Last date for application: {{ job_info.last_date }}</p>
-        &nbsp; &nbsp; &nbsp; &nbsp;
-        <p>Candidate Profile: {{ job_info.candidate_profile }}</p>
-        &nbsp; &nbsp; &nbsp; &nbsp;
-        <p>Job Responsibility: {{ job_info.job_responsibility }}</p> 
+    {% if user_type == 'j' %}
+    <!-- job details for jobseeker -->
+        {% if job_info %}
+            <h2>{{ job_info.title }}</h2>
+            <br>
+            <p>Salary: {{ job_info.salary }}</p>
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <p>Last date for application: {{ job_info.last_date }}</p>
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <p>Candidate Profile: {{ job_info.candidate_profile }}</p>
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <p>Job Responsibility: {{ job_info.job_responsibility }}</p> 
 
-        <div class="container">
-            <!-- VErify application -->
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#verify">Apply</button>
-            <!-- Modal -->
-            <div class="modal fade" id="verify" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <p>Are you sure you want to apply for the job?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="{% url 'job_application' job_info.slug %}">
-                                <button type="button" class="btn btn-default">Yes</button>
-                            </a>
+            {% if applier %}
+                <div>
+                    <strong>You have already applied for the job.</strong>
+                    <!-- Redirect to Applied Jobs Section -->
+                    <button type="button" class="btn btn-info btn-lg">Show applied jobs</button>
+                </div>
+            {% else %}
+                <div class="container">
+                    <!-- VErify application -->
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#verify">Apply</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="verify" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <p>Are you sure you want to apply for the job?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{% url 'job_application' job_info.slug %}">
+                                        <button type="button" class="btn btn-default">Yes</button>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            {% endif %}
+        {% endif %}
+    {% elif user_type == 'e' %}
+        {% if postedjob %}
+        <!-- If the employer has posted that job -->
+            {% if job_info %}
+            <!-- job details for employer -->
+                <h2>{{ job_info.title }}</h2>
+                <br>
+                <p>Salary: {{ job_info.salary }}</p>
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <p>Last date for application: {{ job_info.last_date }}</p>
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <p>Candidate Profile: {{ job_info.candidate_profile }}</p>
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <p>Job Responsibility: {{ job_info.job_responsibility }}</p> 
+                
+                <strong>You posted this job on: {{ job_info.posted_date }}</strong>
+                <!-- Redirect to Edit Job Section -->
+                <a href="{% url 'edit_job' job_info.slug %}">
+                    <button type="button" class="btn btn-info btn-lg">Edit Job Info</button>    
+                </a>
+                {% endif %}
+        {% endif %}
     {% endif %}
-
 {% endblock %}

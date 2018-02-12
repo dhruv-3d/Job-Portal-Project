@@ -327,8 +327,11 @@ def resume(request):
 def job_listing(request):
     print(request)
     context_dict = {}
+    usertype = None
+    usertype = user_type(request)
 
-    if request.method == 'GET' and "sh_jobs" in request.GET:
+    #will execute when view is called from managejob view for employer
+    if request.method == 'GET' and usertype == 'e':
         try:
             emp = Employer.objects.get(user_id=request.user.id)
             jobs = AddJob.objects.filter(employer_id=emp.id)
@@ -374,13 +377,36 @@ def job_listing(request):
 #-----------apply for job
 def job_details(request, jobslug_name):
     context_dict = {}
+    usertype = None
+    usertype = user_type(request)
+    context_dict['user_type'] = usertype
 
     if request.method == "GET":
+
+        #getting job information
         job_info = AddJob.objects.get(slug=jobslug_name)
         print(job_info)
 
-    context_dict['job_info'] = job_info
+        #checking jobseeker has applied or not
+        if user_type == 'j':
+            seeker = JobSeekers.objects.get(user_id=request.user.id)
+            try:
+                applier = Appliers.objects.get(jobseeker_id=seeker.id, job_id=job_info.id)
+                context_dict['seeker'] = seeker
+                context_dict['applier'] = applier
+            except Appliers.DoesNotExist:
+                context_dict['seeker'] = seeker
 
+        elif user_type == 'e':
+            employer = Employer.objects.get(user_id=request.user.id)
+            try:
+                postedjob = AddJob.objects.get(employer_id=employer.id)
+                context_dict['employer'] = employer
+                context_dict['postedjob'] = postedjob
+            except AddJob.DoesNotExist:
+                context_dict['employer'] = employer
+        
+    context_dict['job_info'] = job_info
     return render(request, 'jportal/job_details.html', context_dict)
 
 #--------
@@ -409,16 +435,21 @@ def job_apply(request, jobslug_name):
         seeker = JobSeekers.objects.get(user_id=request.user.id)
         job = AddJob.objects.get(slug=jobslug_name)
 
-        applier = Appliers()
-        applier.date_apply = datetime.now()
-        applier.status = 'pending'
-        applier.job_id = job.id
-        applier.jobseeker_id = seeker.id
-        applier.save()
+        applier = Appliers.objects.get(job_id=job.id, jobseeker_id=seeker.id)
+        if applier:
+            context_dict['applied_before'] = applier
+        else:
+            applier = Appliers()
+            applier.date_apply = datetime.now()
+            applier.status = 'pending'
+            applier.job_id = job.id
+            applier.jobseeker_id = seeker.id
+            applier.save()
 
-        return index(request)
+            return index(request)
 
-    context_dict['applier'] = applier
+            context_dict['applier'] = applier
+    
     return render(request, 'index', context_dict)
 
 
@@ -465,15 +496,12 @@ def suggest_job(request):
 #--------------------------------------
 def manage_job(request):
     print(request.user)
-    try:
-        emp = Employer.objects.get(user_id=request.user.id)
-        jobs = AddJob.objects.filter(employer_id=emp.id)
-        print(jobs)
-    except AddJob.DoesNotExist:
-        print("Kassu nathi")
-        return redirect('index.html')
-        
-    context_dict={'job': jobs}
+    context_dict = {}
+
+    if request.method == 'GET':
+        context_dict['user_type'] = user_type(request)
+        context_dict['jobs'] = job_listing(request)
+
     return render(request, 'jportal/managejob.html', context_dict) 
 
 def edit_job(request,addjob_title_slug):
