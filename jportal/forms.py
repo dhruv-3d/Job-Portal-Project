@@ -159,7 +159,7 @@ class PhDForm(forms.ModelForm):
     year = forms.ChoiceField(choices=get_years(),required=True)
     grading_system = forms.ChoiceField(choices=GRADING_SYSTEM)
     marks = forms.DecimalField(max_digits=2,decimal_places=2)
-    class meta:
+    class Meta:
         model = Education
         fields = ('phd','specialization','university','year','grading_system','marks',)
 
@@ -168,7 +168,7 @@ class ClassXIIForm(forms.ModelForm):
     year = forms.ChoiceField(choices=get_years(),required=True)
     medium = forms.CharField(max_length=50,required=True)
     percentage = forms.DecimalField(max_digits=2,decimal_places=2)
-    class meta:
+    class Meta:
         model = Education
         fields = ('board','year','medium','percentage',)
 
@@ -177,7 +177,7 @@ class ClassXForm(forms.ModelForm):
     year = forms.ChoiceField(choices=get_years(),required=True)
     medium = forms.CharField(max_length=50,required=True)
     percentage = forms.DecimalField(max_digits=2,decimal_places=2)
-    class meta:
+    class Meta:
         model = Education
         fields = ('board','year','medium','percentage',)
     

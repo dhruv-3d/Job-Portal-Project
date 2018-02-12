@@ -4,12 +4,34 @@
 {% block title %}Education{% endblock %}
 
 {% block body_block %}
-<button class="accordion" data-title="graduation">Add Graduation</button>
-<div class="panel">
-    <form method="post" action="." enctype="multipart/form-data" id="form">
-        {% csrf_token %}
-        {{ g_form.as_p }}
-        <input type="submit" name="submit" value="Register">
-    </form>
+<div class = "container">
+    <a type="button" data-toggle="collapse" href="#form_g" name="graduation">Add Graduation</a>
+    <div class="collapse" id="form_g">
+        <form method="post" action="." enctype="multipart/form-data" id="g_form">
+            {% csrf_token %}
+            {{ g_form.as_p }}
+            <input type="submit" name="add_graduation" value="Add">
+        </form>
+    </div>
 </div>
+<div class = "container">
+    <a type="button" data-toggle="collapse" href="#form_pg" name="post_graduation">Add Post Graduation</a>
+    <div class="collapse" id="form_pg">
+        <form method="post" action="." enctype="multipart/form-data" id="pg_form">
+            {% csrf_token %}
+            {{ pg_form.as_p }}
+            <input type="submit" name="add_post_graduation" value="Add">
+        </form>
+    </div>
+</div>
+<div class = "container">
+    <a type="button" data-toggle="collapse" href="#form_phd"name="phd">Add Doctorate/PhD</a>
+    <div class="collapse" id="form_phd">
+        <form method="post" action="." enctype="multipart/form-data" id="phd_form">
+            {% csrf_token %}
+            {{ phd_form.as_p }}
+            <input type="submit" name="add_phd" value="Add">
+        </form>
+    </div>  
+</div>     
 {% endblock %}

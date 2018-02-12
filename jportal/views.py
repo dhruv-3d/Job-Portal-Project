@@ -13,7 +13,7 @@ from jportal.models import JobSeekers, State, City, JobSeekersProfile
 from jportal.models import Graduation, Post_Graduation, PhD
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm
-from jportal.forms import UserEditForm, EmployerEditForm, GraduationForm,PostGraduationForm,PhD
+from jportal.forms import UserEditForm, EmployerEditForm, GraduationForm,PostGraduationForm,PhDForm
 from jportal.forms import ClassXIIForm,ClassXForm 
 from django.utils import timezone
 
@@ -297,23 +297,54 @@ def suggest_job(request):
         job_list = get_job_list(8, starts_with)
     return render(request, 'jportal/.html', {'jobs': job_list,'usertype':usertype})
 
-def add_education(request):
-    #usertype=user_type(request)
-    #user=User.objects.get(username=username)
-    #job_seek=JobSeekers.objects.get(user_id=user.id)
-    #seek_profile=JobSeekersProfile(user_id=job_seek.id)
-    if request.method=='GET':
-        cat = request.GET('title') 
-        if cat=='graduation':
-            form=GraduationForm()
-            if request.method == 'POST':
-                form=GraduationForm(request.POST)
-                 if form.is_valid():
-                     g_form=form.save(commit=False)
-                     g_form.category = cat
+def add_education(request,username):
+    usertype=user_type(request)
+    user=User.objects.get(username=username)
+    job_seek=JobSeekers.objects.get(user_id=user.id)
+    seek_profile=JobSeekersProfile(user_id=job_seek.id)
+    g_form = GraduationForm()
+    pg_form = PostGraduationForm()
+    phd_form = PhDForm()
+    context_dict={'g_form':g_form,'pg_form':pg_form,'phd_form':phd_form}
+    if request.method  == 'POST':
+        if 'add_graduation' in request.POST:
+            g_form=GraduationForm(request.POST)
+            pg_form = PostGraduationForm()
+            phd_form = PhDForm()
+            if g_form.is_valid():
+                g_detail=g_form.save(commit=False)
+                g_detail.category = 'graduation'
+                print(g_detail.category)
+                g_detail.save()
+                context_dict={'g_form':g_detail,'pg_form':pg_form,'phd_form':phd_form}
+            else:
+                print(g_form.errors)
+        if 'add_post_graduation' in request.POST:
+            pg_form=PostGraduationForm(request.POST)
+            g_form = GraduationForm()
+            phd_form = PhDForm()
+            if pg_form.is_valid():
+                pg_detail=pg_form.save(commit=False)
+                pg_detail.category = 'post_graduation'
+                print(pg_detail.category)
+                pg_detail.save() 
+                context_dict={'pg_form':pg_detail,'g_form':g_form,'phd_form':phd_form}
+            else:
+                print(g_form.errors)
+        if 'add_phd' in request.POST:
+            phd_form=PhDForm(request.POST)
+            g_form = GraduationForm()
+            pg_form = PostGraduationForm()
+            if phd_form.is_valid():
+                phd_detail=phd_form.save(commit=False)
+                phd_detail.category = 'phd'
+                print(phd_detail.category)
+                phd_detail.save()
+                context_dict={'phd_form':phd_detail,'g_form':g_form,'pg_form':pg_form,}
+            else:
+                print(g_form.errors)
+    return render(request,'jportal/education.html',context_dict)
 
-
-    return render(request,'jportal/education.html',{'g_form':g_form})
 
 
     

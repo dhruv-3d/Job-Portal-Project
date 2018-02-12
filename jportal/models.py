@@ -53,13 +53,13 @@ class Education(models.Model):
     university = models.CharField(max_length=200,blank=True)
     year = models.CharField(max_length=10,blank=True)
     grading_system = models.CharField(max_length=50,blank=True)
-    marks = models.DecimalField(max_digits=2,decimal_places=2,default=0,blank=True)
+    marks = models.DecimalField(max_digits=4,decimal_places=2,default=0,blank=True)
     school = models.CharField(max_length=200,blank=True)
     board = models.CharField(max_length=10,blank=True)
     medium = models.CharField(max_length=20,blank=True)
-    percentage = models.DecimalField(max_digits=2,decimal_places=2,default=0,blank=True)
+    percentage = models.DecimalField(max_digits=4,decimal_places=2,default=0,blank=True)
     class Meta:
-        verbose_name_plural = 'PhD'
+        verbose_name_plural = 'Education'
 
 class State(models.Model):
     name = models.CharField(max_length=100)
