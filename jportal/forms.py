@@ -3,6 +3,8 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+
+
 from jportal.models import Employer, EmployerProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 from jportal.models import Job

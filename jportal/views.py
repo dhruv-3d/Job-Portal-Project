@@ -338,6 +338,7 @@ def add_job(request):
 def manage_job(request):
     print(request.user)
     try:
+        
         emp = Employer.objects.get(user_id=request.user.id)
         jobs = AddJob.objects.filter(employer_id=emp.id)
         print(jobs)

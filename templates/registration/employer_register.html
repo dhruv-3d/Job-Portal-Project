@@ -1,6 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
-
+{% load bootstrap3 %}
 {% block title_block %}
 	Job Search - Employer Registration
 {% endblock %}
@@ -9,10 +8,13 @@
         <h2>Employer Registration</h2>
         <form method="post" action="." id="form"  enctype="multipart/form-data" data-cities-url="{% url 'ajax_load_cities' %}" >   
                 {% csrf_token %}
-                {{ user_form.as_p }}
-                {{ employer_form.as_p }}
-                
-                <input type="submit" name="submit" value="Register">
+                {% bootstrap_form user_form %}
+                {% bootstrap_form employer_form %}                
+                {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                {% bootstrap_icon "star" %} Submit
+                </button>
+                {% endbuttons %}
         </form>
     </div>
    

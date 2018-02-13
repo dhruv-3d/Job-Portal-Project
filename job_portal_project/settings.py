@@ -39,11 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'jportal',
     'smart_selects',
     'clever_selects', 
     'registration',
     'captcha',
+    'herald',
+    'bootstrap3',
 ]
 
 # If True, users can register
@@ -61,6 +64,8 @@ LOGIN_REDIRECT_URL = '/jportal/'
 # The page users are directed to if they are not logged in,
 # and are trying to access pages requiring authentication
 LOGIN_URL = '/accounts/login/'
+
+SITE_ID=1
 
 
 
