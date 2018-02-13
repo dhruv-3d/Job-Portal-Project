@@ -649,7 +649,6 @@ html {
   .btn {
     border-radius: 0;
     font-family: "Roboto Condensed", sans-serif;
-    text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 11px;
     padding: 8px 37px;
@@ -813,7 +812,6 @@ html {
   /* Forms common style */
   .form-control {
     font-family: "Roboto Condensed", sans-serif;
-    text-transform: uppercase;
     letter-spacing: 2px;
     font-size: 11px;
     height: 33px;
@@ -889,7 +887,7 @@ html {
   
   .font-alt {
     font-family: "Roboto Condensed", sans-serif;
-    text-transform: uppercase;
+    
     letter-spacing: 2px;
   }
   
@@ -1165,7 +1163,7 @@ width: auto;
   
   .photography-page .image-caption .caption-text {
     font-size: 24px;
-    text-transform: capitalize;
+    
     letter-spacing: 1px;
   }
   
@@ -1281,7 +1279,7 @@ width: auto;
     border-radius: 0;
     z-index: 1000;
     font-family: "Roboto Condensed", sans-serif;
-    text-transform: uppercase;
+  
     letter-spacing: 3px;
     font-size: 11px;
     transition: background, padding 0.4s ease-in-out 0s;
@@ -1382,7 +1380,7 @@ width: auto;
       -webkit-border-radius: 0;
       -moz-border-radius: 0;
       border-radius: 0;
-      text-transform: uppercase;
+
       letter-spacing: 2px;
       font-size: 11px;
   }
@@ -1594,7 +1592,7 @@ width: auto;
   
   .features-title,
   .alt-features-title {
-    text-transform: uppercase;
+
     letter-spacing: 2px;
     font-weight: 400;
     font-size: 14px;
@@ -2269,7 +2267,6 @@ width: auto;
   .pagination a {
     border: 1px solid #eaeaea;
     display: inline-block;
-    text-transform: uppercase;
     text-align: center;
     color: #999;
     padding: 4px 12px;

@@ -1,24 +1,19 @@
-<!DOCTYPE html>
+{% extends 'jportal/base.html' %}
 {% load staticfiles %}
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Job Seeker Registration</title>
+{% block title_block %}
+    Jobseeker Registration
+{% endblock %}
+{% block nav_block %}
+    
+{% endblock %}
+{% block body_block %}
+    <h2>Jobseeker Registration</h2>
+    <form method="post" action="." enctype="multipart/form-data" >  
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ job_seek.as_p }}
+            <input type="submit" name="emp_submit" value="Register">
 
-</head>
-<body>
-    <h2>Job Seeker Registration</h2>
-    <div id="empReg" class="tab-pane fade in active">
-        <form method="post" action="." enctype="multipart/form-data" >   
-                {% csrf_token %}
-                {{ js.user_form.as_p }}
-                {{ js.job_seek.as_p }}
-                <input type="submit" name="jobsubmit" value="Register">
-        </form>
-    </div>
-</body>
-</html>
+    </form>
+{% endblock %}

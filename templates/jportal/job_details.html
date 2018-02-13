@@ -13,21 +13,27 @@
     {% if user_type == 'j' %}
     <!-- job details for jobseeker -->
         {% if job_info %}
-            <h2>{{ job_info.title }}</h2>
+        <div class="jumbotron">
+            <h2 style="padding-left:2%;">{{ job_info.title }}</h2>
             <br>
-            <p>Salary: {{ job_info.salary }}</p>
-            &nbsp; &nbsp; &nbsp; &nbsp;
-            <p>Last date for application: {{ job_info.last_date }}</p>
-            &nbsp; &nbsp; &nbsp; &nbsp;
-            <p>Candidate Profile: {{ job_info.candidate_profile }}</p>
-            &nbsp; &nbsp; &nbsp; &nbsp;
-            <p>Job Responsibility: {{ job_info.job_responsibility }}</p> 
-
+            <div class="container" style="border:1px solid; border-radius:10px; padding:1%;">
+                <p>Salary: {{ job_info.salary }}</p>
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <p>Last date for application: {{ job_info.last_date }}</p>
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <p>Candidate Profile: {{ job_info.candidate_profile }}</p>
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <p>Job Responsibility: {{ job_info.job_responsibility }}</p> 
+            </div>
+        </div>
             {% if applier %}
                 <div>
                     <strong>You have already applied for the job.</strong>
                     <!-- Redirect to Applied Jobs Section -->
-                    <button type="button" class="btn btn-info btn-lg">Show applied jobs</button>
+                    <br>
+                    <a href="{% url 'jobs_applied' %}">
+                        <button type="button" class="btn btn-info">Show applied jobs</button>
+                    </a>
                 </div>
             {% else %}
                 <div class="container">
@@ -41,7 +47,7 @@
                                     <p>Are you sure you want to apply for the job?</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="{% url 'job_application' job_info.slug %}">
+                                    <a href="{% url 'job_apply' job_info.slug %}">
                                         <button type="button" class="btn btn-default">Yes</button>
                                     </a>
                                 </div>

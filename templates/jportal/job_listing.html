@@ -12,21 +12,8 @@
 {% block body_block %}
     <div class="container">
 
-        <!-- job listing for search results -->
-        {% if jobs and user_type == 'j' %}
-            <div class="panel-group" style="width:500px;">
-            {% for job in jobs %}
-                <div class="panel panel-primary" style="border-radius:10px;">
-                    <div class="panel-heading">
-                        <a style="color:rgb(255, 255, 255);" href="{% url 'job_details' job.slug %}">{{ job.title }}</a>
-                    </div>
-                    <div class="panel-body">{{ job.Job_responsibility }}</div>
-                </div>
-            {% endfor %}
-            </div>
-
         <!-- job listing for for jobs posted by employers -->
-        {% elif jobs and user_type == 'e' %}
+        {% if jobs and user_type == 'e' %}
         <div class="panel-group" style="width:500px;">
             {% for job in jobs %}
                 <div class="panel panel-primary" style="border-radius:10px;">
@@ -47,6 +34,18 @@
                 </div>
             {% endfor %}
         </div>
+        <!-- job listing for search results -->
+        {% elif jobs %}
+            <div class="panel-group" style="width:50%;">
+            {% for job in jobs %}
+                <div class="panel panel-primary" style="border-radius:10px;">
+                    <div class="panel-heading" style="border-radius:10px;">
+                        <a style="color:rgb(255, 255, 255);" href="{% url 'job_details' job.slug %}">{{ job.title }}</a>
+                    </div>
+                    <div class="panel-body">{{ job.Job_responsibility }}</div>
+                </div>
+            {% endfor %}
+            </div>
         {% else %}
             <h4>No Jobs Found</h4>    
         {% endif %}

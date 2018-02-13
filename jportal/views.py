@@ -63,12 +63,13 @@ def about(request):
 
 #---------------------EMPLOYER REGISTRATION
 def employer_reg(request):
-    
+    context_dict = {}
+
     user_form = UserForm()
     employer_form = EmployerForm()
     
     print(request.user)
-    if request.method == 'POST' and 'emp_submit' in request.POST:
+    if request.method == 'POST':
         user_form = UserForm(request.POST)
         employer_form = EmployerForm(request.POST, request.FILES)
         
@@ -86,25 +87,27 @@ def employer_reg(request):
             emp_user.user = usr_obj
 
             emp_user.save()
-
+            login(request)
             return index(request)
 
         else:
             print(employer_form.errors)
             print(user_form.errors)
     
-    context_dict = {'employer_form':employer_form, 'user_form':user_form, }
+    context_dict['employer_form'] = employer_form 
+    context_dict['user_form'] = user_form
+    
+    return render(request, 'registration/employer_register.html', context_dict)
 
-    return context_dict
 
 #--------------------JOB SEEKER REGISTRATION
 def jobseeker_reg(request):
-
+    context_dict = {}
     user_form = UserForm()
     job_seek = JobSeekerForm()
 
     print(request)
-    if request.method == 'POST' and 'jobsubmit' in request.POST:
+    if request.method == 'POST':
         user_form = UserForm(request.POST)
         job_seek = JobSeekerForm(request.POST, request.FILES)
         if user_form.is_valid() and job_seek.is_valid():
@@ -121,16 +124,18 @@ def jobseeker_reg(request):
             
             seeker_user.user_id = usr_obj.id
             seeker_user.save()
-
-            return index(request)
+            login(request, user)
+            redirect('index')
 
         else:
             print(user_form.errors)
             print(job_seek.errors)
  
-    context_dict = {'job_seek':job_seek, 'user_form':user_form, }
+    context_dict['job_seek'] = job_seek 
+    context_dict['user_form'] = user_form
 
-    return context_dict
+    return render(request, 'registration/jobseeker_register.html', context_dict)
+
 
 #------------Job seeker (by karishma)
 def jobseeker_edit(request):
@@ -164,10 +169,6 @@ def jobseeker_edit(request):
 
 def register(request):
     context_dict = {}
-
-    context_dict['user_type'] = user_type(request)
-    context_dict['e'] = employer_reg(request)
-    context_dict['js'] =  jobseeker_reg(request)
     
     return render(request, 'registration/register.html', context_dict)
 
@@ -388,8 +389,9 @@ def job_details(request, jobslug_name):
         print(job_info)
 
         #checking jobseeker has applied or not
-        if user_type == 'j':
+        if usertype == 'j':
             seeker = JobSeekers.objects.get(user_id=request.user.id)
+            print(seeker)
             try:
                 applier = Appliers.objects.get(jobseeker_id=seeker.id, job_id=job_info.id)
                 context_dict['seeker'] = seeker
@@ -397,7 +399,7 @@ def job_details(request, jobslug_name):
             except Appliers.DoesNotExist:
                 context_dict['seeker'] = seeker
 
-        elif user_type == 'e':
+        elif usertype == 'e':
             employer = Employer.objects.get(user_id=request.user.id)
             try:
                 postedjob = AddJob.objects.get(employer_id=employer.id)
@@ -409,23 +411,23 @@ def job_details(request, jobslug_name):
     context_dict['job_info'] = job_info
     return render(request, 'jportal/job_details.html', context_dict)
 
+
 #--------
 @login_required
-def show_jobs_applied(request):
+def jobs_applied(request):
     print(request)
 
     context_dict = {}
     if request.method == 'GET':
         seeker = JobSeekers.objects.get(user_id=request.user.id)
         applied = Appliers.objects.filter(jobseeker_id=seeker.id)
-        job_list = AddJob.objects.values('id')
         all_jobs  =AddJob.objects.all()
 
         context_dict['applied_jobs'] = applied
         context_dict['all_jobs'] = all_jobs
-        context_dict['job_list'] = job_list
 
-    return render(request, 'jportal/jobs_application.html', context_dict)
+    return render(request, 'jportal/jobs_applied.html', context_dict)
+
 
 @login_required
 def job_apply(request, jobslug_name):
@@ -434,8 +436,12 @@ def job_apply(request, jobslug_name):
     if request.method == "GET":
         seeker = JobSeekers.objects.get(user_id=request.user.id)
         job = AddJob.objects.get(slug=jobslug_name)
+        applier = None
+        try:
+            applier = Appliers.objects.get(job_id=job.id, jobseeker_id=seeker.id)
+        except:
+            pass
 
-        applier = Appliers.objects.get(job_id=job.id, jobseeker_id=seeker.id)
         if applier:
             context_dict['applied_before'] = applier
         else:
@@ -446,11 +452,12 @@ def job_apply(request, jobslug_name):
             applier.jobseeker_id = seeker.id
             applier.save()
 
-            return index(request)
+            return job_apply(request, jobslug_name)
 
-            context_dict['applier'] = applier
+        context_dict['applier'] = applier
     
-    return render(request, 'index', context_dict)
+    return render(request, 'jportal/job_apply.html', context_dict)
+
 
 
 #----vidushi's------------------------
@@ -463,7 +470,6 @@ def show_appliers(request):
         appliers = Appliers.objects.filter(job_id=job_id)
         context_dict['appliers']=appliers
         return render(request, 'jportal/appliers.html', context_dict)
-
 
 
 #testing remaining..
