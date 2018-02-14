@@ -12,7 +12,7 @@ from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, State, City, JobSeekersProfile
 from jportal.models import Graduation, Post_Graduation, PhD
 
-from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm
+from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm, EditJobForm
 from jportal.forms import UserEditForm, EmployerEditForm, GraduationForm,PostGraduationForm,PhDForm
 from jportal.forms import ClassXIIForm,ClassXForm 
 from django.utils import timezone
@@ -220,9 +220,9 @@ def add_job(request):
     print(request.user)
     usertype = user_type(request)
     emp = Employer.objects.get(user_id=request.user.id)
-    form=JobForm()
+    form=AddJobForm()
     if request.method == 'POST':
-        form = JobForm(request.POST)
+        form = AddJobForm(request.POST)
         print(form)
         print(form.is_valid())
         if form.is_valid():
@@ -234,11 +234,71 @@ def add_job(request):
             return index(request)
         else:
             print(form.errors)
-    return render(request, 'jportal/add_job.html', {'form': form,'usertype':usertype})
+    return render(request, 'jportal/add_job.html', {'form': form,'usertype':usertype,})
     
 def manage_job(request):
+    print(request.user)
+    try:
+        
+        emp = Employer.objects.get(user_id=request.user.id)
+        jobs = AddJob.objects.filter(employer_id=emp.id)
+        print(jobs)
+    except AddJob.DoesNotExist:
+        print("Kassu nathi")
+        return redirect('index.html')
+
+    usertype = user_type(request)        
+    context_dict={'job': jobs,'usertype':usertype,}
+    return render(request, 'jportal/managejob.html', context_dict) 
+
+def edit_job(request,addjob_title_slug):
+    try:
+        b = AddJob.objects.get(slug=addjob_title_slug)
+    except AddJob.DoesNotExist:
+        return redirect('add_job.html')
+    
+    b = AddJob.objects.get(slug=addjob_title_slug)
+    print(b)
+    form = EditJobForm({'category':b.category, 'subcategory':b.subcategory, 'title':b.title,'last_date':b.last_date,'Job_responsibility':b.Job_responsibility,'candidate_profile':b.candidate_profile})
+    print(form)
+    if request.method == 'POST':
+        form = EditJobForm(request.POST)
+        if form.is_valid():
+            a = form.save(commit=False)
+            if a.category:
+                b.category = a.category
+            if a.subcategory:
+                b.subcategory = a.subcategory
+            if a.last_date:
+                b.last_date = a.last_date
+            if a.salary:
+                b.salary = a.salary
+            if a.title:
+                b.title = a.title
+            if a.Job_responsibility:
+                b.Job_responsibility = a.Job_responsibility            
+            if a.candidate_profile:
+                b.candidate_profile = a.candidate_profile
+  
+            b.save()
+            return redirect('/jportal/managejob/')
+            
+        else:
+            print(form.errors)
     usertype = user_type(request)
-    return render(request, 'jportal/managejob.html',{'usertype':usertype})
+    return render(request, 'jportal/edit_job.html', {'form':form,'usertype':usertype,})
+
+def delete_job(request,addjob_title_slug):
+    try:
+        a = AddJob.objects.get(slug=addjob_title_slug)
+    except AddJob.DoesNotExist:
+        return redirect('index.html')
+    
+    if a:
+        AddJob.objects.get(slug=addjob_title_slug).delete()
+    
+    return redirect('managejob')
+
 
 #testing remaining..
 def show_appliers(request):
@@ -258,7 +318,7 @@ def show_jobs_applied(request):
         jobseeker_id = request.GET['jobseeker_id']
         job_ids= Appliers.objects.values_list('job_id',flat=True).filter(appliers_id=jobseeker_id)
         jobs_applied = Job.objects.filter(pk__in=set(job_ids))
-        return render(request, 'jportal/jobs_applied.html', {'jobs_applied':jobs_applied,'usertype':usertype})
+        return render(request, 'jportal/jobs_applied.html', {'jobs_applied':jobs_applied,'usertype':usertype,})
 
 #testing remaining..
 def get_employer_list(max_results=0, starts_with=''): 

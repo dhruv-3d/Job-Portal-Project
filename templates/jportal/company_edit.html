@@ -1,6 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
-
+{% load bootstrap3 %}
 {% block title_block %}
 	Job Search - Company_details_form
 {% endblock %}
@@ -9,8 +8,10 @@
     <h2>Company Details</h2>
     <form method="post" action="." enctype="multipart/form-data" >   
             {% csrf_token %}
-            {{company_form.as_p}}
-            <input type="submit" name="submit" value="Confirm">
+            {% bootstrap_form company_form %}
+            {% buttons %}
+            <button type="submit" name="submit" class="btn btn-primary" value="Confirm">Add</button>
+            {% endbuttons %}
     </form>
 </div>
 {% endblock %}

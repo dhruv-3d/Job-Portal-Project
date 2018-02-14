@@ -1,11 +1,68 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
-
+{% load bootstrap3 %}
 {% block title_block %}
 	Job Search - Manage Job
 {% endblock %}
 {% block body_block %}
+<style>
+    #content {
+      display: none;
+    }
+    input[type="text"]{
+        color: transparent;
+        text-shadow: 0 0 0 #000;
+        padding: 6px 12px;
+        width: 60px;
+        cursor: pointer;
+    }
+    input[type="text"]:focus{
+        outline: none;
+    }
+    input:focus + div#content {
+      display: block;
+    }
+</style>
+<div class="container">
+    <h6><i>Click Button and Add Job Here</i></h6>
     <a href="{% url 'add_job' %}">
-    <button type="submit" value="ADD JOB">ADD JOB</button>
+        {% buttons %}
+        <button type="submit" class="btn btn-primary">
+         Add Job
+        </button>
+        {% endbuttons %}
     </a>
+</div>
+<div class="container">
+        {% for i in job %}
+        <br />
+            <div class="container"> 
+                <h3><b>{{ i.title }}</b></h3> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+                    <a href="{% url 'edit_job' i.slug %}">
+                    {% buttons %}
+                    <button type="submit" class="btn btn-primary" value="Edit Jobs">Edit Jobs</button>
+                    {% endbuttons %}
+                    </a>
+                
+                    <a href="{% url 'delete_job' i.slug %}">
+                    {% buttons %}
+                    <button type="submit" class="btn btn-primary" value="Delete">Delete</button>
+                    {% endbuttons %}
+                    </a>
+                    {% buttons %}
+                    <button type="text" name="show" class="btn btn-primary" value="Show">Show</button>
+                    {% endbuttons %}
+                    </a>              
+                    <div id="content">
+                        {{i.title}} <br/>
+                        {{i.posted_date}}  <br/>
+                        {{i.category}}  <br/>
+                        {{i.subcategory}}  <br/>
+                        {{i.last_date}}   <br/>
+                        {{i.salary}}   <br/>
+                        {{i.employer}}   <br/>
+                    </div>
+                    
+            </div>
+        {% endfor %}
+</div>
 {% endblock %}

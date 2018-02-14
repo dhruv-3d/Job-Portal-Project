@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from smart_selects.db_fields import ChainedForeignKey
 from django.core.validators import MaxValueValidator
 class Category(models.Model):
@@ -131,6 +132,13 @@ class AddJob(models.Model):
     Job_responsibility = models.TextField(blank=False)
     candidate_profile = models.TextField(blank=False)
     posted_date= models.DateTimeField(auto_now=True)
+    slug=models.SlugField(unique=True)
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title) 
+        super(AddJob, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
 
 class Appliers(models.Model):
     applier = models.ForeignKey(JobSeekers,on_delete=models.CASCADE)

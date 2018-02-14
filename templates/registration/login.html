@@ -1,6 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
-
+{% load bootstrap3 %}
 {% block title_block %}
 	Job Search - LogIn
 {% endblock %}
@@ -9,11 +8,13 @@
     <h2>Login</h2>
     <form method="post" action=".">   
             {% csrf_token %}
-            {{ form.as_p }}
+            {% bootstrap_form form %}
             <div class="checkbox">
                 <label><input type="checkbox"> Remember me</label>
             </div>
-            <input type="submit" name="submit" value="Login">
+            {% buttons %}
+            <button type="submit" name="submit" class="btn btn-primary" value="Login">Login</button>
+            {% endbuttons %}        
     </form>
 </div>
 <br/>

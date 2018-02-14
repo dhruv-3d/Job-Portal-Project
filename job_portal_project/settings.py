@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'smart_selects',
     'registration',
     'captcha',
+    'bootstrap3',
 ]
 
 # If True, users can register

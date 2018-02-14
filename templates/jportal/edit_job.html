@@ -1,20 +1,21 @@
 {% extends 'jportal/base.html' %}
 {% load bootstrap3 %}
 {% block title_block %}
-	Job Search - Add Job
+	Job Search - Edit Job
 {% endblock %}
 {% block body_block %}
 <div class="container">
-    <h2>Add Job</h2>
-    <form method="post" action=".">
+    <form method="POST" action=".">
         {% csrf_token %}
-        {{ form.media.js }}
         {% bootstrap_form form %}
+        {{ form.media.js }}
         {% buttons %}
-        <button type="submit" class="btn btn-primary">
-         Submit
+        <button type="submit" class="btn btn-primary" value="submit">
+        Submit
         </button>
         {% endbuttons %}
-    </form>
-</div>
+        <br/>
+    
+    </div>
+</form>
 {% endblock %}
