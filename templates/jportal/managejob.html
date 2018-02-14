@@ -23,25 +23,21 @@
       display: block;
     }
 </style>
-    <div class="container">
-        <a href="{% url 'add_job' %}">
-            <button class="btn btn-secondary btn-lg" type="submit" value="ADD JOB">Add a new job</button>
-        </a>
-    </div>
+    {% include "jportal/sidebar_emp.html" %}
+    <div class="container" style="width:70%;">
+        <div class="container">
+            <a href="{% url 'add_job' %}">
+                <button class="btn btn-secondary btn-lg" type="submit" value="ADD JOB">Add a new job</button>
+            </a>
+        </div>
+    
+        <div style="border:1px solid; margin:40px;">
+        </div>
 
-    <div class="container">
-        <a href="{% url 'job_applications' %}">
-            <button class="btn btn-secondary btn-lg" type="submit" value="ADD JOB">Job Applications</button>
-        </a>
-    </div>
-   
-    <div style="border:1px solid; margin:40px;">
-    </div>
+        <div class="container" style="border:1px solid; margin:10px; padding:20px; border-radius:20px;">
+                <h3>Jobs Posted by you</h3>
 
-    <div class="container" style="border:1px solid; margin:10px; padding:20px; border-radius:20px;">
-            <h3>Jobs Posted by you</h3>
-
-        {% include "jportal/job_listing.html" %}
+            {% include "jportal/job_listing.html" %}
+        </div>
     </div>
-
 {% endblock %}

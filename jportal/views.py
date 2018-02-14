@@ -99,7 +99,6 @@ def employer_reg(request):
     
     return render(request, 'registration/employer_register.html', context_dict)
 
-
 #--------------------JOB SEEKER REGISTRATION
 def jobseeker_reg(request):
     context_dict = {}
@@ -135,7 +134,6 @@ def jobseeker_reg(request):
     context_dict['user_form'] = user_form
 
     return render(request, 'registration/jobseeker_register.html', context_dict)
-
 
 #------------Job seeker (by karishma)
 def jobseeker_edit(request):
@@ -411,7 +409,6 @@ def job_details(request, jobslug_name):
     context_dict['job_info'] = job_info
     return render(request, 'jportal/job_details.html', context_dict)
 
-
 #--------
 @login_required
 def jobs_applied(request):
@@ -427,7 +424,6 @@ def jobs_applied(request):
         context_dict['all_jobs'] = all_jobs
 
     return render(request, 'jportal/jobs_applied.html', context_dict)
-
 
 @login_required
 def job_apply(request, jobslug_name):
@@ -458,20 +454,22 @@ def job_apply(request, jobslug_name):
     
     return render(request, 'jportal/job_apply.html', context_dict)
 
-
-
-#----vidushi's------------------------
-#-------------
-#testing remaining..
-def show_appliers(request):
+#----vidushi's view..but overwritten------------------------
+#-------------Done
+def job_applications(request):
     context_dict={}
+
     if request.method == 'GET':
-        job_id = request.GET['job_id']
-        appliers = Appliers.objects.filter(job_id=job_id)
-        context_dict['appliers']=appliers
-        return render(request, 'jportal/appliers.html', context_dict)
+        
+        employer = Employer.objects.get(user_id=request.user.id)
+        jobs = AddJob.objects.filter(employer_id=employer.id)
 
+        context_dict['employer'] = employer
+        context_dict['jobs'] = jobs
 
+        return render(request, 'jportal/job_applications.html', context_dict)
+
+#-----baaki
 #testing remaining..
 def get_employer_list(max_results=0, starts_with=''): 
     emp_list = []

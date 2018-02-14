@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^job_details/(?P<jobslug_name>[\w\-]+)/$',views.job_details,name='job_details'), #common
     url(r'^job_apply/(?P<jobslug_name>[\w\-]+)/$',views.job_apply, name='job_apply'), #j
     url(r'^jobs_applied/$',views.jobs_applied, name='jobs_applied'), #j
+    url(r'^job_applications/$',views.job_applications, name='job_applications'), #e
 
     # is idle---can be used!
     #url(r'^employer_page/$', views.employer_page, name='employer_page'),
