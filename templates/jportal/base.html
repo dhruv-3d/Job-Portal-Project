@@ -21,6 +21,7 @@
 </head>
 
 <body>
+	{% block nav %}
 	<div class="page-wrap">
 		<div class="container">
 			<nav class="navbar navbar-fixed" role="navigation">
@@ -123,6 +124,7 @@
 				</div>
 			</nav>
 		</div>
+		{% endblock %}
 		{% block body_block %} {% endblock %}
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

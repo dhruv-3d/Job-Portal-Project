@@ -28,9 +28,9 @@
 }
 </style>
 {% block body_block %}
-<div class="container">
+<div class="container row">
     <div class="col-sm-4 col-md-4 col-lg-4">
-        <nav class="nav-sidebar" style="width:150px;position:fixed;z-index: 1;top: 100px;left: 10px;
+        <nav class="nav-sidebar" style="width:150px;position:absolute;z-index: 1;top: 100px;left: 10px;
                                         padding: 15px 0;border-right: 1px solid #ddd;  font-family:Roboto;">
             <ul class="nav tabs">
                 <li class="active"><a href="#">Profile Details</a></li>
@@ -42,13 +42,12 @@
             </ul>
         </nav>
     </div>
-</div>
 <div class = "col-sm-8 col-md-8 col-lg-8" style="margin-left: 160px;font-size: 28px; padding: 0px 40px;">
-    <div class="container" style="width:900px;">
-        <div class="jumbotron" style="height:50px;">
-                <h3 style="display:inline">Profile Details</h3>
-                <a class="btn btn-border-d btn-round" href="#" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></a>
-                <a class="btn btn-border-d btn-round" href="#" style="float:right;"><span class="glyphicon glyphicon-edit"></span></a>
+    <div class="container">
+        <div class="jumbotron">
+            <h3 style="display:inline">Profile Details</h3>
+            <a class="btn btn-border-d btn-round" href="#" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a class="btn btn-border-d btn-round" href="#" style="float:right;"><span class="glyphicon glyphicon-edit"></span></a>
         </div>
         <div class="row">
             <div class="col-md-4 col-lg-4" style="border-right: 1px solid #ddd;">
@@ -68,5 +67,6 @@
             </div>  
         </div>
     </div>  
+</div>
 </div>
 {% endblock %}

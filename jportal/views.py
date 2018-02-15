@@ -51,6 +51,8 @@ def load_cities(request):
     cities = City.objects.filter(state_id=state_id).order_by('name')
     return render(request, 'jportal/city_dropdown_list_options.html', {'cities': cities})
 
+#----------------------------Main Pages-------------------
+
 def index(request):
     print(request.user)
 
@@ -209,6 +211,7 @@ def jobseeker_profile(request,username):
         user = User.objects.get(username=username)
         print(user.username)
         seeker = JobSeekers.objects.get(user_id=user.id)
+        education = Education.objects.filter(jobseeker_id=seeker.id)
         context_dict['user'] = user
         context_dict['seeker'] = seeker
         context_dict['usertype'] = usertype 
@@ -279,15 +282,6 @@ def suggest_employer(request):
         emp_list = get_employer_list(8, starts_with)
     return render(request, 'jportal/.html', {'emps': emp_list,'usertype' : usertype})
 
-def get_job_list(max_results=0, starts_with=''): 
-    job_list = []
-    if starts_with:
-        job_list = Job.objects.filter(name__istartswith=starts_with)
-    if max_results > 0:
-        if len(job_list) > max_results:
-            job_list = job_list[:max_results] 
-    return job_list
-
 def suggest_job(request): 
     usertype = user_type(request)
     job_list = []
@@ -297,54 +291,213 @@ def suggest_job(request):
         job_list = get_job_list(8, starts_with)
     return render(request, 'jportal/.html', {'jobs': job_list,'usertype':usertype})
 
-def add_education(request,username):
-    usertype=user_type(request)
-    user=User.objects.get(username=username)
-    job_seek=JobSeekers.objects.get(user_id=user.id)
-    seek_profile=JobSeekersProfile(user_id=job_seek.id)
-    g_form = GraduationForm()
-    pg_form = PostGraduationForm()
-    phd_form = PhDForm()
-    context_dict={'g_form':g_form,'pg_form':pg_form,'phd_form':phd_form}
-    if request.method  == 'POST':
-        if 'add_graduation' in request.POST:
-            g_form=GraduationForm(request.POST)
-            pg_form = PostGraduationForm()
-            phd_form = PhDForm()
-            if g_form.is_valid():
-                g_detail=g_form.save(commit=False)
+#------------------Education-----------------
+
+def add_grad(request,username):
+    user = User.objects.get(username=username)
+    print(user.username)
+    seeker = JobSeekers.objects.get(user_id=user.id)
+    try:
+        g = Education.objects.get(jobseeker_id=seeker.id, category='graduation')
+        t=1
+    except:
+        t=0
+    if request.method == 'POST':
+        if t:
+            form = GraduationForm(request.POST,instance=g)
+            if form.is_valid():
+                form.save(commit=True)
+                return redirect('education', username=user.username)
+            else:
+                print(form.errors)
+        else:
+            form = GraduationForm(request.POST)
+            if form.is_valid():
+                g_detail=form.save(commit=False)
+                g_detail.jobseeker_id=seeker.id
                 g_detail.category = 'graduation'
                 print(g_detail.category)
                 g_detail.save()
-                context_dict={'g_form':g_detail,'pg_form':pg_form,'phd_form':phd_form}
+                return redirect('education', username=user.username)
             else:
-                print(g_form.errors)
-        if 'add_post_graduation' in request.POST:
-            pg_form=PostGraduationForm(request.POST)
-            g_form = GraduationForm()
-            phd_form = PhDForm()
-            if pg_form.is_valid():
-                pg_detail=pg_form.save(commit=False)
+                print(form.errors)
+    else:
+        if t:
+            form = GraduationForm(instance=g)
+        else:
+            form = GraduationForm()
+    context_dict={'form':form}    
+    return context_dict['form']
+        
+def add_postgrad(request,username):
+    user = User.objects.get(username=username)
+    print(user.username)
+    seeker = JobSeekers.objects.get(user_id=user.id)
+    try:
+        pg = Education.objects.get(jobseeker_id=seeker.id, category='post_graduation')
+        t=1
+    except:
+        t=0
+    if request.method == 'POST':
+        if t:
+            form = PostGraduationForm(request.POST,instance=pg)
+            if form.is_valid():
+                form.save(commit=True)
+                return redirect('education', username=user.username)
+            else:
+                print(form.errors)
+        else:
+            form = PostGraduationForm(request.POST)
+            if form.is_valid():
+                pg_detail=form.save(commit=False)
+                pg_detail.jobseeker_id=seeker.id
                 pg_detail.category = 'post_graduation'
                 print(pg_detail.category)
-                pg_detail.save() 
-                context_dict={'pg_form':pg_detail,'g_form':g_form,'phd_form':phd_form}
+                pg_detail.save()
+                return redirect('education', username=user.username)
             else:
-                print(g_form.errors)
-        if 'add_phd' in request.POST:
-            phd_form=PhDForm(request.POST)
-            g_form = GraduationForm()
-            pg_form = PostGraduationForm()
-            if phd_form.is_valid():
-                phd_detail=phd_form.save(commit=False)
+                print(form.errors)
+
+    else:
+        if t:
+            form = PostGraduationForm(instance=pg)
+        else:
+            form = PostGraduationForm()
+    return render(request, 'jportal/post_graduation.html',{'form':form})
+
+def add_doctorate(request,username):
+    user = User.objects.get(username=username)
+    print(user.username)
+    seeker = JobSeekers.objects.get(user_id=user.id)
+    try:
+        phd = Education.objects.get(jobseeker_id=seeker.id, category='phd')
+        t=1
+    except:
+        t=0
+    if request.method == 'POST':
+        if t:
+            form = PhDForm(request.POST,instance=phd)
+            if form.is_valid():
+                form.save(commit=True)
+                return redirect('education', username=user.username)
+            else:
+                print(form.errors)
+        else:
+            form = PhDForm(request.POST)
+            if form.is_valid():
+                phd_detail=form.save(commit=False)
+                phd_detail.jobseeker_id=seeker.id
                 phd_detail.category = 'phd'
                 print(phd_detail.category)
                 phd_detail.save()
-                context_dict={'phd_form':phd_detail,'g_form':g_form,'pg_form':pg_form,}
+                return redirect('education', username=user.username)
             else:
-                print(g_form.errors)
-    return render(request,'jportal/education.html',context_dict)
+                print(form.errors)
+    else:
+        if t:
+            form = PhDForm(instance=phd)
+        else:
+            form = PhDForm()
+    return render(request,'jportal/phd.html',{'form':form})
+
+def add_classxii(request,username):
+    usertype = user_type(request)
+    user = User.objects.get(username=username)
+    print(user.username)
+    seeker = JobSeekers.objects.get(user_id=user.id)
+    try:
+        classxii = Education.objects.get(jobseeker_id=seeker.id, category='class XII')
+        t=1
+    except:
+        t=0
+    if request.method == 'POST':
+        if t:
+            class_xii=ClassXIIForm(request.POST,instance=classxii)
+            if class_xii.is_valid():
+                class_xii.save(commit=True)
+                return redirect('education', username=user.username)
+            else:
+                print(class_xii.errors)
+        else:
+            class_xii=ClassXIIForm(request.POST)
+            if class_xii.is_valid():
+                class_xii_detail=class_xii.save(commit=False)
+                class_xii_detail.jobseeker_id=seeker.id
+                class_xii_detail.category = 'class XII'
+                print(class_xii_detail.category)
+                class_xii_detail.save()
+                return redirect('education', username=user.username)
+            else:
+                print(class_xii.errors)
+    else:
+        if t:
+            class_xii=ClassXIIForm(instance=classxii)
+        else:
+            class_xii=ClassXIIForm()
+    return render(request,'jportal/class_xii.html',{'class_xii':class_xii})
+
+def add_classx(request,username):
+    usertype = user_type(request)
+    user = User.objects.get(username=username)
+    print(user.username)
+    seeker = JobSeekers.objects.get(user_id=user.id)
+    try:
+        classx = Education.objects.get(jobseeker_id=seeker.id, category='class X')
+        t=1
+    except:
+        t=0
+    if request.method == 'POST':
+        if t:
+            class_x=ClassXForm(request.POST,instance=classx)
+            if class_x.is_valid():
+                class_x.save(commit=True)
+                return redirect('education', username=user.username)
+            else:
+                print(class_x.errors)
+        else:
+            class_x=ClassXForm(request.POST)
+            if class_x.is_valid():
+                class_x_detail=class_x.save(commit=False)
+                class_x_detail.jobseeker_id=seeker.id
+                class_x_detail.category = 'class X'
+                print(class_x_detail.category)
+                class_x_detail.save()
+                return redirect('education', username=user.username)
+            else:
+                print(class_x.errors)
+    else:
+        if t:
+            class_x=ClassXForm(instance=classx)
+        else:
+            class_x=ClassXForm()
+    return render(request,'jportal/class_x.html',{'class_x':class_x})
+
+def add_education(request,username):
+    print(request.user)
+
+    context_dict ={}
+    context_dict['usertype'] = user_type(request)
+
+    if request.method == 'GET':
+        if 'grad' in request.GET:
+            context_dict['form1'] = add_grad(request,username)
+        if 'dgdfg' in request.GET:
+            #sdfgdsg dusraform
+            pass
+
+    if request.method == 'POST':
+        if 'grad' in request.POST:
+            context_dict['form1'] = add_grad(request,username)
+        if 'dgdfg' in request.POST:
+            #sdfgdsg dusraform
+            pass
+
+    return render(request, 'jportal/education.html', context_dict)
+        
 
 
 
+
+
+        
     

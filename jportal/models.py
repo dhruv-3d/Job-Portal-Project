@@ -44,22 +44,6 @@ class PhD(models.Model):
     def __str__(self):
         return self.title
 
-class Education(models.Model):
-    category = models.CharField(max_length=30,blank=True,null=True)
-    graduation = models.ForeignKey(Graduation,on_delete=models.SET_NULL,blank=True,null=True)
-    post_graduation = models.ForeignKey(Post_Graduation,on_delete=models.SET_NULL,blank=True,null=True)
-    phd = models.ForeignKey(PhD,on_delete=models.SET_NULL,blank=True,null=True)
-    specialization = models.CharField(max_length=50,blank=True)
-    university = models.CharField(max_length=200,blank=True)
-    year = models.CharField(max_length=10,blank=True)
-    grading_system = models.CharField(max_length=50,blank=True)
-    marks = models.DecimalField(max_digits=4,decimal_places=2,default=0,blank=True)
-    school = models.CharField(max_length=200,blank=True)
-    board = models.CharField(max_length=10,blank=True)
-    medium = models.CharField(max_length=20,blank=True)
-    percentage = models.DecimalField(max_digits=4,decimal_places=2,default=0,blank=True)
-    class Meta:
-        verbose_name_plural = 'Education'
 
 class State(models.Model):
     name = models.CharField(max_length=100)
@@ -115,6 +99,45 @@ class JobSeekers(models.Model):
     def __str__(self):
         return self.user.username
 
+class Education(models.Model):
+    jobseeker = models.ForeignKey(JobSeekers,on_delete=models.CASCADE,blank=True,null=True)
+    category = models.CharField(max_length=30,blank=True,null=True)
+    graduation = models.ForeignKey(Graduation,on_delete=models.SET_NULL,blank=True,null=True)
+    post_graduation = models.ForeignKey(Post_Graduation,on_delete=models.SET_NULL,blank=True,null=True)
+    phd = models.ForeignKey(PhD,on_delete=models.SET_NULL,blank=True,null=True)
+    specialization = models.CharField(max_length=50,blank=True)
+    university = models.CharField(max_length=200,blank=True)
+    year = models.CharField(max_length=10,blank=True)
+    grading_system = models.CharField(max_length=50,blank=True)
+    marks = models.DecimalField(max_digits=4,decimal_places=2,default=0,blank=True)
+    school = models.CharField(max_length=200,blank=True)
+    board = models.CharField(max_length=10,blank=True)
+    medium = models.CharField(max_length=20,blank=True)
+    percentage = models.DecimalField(max_digits=4,decimal_places=2,default=0,blank=True)
+    class Meta:
+        verbose_name_plural = 'Education'
+
+
+class JobSeekersProfile(models.Model):
+    jobseeker = models.OneToOneField(JobSeekers,on_delete=models.CASCADE)
+    pref_job_loc = models.CharField(max_length=100, blank=True)
+    resume = models.FileField(blank=True)
+    category = models.ForeignKey(Category,on_delete=models.SET_NULL, null=True)
+    subcategory= ChainedForeignKey(
+        SubCategory,
+        chained_field="category",
+        chained_model_field="category",
+        show_all=False,
+        auto_choose=True,
+        sort=True)
+    education =  models.ForeignKey(Education,on_delete=models.SET_NULL, null=True)
+    key_skills = models.TextField(blank=False)
+    total_workexp = models.DateTimeField(blank=False)
+    current_drawn_sal = models.PositiveIntegerField(blank=True)
+
+    def __str__(self):
+        return self.user.username
+
 class AddJob(models.Model):
     category=models.ForeignKey(Category,on_delete=models.CASCADE)
     subcategory= ChainedForeignKey(
@@ -137,23 +160,3 @@ class Appliers(models.Model):
     job_id = models.ForeignKey(AddJob,on_delete=models.CASCADE)
     date_apply = models.DateField()
     status = models.CharField(max_length=50)
-
-class JobSeekersProfile(models.Model):
-    user = models.OneToOneField(JobSeekers,on_delete=models.CASCADE)
-    pref_job_loc = models.CharField(max_length=100, blank=True)
-    resume = models.FileField(blank=True)
-    category = models.ForeignKey(Category,on_delete=models.SET_NULL, null=True)
-    subcategory= ChainedForeignKey(
-        SubCategory,
-        chained_field="category",
-        chained_model_field="category",
-        show_all=False,
-        auto_choose=True,
-        sort=True)
-    education =  models.ForeignKey(Education,on_delete=models.SET_NULL, null=True)
-    key_skills = models.TextField(blank=False)
-    total_workexp = models.DateTimeField(blank=False)
-    current_drawn_sal = models.PositiveIntegerField(blank=True)
-
-    def __str__(self):
-        return self.user.username
