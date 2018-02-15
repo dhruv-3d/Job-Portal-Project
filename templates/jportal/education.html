@@ -1,0 +1,32 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Education{% endblock %}
+
+{% block body_block %}
+
+<div class="container">
+    <button id="grad" name="grad">Add Graduation</button>
+    <button id="postgrad" name="postgrad">Add Post Graduation</a>
+    <button id="phd" name="phd">Add PhD/Doctorate</a>
+    <button id="twelve" name="twelve">Add Class 12th</a>
+    <button id="tenth" name="tenth">Add Class 10th</a>
+</div>
+
+<div class="collapse" id="form_g">
+    {% include 'jportal/graduation.html' %}
+</div>
+<div class="collapse" id="form_pg">
+    {% include 'jportal/post_graduation.html' %}
+</div>
+<div class="collapse" id="form_phd">
+    {% include 'jportal/phd.html' %}
+</div>
+<div class="collapse" id="form_10">
+    {% include 'jportal/class_x.html' %}
+</div>
+<div class="collapse" id="form_12">
+    {% include 'jportal/class_xii.html' %}
+</div>
+
+{% endblock %}

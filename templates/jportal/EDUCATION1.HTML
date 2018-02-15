@@ -1,0 +1,84 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Education{% endblock %}
+
+{% block body_block %}
+
+<div class="container">
+    <form class="form-group" method="post" action="." enctype="multipart/form-data"></form>  
+    <div class='panel-title'>Add Graduation</div>
+        {% csrf_token %}
+        {{ g_form.as_p }}
+    <div class='panel-title'>Add Post Graduation</div>
+        {{ pg_form.as_p }}
+    <div class='panel-title'>Add PhD</div>
+        {{ phd_form.as_p }}
+    <div class='panel-title'>Add Class 12th</div>
+        {{ class_xii.as_p }}
+    <div class='panel-title'>Add Class 10th</div>
+        {{ class_x.as_p }}
+    <input type="submit" value="Add">
+    </form>
+</div>
+
+
+
+
+
+
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Education{% endblock %}
+
+{% block body_block %}
+<div class = "container">
+    <a type="button" data-toggle="collapse" href="#form_g" name="graduation">Add Graduation</a>
+    <div class="collapse" id="form_g">
+        <form method="post" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ g_form.as_p }}       
+    </div>
+</div>
+<div class = "container">
+    <a type="button" data-toggle="collapse" href="#form_pg" name="post_graduation">Add Post Graduation</a>
+    <div class="collapse" id="form_pg">
+        <form method="post" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ pg_form.as_p }}
+            <input type="submit" name="add_graduation" value="Add">
+        
+    </div>
+</div>
+<div class = "container">
+    <a type="button" data-toggle="collapse" href="#form_phd"name="phd">Add Doctorate/PhD</a>
+    <div class="collapse" id="form_phd">
+        <form method="post" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ phd_form.as_p }}
+            <input type="submit" name="add_phd" value="Add">
+        
+    </div>  
+</div>   
+<div class = "container">
+    <a type="button" data-toggle="collapse" href="#form_xii" name="classxii">Add Class XII</a>
+    <div class="collapse" id="form_xii">
+        <form method="post" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ class_xii.as_p }}
+            <input type="submit" name="add_classXII" value="Add">
+        
+    </div>  
+</div>    
+<div class = "container">
+    <a type="button" data-toggle="collapse" href="#form_x" name="classx">Add Class X</a>
+    <div class="collapse" id="form_x">
+        <form method="post" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ class_x.as_p }}
+            <input type="submit" name="add_classX" value="Add">
+        
+    </div>  
+</div>   
+{% endblock %}

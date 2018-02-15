@@ -2,18 +2,16 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Employer Registration
-{% endblock %}
-{% block nav_block %}
-    
+	Job Search - Employer Registration
 {% endblock %}
 {% block body_block %}
-    <h2>Employer Registration</h2>
-    <form method="post" action="." enctype="multipart/form-data" >  
-            {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ employer_form.as_p }}
-            <input type="submit" name="emp_submit" value="Register">
-
-    </form>
+    <div class="container">
+        <h2>Personal Details</h2>
+        <form method="post" action="." enctype="multipart/form-data" id="form" data-cities-url="{% url 'ajax_load_cities' %}">   
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {{ employer_form.as_p }}
+                <input type="submit" name="submit" value="Register">
+        </form>
+    </div>
 {% endblock %}

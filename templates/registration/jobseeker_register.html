@@ -2,18 +2,18 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Jobseeker Registration
-{% endblock %}
-{% block nav_block %}
-    
+	Job Search - Jobseeker Registration
 {% endblock %}
 {% block body_block %}
-    <h2>Jobseeker Registration</h2>
-    <form method="post" action="." enctype="multipart/form-data" >  
+<div class="container">
+    <h2>Job Seeker Registration</h2>
+    <form method="post" action="." enctype="multipart/form-data" id="form" data-cities-url="{% url 'ajax_load_cities' %}">  
+        <div class="form-group">
             {% csrf_token %}
             {{ user_form.as_p }}
             {{ job_seek.as_p }}
-            <input type="submit" name="emp_submit" value="Register">
-
+            <input class="form-control" type="submit" name="submit" value="Register" />
+        </div>
     </form>
+</div>
 {% endblock %}

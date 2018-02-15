@@ -17,10 +17,9 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include 
 from django.conf import settings
-from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import PasswordChangeView
 from django.conf.urls.static import static
-
-from registration.backends.simple.views import RegistrationView
+from django.contrib.auth.forms import PasswordChangeForm
 
 from jportal import views
 
@@ -29,9 +28,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^jportal/', include('jportal.urls')), 
     url(r'^chaining/', include('smart_selects.urls')),
-    url(r'^employer_page/$', views.employer_page, name='employer_page'),
-    url(r'^login/$', auth_views.login, name='login'),
-    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
-    url(r'^accounts/', include('registration.backends.simple.urls')),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^captcha/', include('captcha.urls')),
+    url(r'^ajax/load-cities/', views.load_cities, name='ajax_load_cities'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

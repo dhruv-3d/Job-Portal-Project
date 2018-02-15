@@ -6,14 +6,45 @@
 {% endblock %}
 {% block body_block %}
     <h2>JOB FORM</h2>
-    <form method="post" action=".">
+    <form method="post" action="." id="form">
         {% csrf_token %}
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script type="text/javascript" src="/static/smart-selects/admin/js/chainedfk.js"></script>
+        <script type="text/javascript" src="/static/smart-selects/admin/js/bindfields.js"></script>
         <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
         <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
 
         {{ form.as_p }}
-        {{ form.media.js }}
-  
-        <input type="submit" value="Submit">
+        <p>
+            <label for="id_subcategory">Subcategory:</label>
+            <select name="subcategory" required id="id_subcategory" data-chainfield="category"
+                    data-url="/chaining/filter/jportal/SubCategory/category/jportal/AddJob/subcategory" 
+                    data-value="null" data-auto_choose="true" data-empty_label="--------" name="subcategory" class="chained-fk">
+            </select>
+        </p>
+        <p>
+            <label for="id_title">Title:</label>
+                <input type="text" name="title" maxlength="100" required id="id_title" />
+        </p>
+        <p>
+            <label for="id_last_date">Last date:</label> 
+            <input type="text" name="last_date" required id="id_last_date" />
+        </p>
+        <p>
+            <label for="id_salary">Salary:</label> 
+            <input type="number" name="salary" min="0" id="id_salary" />
+        </p>
+        <p>
+            <label for="id_Job_responsibility">Job responsibility:</label> 
+            <textarea name="Job_responsibility" cols="40" rows="10" required id="id_Job_responsibility"></textarea>
+        </p>
+        <p>
+            <label for="id_candidate_profile">Candidate profile:</label> 
+            <textarea name="candidate_profile" cols="40" rows="10" required id="id_candidate_profile"></textarea>
+        </p>
+        
+        <p>
+            <input type="submit" value="Add Job">
+        </p>
     </form>
 {% endblock %}

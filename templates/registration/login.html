@@ -2,35 +2,36 @@
 {% load staticfiles %}
 
 {% block title_block %}
-	Login
+	Job Search - LogIn
 {% endblock %}
-
 {% block body_block %}
-    <link href="http://v4-alpha.getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
-    <link rel="import" href="/templates/jportal/employer_register.html">
-    <center>
-        <div>
-            <form class="form-signin" role="form" method="post" action="."> 
-                {% csrf_token %}
-                <h2 class="form-signin-heading">Please Log in</h2>
-                <p>
-                    <label for="id_username" class="sr-only">Email:</label>
-                    <input type="text" name="username" autofocus maxlength="254" required id="id_username" 
-                        class="form-control" placeholder="Username" required autofocus/>
-                </p>
-                <p>
-                    <label for="id_password" class="sr-only">Password:</label>
-                    <input type="password" name="password" required id="id_password" class="form-control"
-                        placeholder="Password" required />
-                </p>
-                <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit" />Login</button>
-            </form>
-        </div>
-        <br />
-        <div>
-            <p>
-                Not a member? <a href="{% url 'register' %}" >Register Here</a>
-            </p>
-        </div>
-    </center>
+<div class = "container">
+    <h2>Login</h2>
+    <form method="post" action=".">   
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="checkbox">
+                <label><input type="checkbox"> Remember me</label>
+            </div>
+            <input type="submit" name="submit" value="Login">
+    </form>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 {% endblock %}

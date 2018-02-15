@@ -1,0 +1,16 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Education{% endblock %}
+
+{% block nav %} {% endblock %}
+{% block body_block %}
+<div class="container">
+<h2>Add Graduation</h2>
+<form method="post" action="." enctype="multipart/form-data">
+    {% csrf_token %} 
+    {{ grad.form.as_p }}
+<input type="submit" value="Add" name='grad'>
+</form>
+</div>
+{% endblock %}
