@@ -299,8 +299,10 @@ def add_grad(request,username):
     seeker = JobSeekers.objects.get(user_id=user.id)
     try:
         g = Education.objects.get(jobseeker_id=seeker.id, category='graduation')
+        form = GraduationForm(instance=g)
         t=1
     except:
+        form = GraduationForm()
         t=0
     if request.method == 'POST':
         if t:
@@ -321,11 +323,6 @@ def add_grad(request,username):
                 return redirect('education', username=user.username)
             else:
                 print(form.errors)
-    else:
-        if t:
-            form = GraduationForm(instance=g)
-        else:
-            form = GraduationForm()
     context_dict={'form':form}    
     return context_dict
         
