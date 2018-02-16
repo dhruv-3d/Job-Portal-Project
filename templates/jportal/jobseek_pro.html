@@ -2,18 +2,16 @@
 {% load bootstrap_toolkit %}
 {% load staticfiles %}
 {% block title_block %}
-	Job Search - Edit Job
+	Job Search - Jobseeker Profile Form 
 {% endblock %}
 {% block body_block %}
 <div class="container">
-    <h2>Add Job</h2>
+    <h2>Jobseeker Profile Form</h2>
     <form method="post" action=".">
         {% csrf_token %}
         {% bootstrap_form form layout="vertical" %}
         {{ form.media.js }}
-        <button type="submit" class="btn btn-warning">
-         Submit
-        </button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 {% endblock %}

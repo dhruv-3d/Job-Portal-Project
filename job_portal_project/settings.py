@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'registration',
     'captcha',
     'bootstrap3',
+    'sitemessage',
+    'bootstrap_toolkit',
 ]
 
 # If True, users can register

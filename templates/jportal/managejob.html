@@ -1,5 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load bootstrap3 %}
+{% load staticfiles %}
 {% block title_block %}
 	Job Search - Manage Job
 {% endblock %}
@@ -25,11 +25,11 @@
 <div class="container">
     <h6><i>Click Button and Add Job Here</i></h6>
     <a href="{% url 'add_job' %}">
-        {% buttons %}
-        <button type="submit" class="btn btn-primary">
+        
+        <button type="submit" class="btn btn-warning">
          Add Job
         </button>
-        {% endbuttons %}
+       
     </a>
 </div>
 <div class="container">
@@ -38,19 +38,19 @@
             <div class="container"> 
                 <h3><b>{{ i.title }}</b></h3> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
                     <a href="{% url 'edit_job' i.slug %}">
-                    {% buttons %}
+                    
                     <button type="submit" class="btn btn-primary" value="Edit Jobs">Edit Jobs</button>
-                    {% endbuttons %}
+                   
                     </a>
                 
                     <a href="{% url 'delete_job' i.slug %}">
-                    {% buttons %}
+                    
                     <button type="submit" class="btn btn-primary" value="Delete">Delete</button>
-                    {% endbuttons %}
+                    
                     </a>
-                    {% buttons %}
+                    
                     <button type="text" name="show" class="btn btn-primary" value="Show">Show</button>
-                    {% endbuttons %}
+                   
                     </a>              
                     <div id="content">
                         {{i.title}} <br/>

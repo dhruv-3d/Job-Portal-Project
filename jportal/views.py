@@ -12,9 +12,9 @@ from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, State, City, JobSeekersProfile
 from jportal.models import Graduation, Post_Graduation, PhD
 
-from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm, EditJobForm
+from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm, EditJobForm, JobseekerprofileForm
 from jportal.forms import UserEditForm, EmployerEditForm, GraduationForm,PostGraduationForm,PhDForm
-from jportal.forms import ClassXIIForm,ClassXForm 
+from jportal.forms import ClassXIIForm,ClassXForm,SearchJobseeker 
 from django.utils import timezone
 
 from datetime import datetime
@@ -112,8 +112,9 @@ def employer_profile(request,username):
             company_data = EmployerCompanyProfile.objects.get(employer_id=emp_data.id)
         except EmployerCompanyProfile.DoesNotExist:
             company_data = ''
-            company_form = EmployerCompanyProfileForm()
-            context_dict['company_form'] = company_form
+    company_form = EmployerCompanyProfileForm()
+    context_dict['company_form'] = company_form
+    
     if request.method == 'POST':
         emp_usr = User.objects.get(username=username)
         print(emp_usr.username)
@@ -126,7 +127,8 @@ def employer_profile(request,username):
             return redirect('employer_profile',username=emp_usr.username)
         else:
             print(company_data.errors)
-        context_dict['company_form'] = company_form
+    
+    context_dict['company_form'] = company_form
     context_dict['emp_usr'] = emp_usr
     context_dict['emp_data'] = emp_data
     context_dict['usertype'] = usertype
@@ -172,7 +174,7 @@ def jobseeker_reg(request):
 
     user_form = UserForm()
     job_seek = JobSeekerForm()
-
+    jobseek_pro = Job
     print(request)
     if request.method == 'POST' :
         user_form = UserForm(request.POST)
@@ -214,6 +216,25 @@ def jobseeker_profile(request,username):
         context_dict['usertype'] = usertype 
     return render(request, 'jportal/jobseeker_profile.html', context_dict)
 
+#jobseeker profile form 
+def jobseekpro(request):
+    print(request.user)
+    usertype = user_type(request)
+    jseek = JobSeekers.objects.get(user_id=request.user.id)
+    education=Education.objects.filter(jobseeker_id=jseek.id).first()
+    form = JobseekerprofileForm()
+    if request.method == 'POST':
+        form = JobseekerprofileForm(request.POST)
+        if form.is_valid():
+            pro = form.save(commit=False)
+            pro.user = jseek
+            pro.education = education
+            pro.save()
+            return redirect('jobseeker_profile', username=request.user.username)
+    else:
+        print(form.errors)
+
+    return render(request,'jportal/jobseek_pro.html', {'form' : form, 'usertype' : usertype, })
 
 #-------------------------Job--------------------
 def add_job(request):
@@ -373,10 +394,11 @@ def add_education(request,username):
             phd_form = PhDForm()
             if g_form.is_valid():
                 g_detail=g_form.save(commit=False)
+                g_detail.jobseeker_id=job_seek.id
                 g_detail.category = 'graduation'
                 print(g_detail.category)
                 g_detail.save()
-                context_dict={'g_form':g_detail,'pg_form':pg_form,'phd_form':phd_form}
+                context_dict={'g_form':g_form,'pg_form':pg_form,'phd_form':phd_form}
             else:
                 print(g_form.errors)
         if 'add_post_graduation' in request.POST:
@@ -404,6 +426,182 @@ def add_education(request,username):
             else:
                 print(g_form.errors)
     return render(request,'jportal/education.html',context_dict)
+
+def job_listing(request):
+    print(request)
+    context_dict = {}
+    usertype = None
+    usertype = user_type(request)
+
+    #will execute when view is called from managejob view for employer
+    if request.method == 'GET' and usertype == 'e':
+        try:
+            emp = Employer.objects.get(user_id=request.user.id)
+            jobs = AddJob.objects.filter(employer_id=emp.id)
+            return jobs
+        except AddJob.DoesNotExist:
+            return HttpResponse("No Jobs Posted")
+    
+    elif request.method == 'GET'  and "jobtitle" in request.GET: 
+
+        try:
+            cat_title = request.GET['category']
+            subcat_name = request.GET['subcategory']
+            #print("aa job mailu :",job_title)
+
+            if cat_title:   #getting job as per category
+                cat = Category.objects.get(id=cat_title)
+
+                if subcat_name:     #getting job as per subcategory
+                    subcat = SubCategory.objects.get(id=subcat_name)
+                    
+                    jobs = AddJob.objects.filter(subcategory_id=subcat.id)
+                    return jobs
+                
+                jobs = AddJob.objects.filter(category_id=cat.id)            
+                return jobs
+
+        except AddJob.DoesNotExist:
+            print("Category wala thi ni mailu job")
+
+        try:
+            job_title = request.GET.get('jobtitle')
+            print("ehehehehe")
+            if job_title:
+                job_srch = job_title.split()
+                jobs = AddJob.objects.filter(slug__icontains=job_srch[0])
+                return jobs
+        except:
+            print("Title thi pan ni mailu job")
+
+
+    return ''  #none found
+
+def job_details(request, jobslug_name):
+    context_dict = {}
+    usertype = None
+    usertype = user_type(request)
+    context_dict['user_type'] = usertype
+
+    if request.method == "GET":
+
+        #getting job information
+        job_info = AddJob.objects.get(slug=jobslug_name)
+        print(job_info)
+
+        #checking jobseeker has applied or not
+        if usertype == 'j':
+            seeker = JobSeekers.objects.get(user_id=request.user.id)
+            print(seeker)
+            try:
+                applier = Appliers.objects.get(jobseeker_id=seeker.id, job_id=job_info.id)
+                context_dict['seeker'] = seeker
+                context_dict['applier'] = applier
+            except Appliers.DoesNotExist:
+                context_dict['seeker'] = seeker
+
+        elif usertype == 'e':
+            employer = Employer.objects.get(user_id=request.user.id)
+            try:
+                postedjob = AddJob.objects.get(employer_id=employer.id)
+                context_dict['employer'] = employer
+                context_dict['postedjob'] = postedjob
+            except AddJob.DoesNotExist:
+                context_dict['employer'] = employer
+        
+    context_dict['job_info'] = job_info
+    return render(request, 'jportal/job_details.html', context_dict)
+
+#--------
+@login_required
+def jobs_applied(request):
+    print(request)
+
+    context_dict = {}
+    if request.method == 'GET':
+        seeker = JobSeekers.objects.get(user_id=request.user.id)
+        applied = Appliers.objects.filter(jobseeker_id=seeker.id)
+        all_jobs  =AddJob.objects.all()
+
+        context_dict['applied_jobs'] = applied
+        context_dict['all_jobs'] = all_jobs
+
+    return render(request, 'jportal/jobs_applied.html', context_dict)
+
+@login_required
+def job_apply(request, jobslug_name):
+    context_dict = {}
+
+    if request.method == "GET":
+        seeker = JobSeekers.objects.get(user_id=request.user.id)
+        job = AddJob.objects.get(slug=jobslug_name)
+        applier = None
+        try:
+            applier = Appliers.objects.get(job_id=job.id, jobseeker_id=seeker.id)
+        except:
+            pass
+
+        if applier:
+            context_dict['applied_before'] = applier
+        else:
+            applier = Appliers()
+            applier.date_apply = datetime.now()
+            applier.status = 'pending'
+            applier.job_id = job.id
+            applier.jobseeker_id = seeker.id
+            applier.save()
+
+            return job_apply(request, jobslug_name)
+
+        context_dict['applier'] = applier
+    
+    return render(request, 'jportal/job_apply.html', context_dict)
+
+#----vidushi's view..but overwritten------------------------
+#-------------Done
+def job_applications(request):
+    context_dict={}
+
+    if request.method == 'GET':
+        
+        employer = Employer.objects.get(user_id=request.user.id)
+        jobs = AddJob.objects.filter(employer_id=employer.id)
+
+        context_dict['employer'] = employer
+        context_dict['jobs'] = jobs
+
+        return render(request, 'jportal/job_applications.html', context_dict)
+
+def search(request):
+    context_dict = {}
+    usertype = user_type(request)   
+    search = SearchJobseeker()
+    if request.method == 'GET':
+        search = SearchJobseeker()
+        try:
+            cat = request.GET['category']
+            context_dict['category'] = cat
+        except:
+            pass
+        try:
+            subcat = request.GET['subcategory']
+            context_dict['subcategory'] = subcat
+        except:
+                pass
+        try:
+            state = request.GET['state']
+            context_dict['state'] = state
+        except:
+                pass
+        try:
+            city = request.GET['city']
+            context_dict['city'] = city
+        except:
+                pass
+    context_dict['form']=search       
+    return render(request,'jportal/search_jobseeker.html',context_dict)
+          
+
 
 
 

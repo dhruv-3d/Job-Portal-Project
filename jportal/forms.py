@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile
-from jportal.models import Category, SubCategory, AddJob, City, State, Education
+from jportal.models import Category, SubCategory, AddJob, City, State, Education, Depend
 from jportal.models import Graduation, Post_Graduation, PhD
 
 from captcha.fields import CaptchaField
@@ -116,6 +116,11 @@ class JobSeekerForm(forms.ModelForm):
         elif self.instance.pk:
             self.fields['city'].queryset = self.instance.state.city_set.order_by('name')
 
+class JobseekerprofileForm(forms.ModelForm):
+    class Meta:
+       model = JobSeekersProfile
+       exclude = ('user','resume','education',)
+
 
 #------
 #karishma's form
@@ -181,3 +186,21 @@ class ClassXForm(forms.ModelForm):
         model = Education
         fields = ('board','year','medium','percentage',)
     
+class SearchJobseeker(forms.ModelForm):
+    
+    class Meta:
+        model = Depend
+        fields = ('category','subcategory', 'state', 'city',)
+   
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['city'].queryset = City.objects.none()
+
+        if 'state' in self.data:
+            try:
+                state_id = int(self.data.get('state'))
+                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')

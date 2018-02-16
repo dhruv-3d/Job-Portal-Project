@@ -1,7 +1,8 @@
 {% extends 'jportal/base.html' %}
 {% load staticfiles %}
-
-{% block title %}{{ user.username }}{% endblock %}
+{% block title %}
+    {{ user.username }}
+{% endblock %}
 <style>
 
 .nav-sidebar a {
@@ -67,5 +68,8 @@
             </div>  
         </div>
     </div>  
+    <a href="{% url 'jobseek_pro' %}">
+    <button class="btn btn-primary" value="submit">Jobseeker Profile Form</button>
+    </a>
 </div>
 {% endblock %}
