@@ -46,24 +46,30 @@ class PhD(models.Model):
 
 
 class State(models.Model):
-    name = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
     def __str__(self):
-        return self.name
+        return self.state
     
 class City(models.Model):
     state = models.ForeignKey(State,on_delete=models.CASCADE)
-    name =models.CharField(max_length=100)
+    city =models.CharField(max_length=100)
     class Meta:
         verbose_name_plural = 'Cities'
     def __str__(self):
-        return self.name
+        return self.city
 
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     designation = models.CharField(max_length=30, blank=False)
     company_name = models.CharField(max_length=150,blank=False)
-    state = models.ForeignKey(State,on_delete=models.SET_NULL, null=True,blank=False)
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True,blank=False)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL,null=True,blank=False)
+    city = ChainedForeignKey(
+            City,
+            chained_field="state",
+            chained_model_field="state",
+            show_all=False,
+            auto_choose=True,
+            sort=True)
     profile_img = models.ImageField(blank=True, upload_to='employer_pic')
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
@@ -86,8 +92,14 @@ class EmployerCompanyProfile(models.Model):
 
 class JobSeekers(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    state = models.ForeignKey(State,on_delete=models.SET_NULL, null=True, blank=False)
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=False)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL,null=True,blank=False)
+    city = ChainedForeignKey(
+            City,
+            chained_field="state",
+            chained_model_field="state",
+            show_all=False,
+            auto_choose=True,
+            sort=True)
     profile_img = models.ImageField(blank=True)
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
@@ -132,7 +144,7 @@ class JobSeekersProfile(models.Model):
         sort=True)
     education =  models.ForeignKey(Education,on_delete=models.SET_NULL, null=True)
     key_skills = models.TextField(blank=False)
-    total_workexp = models.DateTimeField(blank=False)
+    total_workexp = models.CharField(max_length=20,blank=False)
     current_drawn_sal = models.PositiveIntegerField(blank=True)
 
     def __str__(self):
@@ -160,3 +172,23 @@ class Appliers(models.Model):
     job_id = models.ForeignKey(AddJob,on_delete=models.CASCADE)
     date_apply = models.DateField()
     status = models.CharField(max_length=50)
+
+class Search(models.Model):
+    category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,blank=True)
+    subcategory = ChainedForeignKey(
+        SubCategory,
+        chained_field="category",
+        chained_model_field="category",
+        show_all=False,
+        auto_choose=True,
+        sort=True,
+        blank=True)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL,null=True,blank=True)
+    city = ChainedForeignKey(
+            City,
+            chained_field="state",
+            chained_model_field="state",
+            show_all=False,
+            auto_choose=True,
+            sort=True,
+            blank=True)

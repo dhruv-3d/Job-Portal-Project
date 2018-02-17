@@ -14,7 +14,7 @@ from jportal.models import Graduation, Post_Graduation, PhD
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm
 from jportal.forms import UserEditForm, EmployerEditForm, GraduationForm,PostGraduationForm,PhDForm
-from jportal.forms import ClassXIIForm,ClassXForm 
+from jportal.forms import ClassXIIForm,ClassXForm, SearchJobseeker, JobseekerprofileForm
 from django.utils import timezone
 
 from datetime import datetime
@@ -46,7 +46,7 @@ def user_type(ek_req):
 
     return usertype
 
-def load_cities(request):
+
     state_id = request.GET.get('state')
     cities = City.objects.filter(state_id=state_id).order_by('name')
     return render(request, 'jportal/city_dropdown_list_options.html', {'cities': cities})
@@ -217,6 +217,24 @@ def jobseeker_profile(request,username):
         context_dict['usertype'] = usertype 
     return render(request, 'jportal/jobseeker_profile.html', context_dict)
 
+def jobseekpro(request,username):
+    print(request.user)
+    usertype = user_type(request)
+    jseek = JobSeekers.objects.get(user_id=request.user.id)
+    education=Education.objects.filter(jobseeker_id=jseek.id).first()
+    form = JobseekerprofileForm()
+    if request.method == 'POST':
+        form = JobseekerprofileForm(request.POST)
+        if form.is_valid():
+            pro = form.save(commit=False)
+            pro.jobseeker = jseek
+            pro.education = education
+            pro.save()
+            return redirect('jobseeker_profile', username=username)
+    else:
+        print(form.errors)
+
+    return render(request,'jportal/extra_details.html', {'form' : form, 'usertype' : usertype, })
 
 #-------------------------Job--------------------
 def add_job(request):
@@ -327,7 +345,7 @@ def add_grad(request,username):
         else:
             form = GraduationForm()
     context_dict={'form':form}    
-    return context_dict['form']
+    return render(request,'jportal/education.html',context_dict)
         
 def add_postgrad(request,username):
     user = User.objects.get(username=username)
@@ -479,11 +497,7 @@ def add_education(request,username):
     context_dict['usertype'] = user_type(request)
 
     if request.method == 'GET':
-        if 'grad' in request.GET:
-            context_dict['form1'] = add_grad(request,username)
-        if 'dgdfg' in request.GET:
-            #sdfgdsg dusraform
-            pass
+        context_dict['form1'] = add_grad(request,username)
 
     if request.method == 'POST':
         if 'grad' in request.POST:
@@ -494,7 +508,47 @@ def add_education(request,username):
 
     return render(request, 'jportal/education.html', context_dict)
         
-
+def search(request):
+    form = SearchJobseeker()
+    context_dict={'form':form}
+    if request.method == 'POST':
+        try:
+            cat = request.POST['category']
+            print(cat)
+        except: cat = ''
+        try:
+            subcat = request.POST['subcategory']
+            print(subcat)
+        except: subcat = ''
+        try:
+            s = request.POST['state']
+            print(s)
+        except: s = ''
+        try:
+            c = request.POST['city']
+            print(c)
+        except: c = ''
+        try:
+            if cat:
+                category = Category.objects.get(id=cat)
+                print(category.id)
+                context_dict['category'] = category
+                if subcat:
+                    subcategory = SubCategory.objects.get(id=subcat)
+                    print(subcategory.id)
+                    context_dict['subcategory'] = subcategory
+        except: pass
+        try:
+            if s:
+                state = State.objects.get(id=s)
+                print(state.id)
+                context_dict['state'] = state
+                if c:
+                    city = City.objects.get(id=c)
+                    print(city.id)
+                    context_dict['city'] = city
+        except: pass
+    return render(request,'jportal/search.html',context_dict)
 
 
 

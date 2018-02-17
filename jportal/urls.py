@@ -19,6 +19,8 @@ urlpatterns = [
     url(r'^(?P<username>[\w\@\.]+)/class_x/$',views.add_classx,name='class_x'),
     url(r'^employer_profile/$', views.employer_profile, name='employer_profile'),
     url(r'^(?P<username>[\w\@\.]+)/jobseeker_profile/$', views.jobseeker_profile, name='jobseeker_profile'),
+    url(r'^(?P<username>[\w\@\.]+)/extra_details/$', views.jobseekpro, name='jobseek_pro'),
     url(r'^emp_edit/(?P<username>[\w\@\.]+)/$', views.edit_employer_profile, name='emp_edit'),
     url(r'^company_edit/$', views.edit_company_details, name='company_edit'),
+    url(r'^search/$', views.search, name='search'),
 ]

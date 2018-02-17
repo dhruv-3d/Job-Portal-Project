@@ -7,7 +7,7 @@ class SubCategoryAdmin(admin.ModelAdmin):
 class JobAdmin(admin.ModelAdmin):
     list_dispaly = ('title', 'posted_date','category','sub_category','state','city')
 class CitiesAdmin(admin.ModelAdmin):
-    list_display = ('name', 'state')
+    list_display = ('city', 'state')
 
 admin.site.register(Category)
 admin.site.register(SubCategory,SubCategoryAdmin)

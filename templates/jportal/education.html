@@ -15,9 +15,4 @@
 <div class="collapse" id="form_g">
     {% include 'jportal/graduation.html' with form=form1 %}
 </div>
-<form method="post" action="." enctype="multipart/form-data">
-    {% csrf_token %} 
-    {{ form1.as_p }}
-<input type="submit" value="Add" name='grad'>
-</form>
 {% endblock %}

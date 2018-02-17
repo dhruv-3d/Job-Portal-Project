@@ -30,5 +30,4 @@ urlpatterns = [
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^captcha/', include('captcha.urls')),
-    url(r'^ajax/load-cities/', views.load_cities, name='ajax_load_cities'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

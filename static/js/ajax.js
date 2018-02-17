@@ -13,9 +13,3 @@ $("#id_state").change(function () {
   });
 });
 
-$('.accordion').click(function(){
-  var title = $(this).attr("data-title"); 
-  $.get('/jportal/education/', {title: title}, function(data){
-          $('#edu_detail').html(data);
-      });
-});

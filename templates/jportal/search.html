@@ -1,0 +1,59 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Search Jobseeker{% endblock %}
+
+{% block nav %} {% endblock %}
+{% block body_block %}
+    <div class="container">
+        <form method="post" action="." enctype="multipart/form-data" id="form">   
+                {% csrf_token %}
+                {{form.media.js}}
+                {{form}}
+                <input type="submit" name="submit" value="Search">
+        </form>
+        {% if state %}
+            {% if city %}
+                {% get_city city.id %}
+                    {% if js %}
+                        {% for i in js %}
+                            <a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.username }}</a>
+                        {% endfor%}
+                    {% else %}
+                        <h3> No Jobseekers found </h3>
+                    {% endif %}
+            {% else %}
+                {% get_state state.id %}
+                {% if js %}
+                    {% for i in js %}
+                        <a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.username }}</a>
+                    {% endfor%}
+                {% else %}
+                    <h3> No Jobseekers found </h3>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        
+        {% if category %}
+            {% if subcategory%}
+                {% get_subcat subcategory.id %}
+                    {% if J_see %}
+                        {% for i in J_see %}
+                            <a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.user.username }}</a>
+                        {% endfor%}
+                    {% else %}
+                        <h3> No Jobseekers found </h3>
+                    {% endif %}
+            {% else %}
+                {% get_cate category.id %}
+                {% if J_see %}
+                    {% for i in J_see %}
+                        <a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.user.username }}</a>
+                    {% endfor%}
+                {% else %}
+                    <h3> No Jobseekers found </h3>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

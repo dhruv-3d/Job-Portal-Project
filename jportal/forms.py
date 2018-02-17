@@ -1,12 +1,12 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, ModelChoiceField
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-
+from smart_selects.form_fields import ChainedModelChoiceField, ChainedSelect
 from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile
 from jportal.models import Category, SubCategory, AddJob, City, State, Education
-from jportal.models import Graduation, Post_Graduation, PhD
+from jportal.models import Graduation, Post_Graduation, PhD, Search
 
 from captcha.fields import CaptchaField
 import datetime
@@ -45,19 +45,6 @@ class EmployerForm(forms.ModelForm):
     class Meta:
         model = Employer
         fields = ('designation','company_name','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['city'].queryset = City.objects.none()
-
-        if 'state' in self.data:
-            try:
-                state_id = int(self.data.get('state'))
-                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        elif self.instance.pk:
-            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')
 
 class UserEditForm(forms.ModelForm):
     class Meta:
@@ -102,21 +89,10 @@ class JobSeekerForm(forms.ModelForm):
     class Meta:
         model = JobSeekers
         fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['city'].queryset = City.objects.none()
-
-        if 'state' in self.data:
-            try:
-                state_id = int(self.data.get('state'))
-                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        elif self.instance.pk:
-            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')
-
-
+class JobseekerprofileForm(forms.ModelForm):
+    class Meta:
+       model = JobSeekersProfile
+       exclude = ('jobseeker','resume','education',)
 #------
 #karishma's form
 class AddJobForm(forms.ModelForm):
@@ -181,3 +157,7 @@ class ClassXForm(forms.ModelForm):
         model = Education
         fields = ('board','year','medium','percentage',)
     
+class SearchJobseeker(forms.ModelForm):
+    class Meta:
+        model = Search
+        fields = ('category','subcategory','state','city')
