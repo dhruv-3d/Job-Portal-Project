@@ -174,7 +174,7 @@ def jobseeker_reg(request):
 
     user_form = UserForm()
     job_seek = JobSeekerForm()
-    jobseek_pro = Job
+    
     print(request)
     if request.method == 'POST' :
         user_form = UserForm(request.POST)
@@ -572,33 +572,40 @@ def job_applications(request):
 
         return render(request, 'jportal/job_applications.html', context_dict)
 
-def search(request):
-    context_dict = {}
-    usertype = user_type(request)   
-    search = SearchJobseeker()
-    if request.method == 'GET':
-        search = SearchJobseeker()
+def search_j(request):
+    context_dict={}
+    if request.method == 'POST':
         try:
-            cat = request.GET['category']
-            context_dict['category'] = cat
+            print("state try")
+            keyword = request.POST['search']
+            print(keyword)
+        except:
+            pass   
+        try:
+            state = State.objects.get(name=keyword)
+            print (state.id)
+            context_dict['state'] = state
         except:
             pass
         try:
-            subcat = request.GET['subcategory']
-            context_dict['subcategory'] = subcat
-        except:
-                pass
-        try:
-            state = request.GET['state']
-            context_dict['state'] = state
-        except:
-                pass
-        try:
-            city = request.GET['city']
+            city = City.objects.get(name=keyword)
+            print (city.id)
             context_dict['city'] = city
         except:
-                pass
-    context_dict['form']=search       
+            pass
+        try:
+            category = Category.objects.get(title=keyword)
+            print (category.id)
+            context_dict['category'] = category
+        except:
+            pass
+        try:
+            subcategory = SubCategory.objects.get(name=keyword)
+            print (subcategory.id)
+            context_dict['subactegory'] = subcategory
+        except:
+            pass
+        
     return render(request,'jportal/search_jobseeker.html',context_dict)
           
 

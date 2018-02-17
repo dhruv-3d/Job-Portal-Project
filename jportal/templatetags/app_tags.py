@@ -1,5 +1,5 @@
 from django import template
-from jportal.models import Category, SubCategory, User
+from jportal.models import Category, SubCategory, User, City, State, JobSeekersProfile
 from jportal.models import JobSeekers, Employer, AddJob, Appliers
 
 register = template.Library()
@@ -19,8 +19,6 @@ def get_cat_subcat(subcat, cat):
     subcat_name = SubCategory.objects.get(id=subcat)
 
     return subcat_name.name + ',' + cat_name.title
-
-
 
 
 @register.assignment_tag
@@ -55,3 +53,50 @@ def get_jobseeker(jobseeker):
 
     return user.username
 
+@register.assignment_tag
+def get_category(cat):
+    a = cat
+
+    seeker = JobSeekersProfile.objects.get(id=a.category_id)
+    user = User.objects.get(id=seeker.user_id)
+
+    return user.username
+
+
+#----------------for search jobseeker by (category,subcategory,state,city)
+@register.assignment_tag
+def get_cate(catid):
+    a = []
+    J_see = JobSeekersProfile.objects.filter(category_id=catid)
+    print(J_see)
+    for i in J_see:
+        a.append(i)
+    return ({'test':a})
+
+@register.assignment_tag
+def get_subcat(subid):
+    a = [] 
+    J_see = JobSeekersProfile.objects.filter(subcategory_id=subid)
+    for i in J_see:
+        a.append(i)
+    return ({'test':a})
+
+@register.assignment_tag
+def get_state(stateid):
+    a = []
+    js = JobSeekers.objects.filter(state_id=stateid)
+    #print(js)
+    for i in js:
+        #print(i)
+        a.append(i)
+    #print(a)
+    return ({'test':a})
+
+@register.assignment_tag
+def get_city(cityid):
+    a = []
+    js = JobSeekers.objects.get(city_id=cityid)   
+    for i in js:
+        a.append(i)
+    return ({'test':a})
+    
