@@ -1,6 +1,6 @@
 {% extends 'jportal/base.html' %}
 {% load staticfiles %}
-
+{% load app_tags %}
 {% block title %}Search Jobseeker{% endblock %}
 
 {% block nav %} {% endblock %}
@@ -14,7 +14,7 @@
         </form>
         {% if state %}
             {% if city %}
-                {% get_city city.id %}
+                {% get_city city.id as js %}
                     {% if js %}
                         {% for i in js %}
                             <a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.username }}</a>
