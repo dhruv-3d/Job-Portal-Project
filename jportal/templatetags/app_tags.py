@@ -69,7 +69,7 @@ def get_category(cat):
 #----------------for search jobseeker by (category,subcategory,state,city)
 @register.assignment_tag
 def get_cate(catid):
-    J_see = JobSeekersProfile.objects.get(category_id=catid)
+    J_see = JobSeekersProfile.objects.filter(category_id=catid)
     return J_see
 
 @register.assignment_tag

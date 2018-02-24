@@ -23,7 +23,7 @@
                         <h3> No Jobseekers found </h3>
                     {% endif %}
             {% else %}
-                {% get_state state.id %}
+                {% get_state state.id as js %}
                 {% if js %}
                     {% for i in js %}
                         <a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.username }}</a>
@@ -36,19 +36,19 @@
         
         {% if category %}
             {% if subcategory%}
-                {% get_subcat subcategory.id %}
+                {% get_subcat subcategory.id as J_see %}
                     {% if J_see %}
                         {% for i in J_see %}
-                            <a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.user.username }}</a>
+                            <a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}">{{ i.jobseeker.user.username }}</a>
                         {% endfor%}
                     {% else %}
                         <h3> No Jobseekers found </h3>
                     {% endif %}
             {% else %}
-                {% get_cate category.id %}
+                {% get_cate category.id as J_see %}
                 {% if J_see %}
                     {% for i in J_see %}
-                        <a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.user.username }}</a>
+                        <a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}">{{ i.jobseeker.user.username }}</a>
                     {% endfor%}
                 {% else %}
                     <h3> No Jobseekers found </h3>
