@@ -1,78 +1,66 @@
 {% extends 'jportal/base.html' %}
 {% load staticfiles %}
 
-{% block title_block %}
-	Job Search - Employer Detail Pages
+{% block title %}
+    {{ user.username }}
 {% endblock %}
+
 {% block body_block %}
+    {% include "jportal/sidebar_emp.html" %}
     <main>
-    <div class="container">
-        <div class="row">
-            <div class="page-header">
-                <h3 style="display:inline">Profile Details </h3>
-                <a class="btn btn-border-d btn-round" href="{% url 'emp_edit' username=user.username %}" style="float:right;"><span class="glyphicon glyphicon-edit"></span></a>
-            </div>
-            <div class="jumbotron">
-                <div class="col-md-4 col-lg-4">
-                    <img src="{{ MEDIA_URL }}{{emp_data.profile_img}}" class="img-thumbnail img-responsive" style="width:200px" />
+        <div class="container" style="width:70%;">
+            <div class="row">
+                <div class="page-header">
+                    <h3 style="display:inline;font-size:1em;">Profile Details </h3>
+                    <a class="btn btn-border-d btn-round" href="{% url 'emp_edit' username=user.username %}" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></a>
                 </div>
-                <div class="col-md-8 col-lg-8">
-                    <h3 class="work-details-title font-alt">{{user.first_name}} {{user.last_name}}</h3>
-                    <h4><b>{{emp_data.designation}}</b>, at {{emp_data.company_name}}</h4>
-                    <h4><i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{emp_data.city}}, {{emp_data.state}}</h4>
-                    <h4><i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Phone: {{emp_data.contact_no}}</h4>
-                    <h4><i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: {{user.email}}</h4>
-                </div>   
-            </div> 
-        </div>
-        <div class="row">
-            {% if company_data %}
-            <div class="page-header">
-                <h3 style="display:inline">Company Details </h3>
-                <a class="btn btn-border-d btn-round" href="{% url 'company_edit' %}" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></a>
-            </div>
-            <div class="jumbotron">
-                <div class="col-md-8 col-lg-8">
-                    <h3 class="work-details-title font-alt">{{company_data.company_name}}</h3>
-                    <p>{{company_data.description|linebreaksbr }}</p>
-                    <address>{{company_data.address}}</address>
-                </div>
-                <div class="col-md-4 col-lg-4">
-                    <img src="{{ MEDIA_URL }}{{company_data.logo}}" class="img-thumbnail img-responsive" style="width:200px">
+                <div class="jumbotron">
+                    <div class="col-md-4 col-lg-4">
+                        <img src="{{ MEDIA_URL }}{{emp_data.profile_img}}" class="img-thumbnail img-responsive" style="width:100%">
+                    </div>
+                    <div class="col-md-8 col-lg-8">
+                        <h3 class="work-details-title font-alt">{{user.first_name}} {{user.last_name}}</h3>
+                        <h4><b>{{emp_data.designation}}</b></h4>
+                        <h5>{{company_data.company_name}}</h5>
+                        <h5><span class="glyphicon glyphicon-earphone"></span> : {{emp_data.contact_no}} </h5>
+                        <h5><span class="glyphicon glyphicon-envelope"></span> : {{emp_usr.email }} </h5>
+                        <h5><span class="glyphicon glyphicon-map-marker color-primary"></span> : {{emp_data.city}}, {{emp_data.state}}</h5>
+                    </div>
                 </div>
             </div>
-            {% else %} 
-            <div class="page-header">
-                <h3 style="display:inline">Company Details </h3>
+            <div class="row">
+                {% if company_data %}
+                    <div class="page-header">
+                        <h3 style="display:inline">Company Details </h3>
+                        <a class="btn btn-border-d btn-round" href="{% url 'company_edit' %}" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></a>
+                    </div>
+                    <div class="jumbotron">
+                        <div class="col-md-8 col-lg-8">
+                            <h3 class="work-details-title font-alt">{{company_data.company_name}}</h3>
+                            <p>{{company_data.description|linebreaksbr }}</p>
+                            <address>{{company_data.address}}</address>
+                        </div>
+                        <div class="col-md-4 col-lg-4">
+                            <img src="{{ MEDIA_URL }}{{company_data.logo}}" class="img-thumbnail img-responsive" style="width:100%">
+                        </div>
+                    </div>
+                {% else %} 
+                    <div class="page-header">
+                        <h3 style="display:inline">Company Details </h3>
+                    </div>
+                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#company_form">Add Company Details</button>
+                    <div id="company_form" class="collapse">
+                        <div class="container">
+                            <h2>Company Details</h2>
+                            <form method="post" action="." enctype="multipart/form-data" >   
+                                {% csrf_token %}
+                                {{company_form.as_p}}
+                                <input type="submit" name="submit" value="Confirm">
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#company_form">Add Company Details</button>
-            <div id="company_form" class="collapse">
-                <div class="container">
-                    <h2>Company Details</h2>
-                    <form method="post" action="." enctype="multipart/form-data" >   
-                        {% csrf_token %}
-                        {{company_form.as_p}}
-                        <input type="submit" name="submit" value="Confirm">
-                    </form>
-                </div>
-            </div>
-            {% endif %}
-        </div> 
-    </div>   
+        </div>   
     </main>
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-<div class="w3-large w3-margin-bottom">
-    <i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Chicago, US<br>
-    <i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Phone: +00 151515<br>
-    <i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: mail@mail.com<br>
-  </div>

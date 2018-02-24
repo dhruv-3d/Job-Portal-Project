@@ -61,19 +61,6 @@ class EmployerEditForm(forms.ModelForm):
         model = Employer
         fields = ('designation','company_name','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no',)    
        
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['city'].queryset = City.objects.none()
-
-        if 'state' in self.data:
-            try:
-                state_id = int(self.data.get('state'))
-                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        elif self.instance.pk:
-            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')       
-        
 class EmployerCompanyProfileForm(forms.ModelForm):
     class Meta:
         model = EmployerCompanyProfile
@@ -89,6 +76,13 @@ class JobSeekerForm(forms.ModelForm):
     class Meta:
         model = JobSeekers
         fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
+class JobSeekerEditForm(forms.ModelForm):
+    profile_img = forms.ImageField(required=False)
+    gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
+    dob = forms.DateField(widget=forms.DateInput())
+    class Meta:
+        model = JobSeekers
+        fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no')
 class JobseekerprofileForm(forms.ModelForm):
     class Meta:
        model = JobSeekersProfile

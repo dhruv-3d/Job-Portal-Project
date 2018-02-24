@@ -1,17 +1,8 @@
-{% extends 'jportal/base.html' %}
-{% load staticfiles %}
-
-{% block title %}Jobseeker Details{% endblock %}
-
-{% block nav %} {% endblock %}
-
-{% block body_block %}
-    <div class="container">
-            <form method="post" action="." enctype="multipart/form-data" id="form">   
-                {% csrf_token %}
-                {{form.media.js}}
-                {{form.as_p}}
-                <input type="submit" name="submit" value="Submit">
-        </form>
-    </div>
-{% endblock %}
+<div class="container">
+    <form method="post" action="." enctype="multipart/form-data" id="form">   
+        {% csrf_token %}
+        {{form.media.js}}
+        {{form.as_p}}
+        <input type="submit" name="submit" value="Submit">
+    </form>
+</div>

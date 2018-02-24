@@ -132,6 +132,7 @@ class Education(models.Model):
 
 class JobSeekersProfile(models.Model):
     jobseeker = models.OneToOneField(JobSeekers,on_delete=models.CASCADE)
+    linkedin_profile = models.CharField(max_length=200, blank=True)
     pref_job_loc = models.CharField(max_length=100, blank=True)
     resume = models.FileField(blank=True)
     category = models.ForeignKey(Category,on_delete=models.SET_NULL, null=True)
