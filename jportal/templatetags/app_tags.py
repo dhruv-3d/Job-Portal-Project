@@ -95,7 +95,7 @@ def get_state(stateid):
 @register.assignment_tag
 def get_city(cityid):
     a = []
-    js = JobSeekers.objects.get(city_id=cityid)   
+    js = JobSeekers.objects.filter(city_id=cityid)   
     for i in js:
         a.append(i)
     return ({'test':a})

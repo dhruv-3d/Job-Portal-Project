@@ -136,7 +136,7 @@ class JobSeekersProfile(models.Model):
     current_drawn_sal = models.PositiveIntegerField(blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.user.username
 
 class AddJob(models.Model):
     category=models.ForeignKey(Category,on_delete=models.CASCADE)

@@ -602,7 +602,7 @@ def search_j(request):
         try:
             subcategory = SubCategory.objects.get(name=keyword)
             print (subcategory.id)
-            context_dict['subactegory'] = subcategory
+            context_dict['subcategory'] = subcategory
         except:
             pass
         

@@ -11,11 +11,11 @@
     <form method="POST" action=".">
     {% csrf_token %}
     <input type="text" name="search" placeholder="search by state,city,category,subacategory"/>
-    <input type="submit" value="submit"/>   
+    <input type="submit" value="submit"/>  
+     
     {% if state %}
         {% get_state state.id as a %}
         {% if a %}
-            pass
             <table>
             {% for k,v in a.items %}
                 {% for g in v %}
@@ -28,34 +28,49 @@
         {% endif %}
     {% endif %}
     {% if city %}
-        {% get_city city.id %}     
-        {% for i in js %}
-                <a href="{% url 'jobseeker_profile' username %}">{{ i.user.username }}</a>
-        {% endfor%}
-    {% endif %}
-    {% if category %}
-        {% get_cate category.id as a %}
-        {% if a %}
-            pass
+        {% get_city city.id as b %} 
+        {% if b %}
             <table>
-            {% for k,v in a.items %}
+            {% for k,v in b.items %}
                 {% for g in v %}
                     <tr>
-                    <td>{{ g }}</td>
+                    <td><a href="{% url 'jobseeker_profile' g %}">{{ g }}</a></td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </table>
+        {% endif %}        
+    {% endif %}
+    {% if category %}
+        {% get_cate category.id as c %}
+        {% if c %}
+            pass
+            <table>
+            {% for k,v in c.items %}
+                {% for g in v %}
+                    <tr>
+                    <td><a href="{% url 'jobseeker_profile' g %}">{{ g }}</a></td>
                     </tr>
                 {% endfor %}
             {% endfor %}
             </table>
         {% endif %}
     {% endif %}
-    {% if subcategory %}
-        {% get_subcat subcategory.id as username %}     
-        {% for i in J_see %}
-            <a href="{% url 'jobseeker_profile' username %}">{{ i.user.username }}</a>
-        {% endfor%}
+    {% if subcategory%}
+    {% get_subcat subcategory.id as e %}
+        {% if e %}
+            pass
+            <table>
+            {% for k,v in e.items %}
+                {% for g in v %}
+                    <tr>
+                    <td><a href="{% url 'jobseeker_profile' g %}">{{ g }}</a></td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </table>
+        {% endif %}
     {% endif %}
     </form>
 </div>
-
-
 {% endblock %}
