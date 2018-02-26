@@ -77,7 +77,6 @@ class JobSeekerForm(forms.ModelForm):
         model = JobSeekers
         fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
 class JobSeekerEditForm(forms.ModelForm):
-    profile_img = forms.ImageField(required=False)
     gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
     dob = forms.DateField(widget=forms.DateInput())
     class Meta:

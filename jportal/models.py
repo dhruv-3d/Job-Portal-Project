@@ -100,7 +100,7 @@ class JobSeekers(models.Model):
             show_all=False,
             auto_choose=True,
             sort=True)
-    profile_img = models.ImageField(blank=True)
+    profile_img = models.ImageField(blank=True,upload_to='jobseeker_pic')
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
     contact_no = models.PositiveIntegerField(blank=False,validators=[MaxValueValidator(9999999999)])

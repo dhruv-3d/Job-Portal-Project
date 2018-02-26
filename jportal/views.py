@@ -211,7 +211,6 @@ def jobseeker_profile(request,username):
         user = User.objects.get(username=username)
         print(user.username)
         seeker = JobSeekers.objects.get(user_id=user.id)
-        education = Education.objects.filter(jobseeker_id=seeker.id)
         context_dict['user'] = user
         context_dict['seeker'] = seeker
         context_dict['usertype'] = usertype 
@@ -224,10 +223,9 @@ def jobseeker_edit(request,username):
     user = User.objects.get(username=username)
     b = JobSeekers.objects.get(user_id=user.id)   
     print(b.id)
-    
-    #form = JobSeekerForm({'state':b.state,'city':b.city,'profile_img':b.profile_img,'gender':b.gender,'dob':b.dob,'contact_no':b.contact_no})
+
     if request.method == 'POST':
-        user_form = UserEditForm(request.POST, instance=user)
+        user_form = UserEditForm(request.POST, request.FILES, instance=user)
         form = JobSeekerEditForm(request.POST, request.FILES, instance=b)
         if user_form.is_valid() and form.is_valid():
                 user_edit = user_form.save(commit=False)
@@ -248,25 +246,48 @@ def jobseeker_edit(request,username):
     context_dict['form'] = form
     return render(request, 'jportal/jobseeker_edit.html', context_dict)
 
-def jobseekpro(request,username):
+def resumeform(request,username):
     print(request.user)
     usertype = user_type(request)
+    context_dict={'usertype':usertype}
     jseek = JobSeekers.objects.get(user_id=request.user.id)
-    education=Education.objects.filter(jobseeker_id=jseek.id).first()
-    form = JobseekerprofileForm()
+    try:
+        education=Education.objects.filter(jobseeker_id=jseek.id).first()
+    except:
+        education=''
+    try:
+        jp = JobSeekersProfile.objects.get(jobseeker_id=jseek.id)
+        a=1
+    except:
+        a=0
     if request.method == 'POST':
-        form = JobseekerprofileForm(request.POST)
-        if form.is_valid():
-            pro = form.save(commit=False)
-            pro.jobseeker = jseek
-            pro.education = education
-            pro.save()
-            return redirect('jobseeker_profile', username=username)
+        if a:
+            form = JobseekerprofileForm(request.POST,instance=jp)
+            if form.is_valid():
+                pro = form.save(commit=False)
+                pro.education = education
+                pro.save()
+                return redirect('resume', username=username)
+            else:
+                print(form.errors)
+        else:
+            form = JobseekerprofileForm(request.POST)
+            if form.is_valid():
+                pro = form.save(commit=False)
+                pro.jobseeker = jseek
+                pro.save()
+                return redirect('resume', username=username)
+            else:
+                print(form.errors)
     else:
-        print(form.errors)
+        if a:
+            form = JobseekerprofileForm(instance=jp)
+        else:
+            form = JobseekerprofileForm()
 
-    return render(request,'jportal/extra_details.html', {'form' : form, 'usertype' : usertype, })
-
+    context_dict['form'] = form
+    context_dict['education'] = education
+    return render(request,'jportal/create_resume.html', context_dict)
 #-------------------------Job--------------------
 def add_job(request):
     print(request.user)

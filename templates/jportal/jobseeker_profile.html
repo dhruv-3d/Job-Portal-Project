@@ -2,48 +2,11 @@
 {% load staticfiles %}
 
 {% block title %}{{ user.username }}{% endblock %}
-<style>
-
-.nav-sidebar a {
-  color: #333;
-  -webkit-transition: all 0.08s linear;
-  -moz-transition: all 0.08s linear;
-  -o-transition: all 0.08s linear;
-  transition: all 0.08s linear;
-}
-.nav-sidebar .active a { 
-  cursor: default;
-  background-color: #0b56a8; 
-  color: #fff; 
-}
-.nav-sidebar .active a:hover {
-  background-color: #E50000;   
-}
-.nav-sidebar .text-overflow a,
-.nav-sidebar .text-overflow .media-body {
-  white-space: nowrap;
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis; 
-}
-</style>
 {% block body_block %}
-<div class="container row">
-    <div class="col-sm-4 col-md-4 col-lg-4">
-        <nav class="nav-sidebar" style="width:150px;position:absolute;z-index: 1;top: 100px;left: 10px;
-                                        padding: 15px 0;border-right: 1px solid #ddd;  font-family:Roboto;">
-            <ul class="nav tabs">
-                <li class="active"><a href="#">Profile Details</a></li>
-                <li><a href="{% url 'education' user.username %}">Educational Details</a></li>
-                <li><a href="#resume">Resume</a></li>
-                <li><a href="#">Recommended Jobs</a></li>
-                <li><a href="#">Jobs Applied</a></li>
-                <li><a href="#">Search Jobs</a></li>
-            </ul>
-        </nav>
-    </div>
-<div class = "col-sm-8 col-md-8 col-lg-8" style="margin-left: 160px;font-size: 28px; padding: 0px 40px;">
-    <div class="container">
+{% include "jportal/sidebar_js.html" %}
+<main>
+    <div class="container row" style="margin-left: 150px;font-size: 28px; padding: 0px 20px;">
+        <div class="col-sm-12 col-md-12 col-lg-12">
         <div class="jumbotron">
             <h3 style="display:inline;font-size:1em;">Profile Details</h3>
             <a class="btn btn-border-d btn-round" href="{% url 'jobseeker_edit' username=user.username %}" style="float:right;"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -55,7 +18,13 @@
             <div class="col-md-3 col-lg-3" style="border-right: 1px solid #ddd;">
                 <h3 class="work-details-title font-alt">Personal Details</h3>
                 <h4><i class="fa fa-user fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i>{{user.first_name}} {{user.last_name}}</h4>
-                <h4><i class="fa fa-user fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.gender}}</h4>
+                <h4>
+                    {% if seeker.gender == 'Male' %}
+                    <i class="fa fa-male fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.gender}}
+                    {% else %}
+                    <i class="fa fa-female fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.gender}}
+                    {% endif %}
+                </h4>
                 <h4><i class="glyphicon glyphicon-calendar fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.dob}}</h4>
             </div>  
             <div class="col-md-3 col-lg-3" style="border-right: 1px solid #ddd;">
@@ -65,9 +34,7 @@
                 <h4><i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: {{user.email}}</h4>
             </div>  
         </div>
-</div>
-</div>
-<div class="container" id="resume">
-    {% include "jportal/extra_details.html" %}
-</div>
+        </div>
+    </div>
+</main>
 {% endblock %}

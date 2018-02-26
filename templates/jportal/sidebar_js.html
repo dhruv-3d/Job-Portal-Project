@@ -1,0 +1,15 @@
+<div class="container row">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+        <nav class="nav-sidebar" style="width:150px;position:absolute;z-index: 1; top: 100px;left: 1px;
+                                        padding: 15px 0;border-right: 1px solid #ddd;  font-family:Roboto;">
+            <ul class="nav tabs">
+                <li class="active"><a href="{% url 'jobseeker_profile' user.username %}">Profile Details</a></li>
+                <li><a href="{% url 'education' user.username %}">Educational Details</a></li>
+                <li><a href="{% url 'resume' user.username %}">Resume</a></li>
+                <li><a href="#">Recommended Jobs</a></li>
+                <li><a href="#">Jobs Applied</a></li>
+                <li><a href="#">Search Jobs</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
