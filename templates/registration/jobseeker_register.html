@@ -6,12 +6,13 @@
 {% block body_block %}
 <div class="container">
     <h2>Job Seeker Registration</h2>
-    <form method="post" action="." enctype="multipart/form-data" id="form" data-cities-url="{% url 'ajax_load_cities' %}">  
+    <form method="post" action="." enctype="multipart/form-data" id="form">  
         <div class="form-group">
             {% csrf_token %}
             {% bootstrap_form user_form %}
             {% bootstrap_form job_seek %}
             {% buttons %}
+            {{ job_seek_form.media.js }}
             <button type="submit" class="btn btn-primary" value="Register"> Submit </button>
             {% endbuttons %}
         </div>

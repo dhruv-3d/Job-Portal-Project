@@ -46,18 +46,7 @@ class EmployerForm(forms.ModelForm):
         model = Employer
         fields = ('designation','company_name','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['city'].queryset = City.objects.none()
 
-        if 'state' in self.data:
-            try:
-                state_id = int(self.data.get('state'))
-                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        elif self.instance.pk:
-            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')
 
 class UserEditForm(forms.ModelForm):
     class Meta:
@@ -74,18 +63,6 @@ class EmployerEditForm(forms.ModelForm):
         model = Employer
         fields = ('designation','company_name','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no',)    
        
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['city'].queryset = City.objects.none()
-
-        if 'state' in self.data:
-            try:
-                state_id = int(self.data.get('state'))
-                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        elif self.instance.pk:
-            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')       
         
 class EmployerCompanyProfileForm(forms.ModelForm):
     class Meta:
@@ -103,18 +80,6 @@ class JobSeekerForm(forms.ModelForm):
         model = JobSeekers
         fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['city'].queryset = City.objects.none()
-
-        if 'state' in self.data:
-            try:
-                state_id = int(self.data.get('state'))
-                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        elif self.instance.pk:
-            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')
 
 class JobseekerprofileForm(forms.ModelForm):
     class Meta:
@@ -192,15 +157,5 @@ class SearchJobseeker(forms.ModelForm):
         model = Depend
         fields = ('category','subcategory', 'state', 'city',)
    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['city'].queryset = City.objects.none()
 
-        if 'state' in self.data:
-            try:
-                state_id = int(self.data.get('state'))
-                self.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('name')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty City queryset
-        elif self.instance.pk:
-            self.fields['city'].queryset = self.instance.state.city_set.order_by('name')
+    

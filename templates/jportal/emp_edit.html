@@ -6,11 +6,12 @@
 {% block body_block %}
     <div class="container">
         <h2>Edit Personal Details</h2>
-        <form method="post" action="." enctype="multipart/form-data" id="form" data-cities-url="{% url 'ajax_load_cities' %}">   
+        <form method="post" action="." enctype="multipart/form-data" id="form" >   
                 {% csrf_token %}
                 {% bootstrap_form user_form %}
                 {% bootstrap_form emp_form %}
                 {% buttons %}
+                {{ emp_form.media.js }}
                 <button type="submit" name="submit" class="btn btn-primary" value="Submit">Submit</button>
                 {% endbuttons %}
         </form>

@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'bootstrap_toolkit',
 ]
 
+
+
 # If True, users can register
 REGISTRATION_OPEN = True
 
@@ -97,6 +99,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'job_portal_project.wsgi.application'
+
+
 
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

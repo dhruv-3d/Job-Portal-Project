@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.core.urlresolvers import reverse
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
@@ -10,12 +10,14 @@ from jportal.models import Category, SubCategory
 from jportal.models import Education, AddJob
 from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, State, City, JobSeekersProfile
-from jportal.models import Graduation, Post_Graduation, PhD
+from jportal.models import Graduation, Post_Graduation, PhD 
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm, EditJobForm, JobseekerprofileForm
 from jportal.forms import UserEditForm, EmployerEditForm, GraduationForm,PostGraduationForm,PhDForm
 from jportal.forms import ClassXIIForm,ClassXForm,SearchJobseeker 
 from django.utils import timezone
+
+
 
 from datetime import datetime
 
@@ -46,10 +48,6 @@ def user_type(ek_req):
 
     return usertype
 
-def load_cities(request):
-    state_id = request.GET.get('state')
-    cities = City.objects.filter(state_id=state_id).order_by('name')
-    return render(request, 'jportal/city_dropdown_list_options.html', {'cities': cities})
 
 def index(request):
     print(request.user)
@@ -215,6 +213,37 @@ def jobseeker_profile(request,username):
         context_dict['seeker'] = seeker
         context_dict['usertype'] = usertype 
     return render(request, 'jportal/jobseeker_profile.html', context_dict)
+
+
+def jobseeker_edit(request,username):
+    context_dict = {}
+    usertype=user_type(request)
+    user = User.objects.get(username=username)
+    b = JobSeekers.objects.get(user_id=user.id)   
+    print(b.id)
+    
+    #form = JobSeekerForm({'state':b.state,'city':b.city,'profile_img':b.profile_img,'gender':b.gender,'dob':b.dob,'contact_no':b.contact_no})
+    if request.method == 'POST':
+        user_form = UserEditForm(request.POST, instance=user)
+        form = JobSeekerForm(request.POST, request.FILES, instance=b)
+        if user_form.is_valid() and form.is_valid():
+                user_edit = user_form.save(commit=False)
+                user_edit.username = user_edit.email
+                user_edit.save()
+                form.save(commit=True)
+                return redirect('jobseeker_profile',username=user_edit.username)
+                
+        else:
+            print(form.errors)
+
+    else:
+        user_form = UserEditForm(request.POST, instance=user)
+        form = JobSeekerForm(instance=b)
+
+    context_dict['usertype'] = usertype
+    context_dict['user_form'] = user_form
+    context_dict['form'] = form
+    return render(request, 'jportal/jobseeker_edit.html', context_dict)
 
 #jobseeker profile form 
 def jobseekpro(request):
@@ -582,13 +611,13 @@ def search_j(request):
         except:
             pass   
         try:
-            state = State.objects.get(name=keyword)
+            state = State.objects.get(state=keyword)
             print (state.id)
             context_dict['state'] = state
         except:
             pass
         try:
-            city = City.objects.get(name=keyword)
+            city = City.objects.get(city=keyword)
             print (city.id)
             context_dict['city'] = city
         except:
