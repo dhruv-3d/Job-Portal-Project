@@ -154,3 +154,8 @@ class SearchJobseeker(forms.ModelForm):
     class Meta:
         model = Search
         fields = ('category','subcategory','state','city')
+
+class UploadResume(forms.ModelForm):
+    class Meta:
+        model = JobSeekersProfile
+        fields = ('resume',)

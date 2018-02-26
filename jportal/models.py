@@ -134,7 +134,7 @@ class JobSeekersProfile(models.Model):
     jobseeker = models.OneToOneField(JobSeekers,on_delete=models.CASCADE)
     linkedin_profile = models.CharField(max_length=200, blank=True)
     pref_job_loc = models.CharField(max_length=100, blank=True)
-    resume = models.FileField(blank=True)
+    resume = models.FileField(blank=True, upload_to='resume')
     category = models.ForeignKey(Category,on_delete=models.SET_NULL, null=True)
     subcategory= ChainedForeignKey(
         SubCategory,
@@ -166,12 +166,12 @@ class AddJob(models.Model):
     salary = models.PositiveIntegerField(blank=True)
     Job_responsibility = models.TextField(blank=False)
     candidate_profile = models.TextField(blank=False)
-    posted_date= models.DateTimeField(auto_now=True)
+    posted_date= models.DateTimeField(auto_now_add=True)
 
 class Appliers(models.Model):
     applier = models.ForeignKey(JobSeekers,on_delete=models.CASCADE)
     job_id = models.ForeignKey(AddJob,on_delete=models.CASCADE)
-    date_apply = models.DateField()
+    date_apply = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=50)
 
 class Search(models.Model):

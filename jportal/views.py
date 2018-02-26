@@ -13,7 +13,7 @@ from jportal.models import JobSeekers, State, City, JobSeekersProfile
 from jportal.models import Graduation, Post_Graduation, PhD
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, AddJobForm, EmployerCompanyProfileForm
-from jportal.forms import UserEditForm, EmployerEditForm, GraduationForm,PostGraduationForm,PhDForm
+from jportal.forms import UserEditForm, EmployerEditForm, GraduationForm,PostGraduationForm,PhDForm,UploadResume
 from jportal.forms import ClassXIIForm,ClassXForm, SearchJobseeker, JobseekerprofileForm,JobSeekerEditForm
 from django.utils import timezone
 
@@ -246,7 +246,7 @@ def jobseeker_edit(request,username):
     context_dict['form'] = form
     return render(request, 'jportal/jobseeker_edit.html', context_dict)
 
-def resumeform(request,username):
+def create_resume(request,username):
     print(request.user)
     usertype = user_type(request)
     context_dict={'usertype':usertype}
@@ -260,7 +260,7 @@ def resumeform(request,username):
         a=1
     except:
         a=0
-    if request.method == 'POST':
+    if request.method == 'POST' and 'create' in request.POST:
         if a:
             form = JobseekerprofileForm(request.POST,instance=jp)
             if form.is_valid():
@@ -284,10 +284,39 @@ def resumeform(request,username):
             form = JobseekerprofileForm(instance=jp)
         else:
             form = JobseekerprofileForm()
-
+        usertype=user_type(request)
+    if request.method == 'POST' and 'upload' in request.POST:
+        resumefile = UploadResume(request.POST, request.FILES)
+        if resumefile.is_valid():
+            resumefile.save()
+            return redirect('resume', username=username)
+    else:
+        resumefile = UploadResume()
     context_dict['form'] = form
     context_dict['education'] = education
+    context_dict['file'] = resumefile
     return render(request,'jportal/create_resume.html', context_dict)
+def view_resume(request,username):
+    context_dict = {}
+    usertype = user_type(request)
+    if request.method == 'GET':
+        user = User.objects.get(username=username)
+        j = JobSeekers.objects.get(user_id=user.id)
+        try:
+            js = JobSeekersProfile.objects.get(jobseeker_id=j.id)
+        except:
+            js=''
+        try:
+            ed=Education.objects.filter(jobseeker_id=j.id).first()
+        except:
+            ed=''
+        context_dict['user'] = user
+        context_dict['j'] = j
+        context_dict['js'] = js
+        context_dict['ed'] = ed
+        context_dict['usertype'] = usertype 
+    return render(request, 'jportal/view_resume.html', context_dict)
+
 #-------------------------Job--------------------
 def add_job(request):
     print(request.user)
