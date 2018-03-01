@@ -61,9 +61,6 @@ class City(models.Model):
         return self.city
 
 
-class Education(models.Model):
-    education = models.CharField(max_length=100)
-
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     designation = models.CharField(max_length=30, blank=False)
