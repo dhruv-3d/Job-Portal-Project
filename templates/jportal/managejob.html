@@ -1,6 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
-
+{% load bootstrap3 %}
 {% block title_block %}
 	Job Search - Manage Job
 {% endblock %}
@@ -27,14 +26,14 @@
     <div class="container" style="width:70%;">
         <div class="container">
             <a href="{% url 'add_job' %}">
-                <button class="btn btn-secondary btn-lg" type="submit" value="ADD JOB">Add a new job</button>
+                <button class="btn btn-primary btn-lg" type="submit" value="ADD JOB">Add a new job</button>
             </a>
         </div>
     
         <div style="border:1px solid; margin:40px;">
         </div>
 
-        <div class="container" style="border:1px solid; margin:10px; padding:20px; border-radius:20px;">
+        <div class="container" style="border:1px solid; margin:5px; padding:5px; border-radius:10px; width:70%;">
                 <h3>Jobs Posted by you</h3>
 
             {% include "jportal/job_listing.html" %}

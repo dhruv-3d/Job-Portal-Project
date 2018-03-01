@@ -1,5 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
+{% load bootstrap3 %}
 {% block title_block %}
 	Job seeker - Edit Profile
 {% endblock %}
@@ -9,8 +9,8 @@
     <h1>Edit Profile Details</h1>
     <form method="POST" action="." enctype="multipart/form-data">
         {% csrf_token %}
-        {{ user_form.as_p }}
-        {{ form.as_p}}
+        {% bootstrap_form user_form %}
+        {% bootstrap_form form %}
         {{ form.media.js }}
         <button type="submit" value="submit">Submit</button>
         <br/>

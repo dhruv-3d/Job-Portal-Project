@@ -1,5 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
+{% load bootstrap3 %}
 
 {% block title_block %}
     Jobseeker Registration
@@ -8,13 +8,18 @@
     
 {% endblock %}
 {% block body_block %}
+<div class="container">
     <h2>Jobseeker Registration</h2>
     <form method="post" action="." enctype="multipart/form-data" >  
             {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ job_seek.as_p }}
-            {{ job_seek.media.js}}
+            {% bootstrap_form user_form %}
+            {% bootstrap_form job_seek %}
+            {{ job_seek.media.js }}
             <input type="submit" name="emp_submit" value="Register">
 
     </form>
+</div>
+<br>
+<br>
+<br>
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
+{% load bootstrap3 %}
 
 {% block title %}Education{% endblock %}
 {% block nav %} {% endblock %}
@@ -8,7 +8,7 @@
     <h2>Add Post Graduation</h2>
 <form method="post" action="." enctype="multipart/form-data">
     {% csrf_token %} 
-    {{ form.as_p }}
+    {% bootstrap_form form %}
     <input type="submit" value="Add">
 </form>
 </div>

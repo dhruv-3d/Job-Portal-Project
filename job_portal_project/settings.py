@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'jportal',
     'smart_selects',
-    'clever_selects', 
+    'bootstrap3',
+    'bootstrap_toolkit',
     'registration',
     'captcha',
 ]

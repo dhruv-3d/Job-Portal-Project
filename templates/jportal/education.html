@@ -6,13 +6,19 @@
 {% block body_block %}
 
 <div class="container">
-    <button type="button" name="grad" data-toggle="collapse" data-target="#form_g">Add Graduation</button>
-    <a type="button" href="{% url 'post_graduation' user.username %}">Add Post Graduation</a>
-    <a type="button" href="{% url 'phd' user.username %}">Add PhD/Doctorate</a>
-    <a type="button" href="{% url 'class_xii' user.username %}">Add Class 12th</a>
-    <a type="button" href="{% url 'class_x' user.username %}">Add Class 10th</a>
+    <a type="button" href="{% url 'graduation' user.username %}"><button>Graduation</button></a>
+    <br>
+    <br>
+    <a type="button" href="{% url 'post_graduation' user.username %}"><button>Add Post Graduation</button></a>
+    <br>
+    <br>
+    <a type="button" href="{% url 'phd' user.username %}"><button>Add PhD/Doctorate</button></a>
+    <br>
+    <br>
+    <a type="button" href="{% url 'class_xii' user.username %}"><button>Add Class 12th</button></a>
+    <br>
+    <br>
+    <a type="button" href="{% url 'class_x' user.username %}"><button>Add Class 10th</button></a>
 </div>
-<div class="collapse" id="form_g">
-    {% include 'jportal/graduation.html' with form=form1 %}
-</div>
+
 {% endblock %}

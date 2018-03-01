@@ -1,5 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
+{% load bootstrap3 %}
 
 {% block title_block %}
 	Job Search - Employer Registration
@@ -9,8 +9,9 @@
         <h2>Edit Personal Details</h2>
         <form method="post" action="." enctype="multipart/form-data" >   
                 {% csrf_token %}
-                {{ user_form.as_p }}
-                {{ emp_form.as_p }}
+                {% bootstrap_form user_form %}
+                {% bootstrap_form emp_form %}
+                {{ emp_form.media.js }}
                 <input type="submit" name="submit" value="Submit">
         </form>
     </div>

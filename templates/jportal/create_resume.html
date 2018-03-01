@@ -1,5 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
+{% load bootstrap3 %}
 {% load app_tags %}
 {% block title %}
     Resume
@@ -20,8 +20,8 @@
             {% endif %}
             <form method="post" action="." enctype="multipart/form-data" id="form">   
                 {% csrf_token %}
+                {% bootstrap_form form %}
                 {{form.media.js}}
-                {{form.as_p}}
                 <button class="btn btn-primary btn-round" type="submit" name="create">Submit</button>
                 <br/>
             </form>
@@ -29,7 +29,8 @@
         <div class="col-sm-2 col-md-4 col-lg-4">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ file.as_p }}
+                {% bootstrap_form file %}
+                
                 <button class="btn btn-primary btn-round" type="submit" name="upload">Upload</button>
             </form>
         </div>

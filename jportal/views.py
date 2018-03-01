@@ -172,7 +172,7 @@ def employer_profile(request,username):
         emp_usr = User.objects.get(username=username)
         print(emp_usr.username)
         emp_data = Employer.objects.get(user_id=emp_usr.id)
-        company_form = EmployerCompanyProfileForm(request.POST)
+        company_form = EmployerCompanyProfileForm(request.FILES,request.POST)
 
         if company_form.is_valid():
             company_data= company_form.save(commit=False) 
@@ -197,7 +197,7 @@ def edit_employer_profile(request, username):
 
     if request.method == "POST":
         user_form = UserEditForm(request.POST, instance=user)
-        emp_form = EmployerEditForm(request.POST, instance=emp)
+        emp_form = EmployerEditForm(request.POST, request.FILES,instance=emp)
 
         if user_form.is_valid() and emp_form.is_valid():
             user_edit = user_form.save(commit=False)
@@ -222,7 +222,7 @@ def edit_company_details(request):
     company = EmployerCompanyProfile.objects.get(employer_id=emp.id)
 
     if request.method == "POST":
-        company_form = EmployerCompanyProfileForm(request.POST, instance=company)
+        company_form = EmployerCompanyProfileForm(request.POST, request.FILES, instance=company)
 
         if company_form.is_valid():
             company_form.save()
@@ -656,7 +656,7 @@ def add_grad(request,username):
         else:
             form = GraduationForm()
     context_dict={'form':form}    
-    return render(request,'jportal/education.html',context_dict)
+    return render(request,'jportal/graduation.html',context_dict)
         
 def add_postgrad(request,username):
     user = User.objects.get(username=username)
@@ -806,17 +806,6 @@ def add_education(request,username):
 
     context_dict ={}
     context_dict['usertype'] = user_type(request)
-
-    if request.method == 'GET':
-        context_dict['form1'] = add_grad(request,username)
-
-    if request.method == 'POST':
-        if 'grad' in request.POST:
-            context_dict['form1'] = add_grad(request,username)
-        if 'dgdfg' in request.POST:
-            #sdfgdsg dusraform
-            pass
-
     return render(request, 'jportal/education.html', context_dict)
 
 

@@ -7,7 +7,7 @@
                 <li><a href="{% url 'education' user.username %}">Educational Details</a></li>
                 <li><a href="{% url 'resume' user.username %}">Resume</a></li>
                 <li><a href="#">Recommended Jobs</a></li>
-                <li><a href="#">Jobs Applied</a></li>
+                <li><a href="{% url 'jobs_applied' %}">Jobs Applied</a></li>
                 <li><a href="#">Search Jobs</a></li>
             </ul>
         </nav>

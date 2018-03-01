@@ -1,19 +1,22 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
+{% load bootstrap3 %}
 
 {% block title_block %}
 	Job Search - Add Job
 {% endblock %}
 {% block body_block %}
+<div class="container">
     <h2>JOB FORM</h2>
     <form method="post" action=".">
         {% csrf_token %}
-        <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
-        <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
 
-        {{ form.as_p }}
+        {% bootstrap_form form %}
         {{ form.media.js }}
   
         <input type="submit" value="Submit">
+        <br>
+        <br>
+        <br>
     </form>
+</div>
 {% endblock %}

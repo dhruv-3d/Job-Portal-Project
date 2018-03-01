@@ -1,5 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
+{% load bootstrap3 %}
 {% load app_tags %}
 {% block title %}
     Search - Jobseeker 
@@ -9,26 +9,35 @@
     <div class="container" style="width:70%; padding-top:50px;">
         <form method="post" action="." enctype="multipart/form-data" id="form">   
                 {% csrf_token %}
+                {% bootstrap_form form %}
                 {{form.media.js}}
-                {{form}}
                 <input type="submit" name="submit" value="Search">
         </form>
+        <br>
+        <br>
+        <div class="container">
+        <table>
+    
         {% if state %}
             {% if city %}
                 {% get_city city.id as js %}
                     {% if js %}
+                        <tr>
                         {% for i in js %}
-                            <a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.username }}</a>
+                           <td><b><a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.username }}</a></b></td>
                         {% endfor%}
+                        </tr>
                     {% else %}
                         <h3> No Jobseekers found </h3>
                     {% endif %}
             {% else %}
                 {% get_state state.id as js %}
                 {% if js %}
+                    <tr>
                     {% for i in js %}
-                        <a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.username }}</a>
+                        <td><b><a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.username }}</a></b></td>
                     {% endfor%}
+                    </tr>
                 {% else %}
                     <h3> No Jobseekers found </h3>
                 {% endif %}
@@ -39,22 +48,28 @@
             {% if subcategory%}
                 {% get_subcat subcategory.id as J_see %}
                     {% if J_see %}
+                        <tr>
                         {% for i in J_see %}
-                            <a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}">{{ i.jobseeker.user.username }}</a>
+                           <td><b><a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}">{{ i.jobseeker.user.username }}</a></b></td>
                         {% endfor%}
+                        </tr>
                     {% else %}
                         <h3> No Jobseekers found </h3>
                     {% endif %}
             {% else %}
                 {% get_cate category.id as J_see %}
                 {% if J_see %}
+                    <tr>
                     {% for i in J_see %}
-                        <a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}">{{ i.jobseeker.user.username }}</a>
+                       <td><b><a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}">{{ i.jobseeker.user.username }}</a></b></td>
                     {% endfor%}
+                    </tr>
                 {% else %}
                     <h3> No Jobseekers found </h3>
                 {% endif %}
             {% endif %}
         {% endif %}
+        </table>
     </div>
+</div>
 {% endblock %}

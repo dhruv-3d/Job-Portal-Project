@@ -1,5 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
+{% load bootstrap3 %}
 
 {% block title_block %}
 	Job Search - Company_details_form
@@ -9,7 +9,7 @@
     <h2>Company Details</h2>
     <form method="post" action="." enctype="multipart/form-data" >   
             {% csrf_token %}
-            {{company_form.as_p}}
+            {% bootstrap_form company_form %}
             <input type="submit" name="submit" value="Confirm">
     </form>
 </div>
