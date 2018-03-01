@@ -1,19 +1,8 @@
-{% extends 'jportal/base.html' %}
-{% load staticfiles %}
 
-{% block title_block %}
-    Job Listing
-{% endblock %}
-
-
-{% block navbar %}
-{% endblock %}
-
-{% block body_block %}
-    <div class="container-fluid">
+    <div class="container">
 
         <!-- job listing for for jobs posted by employers -->
-        {% if jobs and user_type == 'e' %}
+        {% if jobs and usertype == 'e' %}
         <div class="panel-group" style="width:500px;">
             {% for job in jobs %}
                 <div class="panel panel-primary" style="border-radius:10px;">
@@ -50,8 +39,3 @@
             <h4>No Jobs Found</h4>    
         {% endif %}
     </div>
-{% endblock %}
-
-{% block footer_block %}
-
-{% endblock %}

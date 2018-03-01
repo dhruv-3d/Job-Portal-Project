@@ -2,12 +2,14 @@ from django import forms
 from django.forms import ModelForm, ModelChoiceField
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from smart_selects.form_fields import ChainedModelChoiceField, ChainedSelect
+
 from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile
-from jportal.models import Category, SubCategory, AddJob, City, State, Education
+from jportal.models import AddJob, Depend
+from jportal.models import Category, SubCategory, State, City, Education
 from jportal.models import Graduation, Post_Graduation, PhD, Search
 
+from smart_selects.form_fields import ChainedSelect, ChainedModelChoiceField
 from captcha.fields import CaptchaField
 import datetime
 
@@ -21,7 +23,7 @@ GRADING_SYSTEM = [
 
 def get_years(initial=1970):
     return [(year, year) for year in range(datetime.datetime.now().year, initial, -1)]
-
+    
 class UserForm(forms.ModelForm):
     email = forms.EmailField(widget=forms.EmailInput,required=True)
     password = forms.CharField(widget=forms.PasswordInput())
@@ -31,7 +33,12 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name','email', 'password', 'confirm_password',)
- 
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name','email')
+
 class EmployerForm(forms.ModelForm):
     designation = forms.CharField(max_length=30,required=True)
     company_name = forms.CharField(max_length=30,required=True )
@@ -46,11 +53,6 @@ class EmployerForm(forms.ModelForm):
         model = Employer
         fields = ('designation','company_name','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
 
-class UserEditForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name','email')
-
 class EmployerEditForm(forms.ModelForm):
     designation = forms.CharField(max_length=30,required=True)
     company_name = forms.CharField(max_length=30,required=True )
@@ -60,7 +62,7 @@ class EmployerEditForm(forms.ModelForm):
     class Meta:
         model = Employer
         fields = ('designation','company_name','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no',)    
-       
+
 class EmployerCompanyProfileForm(forms.ModelForm):
     class Meta:
         model = EmployerCompanyProfile
@@ -86,18 +88,22 @@ class JobseekerprofileForm(forms.ModelForm):
     class Meta:
        model = JobSeekersProfile
        exclude = ('jobseeker','resume','education',)
+
+
+
+class SearchForm(forms.ModelForm):
+    class Meta:
+        model = Depend
+        exclude = ('id',)
+
+
 #------
 #karishma's form
-class AddJobForm(forms.ModelForm):
+class JobForm(forms.ModelForm):
     class Meta:
        model = AddJob
        exclude = ('posted_date','employer','slug',)
 
-
-class EditJobForm(forms.ModelForm):
-    class Meta:
-       model = AddJob
-       exclude = ('posted_date','employer','slug',)
 
 class GraduationForm(forms.ModelForm):
     graduation = forms.ModelChoiceField(queryset=Graduation.objects.all(), required=True)

@@ -2,7 +2,6 @@ from django import template
 from jportal.models import Category, SubCategory, User, City, State, JobSeekersProfile
 from jportal.models import JobSeekers, Employer, AddJob, Appliers
 
-
 register = template.Library()
 
 @register.assignment_tag
@@ -21,9 +20,6 @@ def get_cat_subcat(subcat, cat):
 
     return subcat_name.name + ',' + cat_name.title
 
-
-
-
 @register.assignment_tag
 def get_app_count(jobid):
 
@@ -36,6 +32,7 @@ def has_app(job):
 
     application = Appliers.objects.filter(job_id=job.id)
 
+    count = application.count()
 
     return application
 
@@ -86,3 +83,4 @@ def get_state(stateid):
 def get_city(cityid):
     js = JobSeekers.objects.filter(city_id=cityid)   
     return js
+

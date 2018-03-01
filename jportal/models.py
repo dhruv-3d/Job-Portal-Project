@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from smart_selects.db_fields import ChainedForeignKey
+from django.template.defaultfilters import slugify
 from django.core.validators import MaxValueValidator
 class Category(models.Model):
     title = models.CharField(max_length=50)
@@ -11,9 +12,8 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
-
 class SubCategory(models.Model):
-    category = models.ForeignKey(Category,on_delete=models.CASCADE)
+    category = models.ForeignKey(Category)
     name = models.CharField(max_length=50)
 
     class Meta:
@@ -21,6 +21,8 @@ class SubCategory(models.Model):
 
     def __str__(self):
         return self.name
+
+
 class Graduation(models.Model):
     title = models.CharField(max_length=50)
     class Meta:
@@ -58,6 +60,10 @@ class City(models.Model):
     def __str__(self):
         return self.city
 
+
+class Education(models.Model):
+    education = models.CharField(max_length=100)
+
 class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     designation = models.CharField(max_length=30, blank=False)
@@ -91,7 +97,7 @@ class EmployerCompanyProfile(models.Model):
         return self.company_name
 
 class JobSeekers(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(User)
     state = models.ForeignKey(State,on_delete=models.SET_NULL,null=True,blank=False)
     city = ChainedForeignKey(
             City,
@@ -100,14 +106,13 @@ class JobSeekers(models.Model):
             show_all=False,
             auto_choose=True,
             sort=True)
-    profile_img = models.ImageField(blank=True,upload_to='jobseeker_pic')
+    profile_img = models.ImageField(blank=True)
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
-    contact_no = models.PositiveIntegerField(blank=False,validators=[MaxValueValidator(9999999999)])
+    contact_no = models.CharField(max_length=10, blank=False)
     email_verify = models.BooleanField(default=False)
     phone_verify = models.BooleanField(default=False)
-    class Meta:
-        verbose_name_plural = 'JobSeekers'
+
     def __str__(self):
         return self.user.username
 
@@ -128,7 +133,6 @@ class Education(models.Model):
     percentage = models.DecimalField(max_digits=4,decimal_places=2,default=0,blank=True)
     class Meta:
         verbose_name_plural = 'Education'
-
 
 class JobSeekersProfile(models.Model):
     jobseeker = models.OneToOneField(JobSeekers,on_delete=models.CASCADE)
@@ -151,8 +155,19 @@ class JobSeekersProfile(models.Model):
     def __str__(self):
         return self.jobseeker.user.username
 
+class Depend(models.Model):
+
+    category=models.ForeignKey(Category, blank=True)
+    subcategory= ChainedForeignKey(
+        SubCategory,
+        chained_field="category",
+        chained_model_field="category",
+        show_all=False,
+        auto_choose=True,
+        sort=True, blank=True)
+
 class AddJob(models.Model):
-    category=models.ForeignKey(Category,on_delete=models.CASCADE)
+    category=models.ForeignKey(Category)
     subcategory= ChainedForeignKey(
         SubCategory,
         chained_field="category",
@@ -160,19 +175,41 @@ class AddJob(models.Model):
         show_all=False,
         auto_choose=True,
         sort=True)
-    title=models.CharField(max_length=100,blank=False)
-    employer = models.ForeignKey(Employer,on_delete=models.CASCADE)
+    title=models.CharField(max_length=100,blank=False,unique=True)
+    employer = models.ForeignKey(Employer)
     last_date = models.DateField(blank=True)
     salary = models.PositiveIntegerField(blank=True)
     Job_responsibility = models.TextField(blank=False)
     candidate_profile = models.TextField(blank=False)
-    posted_date= models.DateTimeField(auto_now_add=True)
+    posted_date= models.DateTimeField(auto_now=True, blank=True)
+    slug=models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title) 
+        super(AddJob, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
 
 class Appliers(models.Model):
-    applier = models.ForeignKey(JobSeekers,on_delete=models.CASCADE)
-    job_id = models.ForeignKey(AddJob,on_delete=models.CASCADE)
-    date_apply = models.DateField(auto_now_add=True)
+    jobseeker = models.ForeignKey(JobSeekers)
+    job = models.ForeignKey(AddJob)
+    date_apply = models.DateField()
     status = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.job
+
+class Subscribtion(models.Model):
+    sub_status = models.BooleanField(default=False)
+    subscriber_email = models.EmailField()
+
+class Newsletter(models.Model):
+    sender_email = models.EmailField()
+    sent_date = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=120, blank=False)
+    message = models.CharField(max_length=500, blank=False)
+    sent_to = models.CharField(max_length=2000, blank=True)
 
 class Search(models.Model):
     category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,blank=True)

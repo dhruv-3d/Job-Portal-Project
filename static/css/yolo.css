@@ -1,0 +1,174 @@
+.examples.bg-dark {
+    background: #333;
+    border: 0;
+  }
+
+  .module,
+  .module-small {
+    position: relative;
+    padding: 140px 0;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+  }
+  
+  /* Module header */
+  .module-small {
+    padding: 70px 0;
+  }
+  
+  .module-extra-small {
+    padding: 25px 0px;
+  }
+  
+  .module-medium {
+    padding: 75px 0px;
+  }
+  
+
+  /* Dark background */
+  .bg-dark,
+  .bg-dark-30,
+  .bg-dark-60,
+  .bg-dark-90,
+  .bg-dark .module-title,
+  .bg-dark-30 .module-title,
+  .bg-dark-60 .module-title,
+  .bg-dark-90 .module-title,
+  .bg-dark .module-subtitle,
+  .bg-dark-30 .module-subtitle,
+  .bg-dark-60 .module-subtitle,
+  .bg-dark-90 .module-subtitle,
+  .bg-dark .alt-module-subtitle h5,
+  .bg-dark-30 .alt-module-subtitle h5,
+  .bg-dark-60 .alt-module-subtitle h5,
+  .bg-dark-90 .alt-module-subtitle h5 {
+    color: #fff;
+  }
+  
+  .bg-dark {
+    background: #111;
+  }
+  
+  .bg-dark-30:before {
+    position: absolute;
+    background: rgba(2, 2, 2, 0.4);
+    content: " ";
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
+  
+  .bg-dark-60:before {
+    position: absolute;
+    background: rgba(34, 34, 34, 0.8);
+    content: " ";
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
+  
+  .bg-dark-90:before {
+    position: absolute;
+    background: rgba(34, 34, 34, 0.9);
+    content: " ";
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
+    
+  .bg-dark a {
+    color: #aaa;
+  }
+  
+  .bg-dark a:hover, .bg-dark a:focus {
+    color: #fff;
+  }
+
+  .parallax-bg {
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+  .showcase-page .showcase-page-header {
+    background-color: rgba(2, 2, 2, 0.7);
+  }
+
+  
+  .module-title {
+    position: relative;
+    letter-spacing: 4px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 30px;
+    color: #111;
+    margin: 0 0 70px;
+  }
+  
+  .module-subtitle {
+    text-align: center;
+    font-size: 16px;
+    color: #111;
+    margin-bottom: 70px;
+  }
+  
+  .module-icon {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+  
+  .module-title + .module-subtitle {
+    margin-top: -35px;
+  }
+  
+  /* Restaurant module header */
+  .alt-module-subtitle {
+    display: table;
+  }
+  
+  .alt-module-subtitle h5 {
+    display: table-cell;
+    white-space: pre;
+    padding: 0 8px;
+    color: #111;
+  }
+
+    
+  .container .works-grid-3 .work-item {
+    width: 33.2%;
+  }
+
+  /* Caption */
+  .titan-caption {
+    position: relative;
+    display: table;
+    height: 100%;
+    width: 70%;
+    margin: 0 auto;
+  }
+  
+  .titan-caption {
+    position: relative;
+    display: table;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+  }
+    
+  .caption-content {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .work-item,
+  .works-grid-3 .work-item,
+  .container .works-grid-3 .work-item,
+  .works-grid-4 .work-item,
+  .works-grid-5 .work-item {
+    width: 50%;
+  }

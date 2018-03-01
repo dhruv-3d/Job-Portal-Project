@@ -1,0 +1,20 @@
+{% extends 'jportal/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Job Search - Edit Job
+{% endblock %}
+{% block body_block %}
+    <div>
+    <form method="POST" action=".">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ form.media.js }}
+    </div>
+    <div>
+        <button type="submit" value="submit">Submit</button>
+        <br/>
+    
+    </div>
+</form>
+{% endblock %}

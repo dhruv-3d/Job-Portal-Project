@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'jportal',
     'smart_selects',
+    'clever_selects', 
     'registration',
     'captcha',
 ]
@@ -52,15 +53,14 @@ REGISTRATION_OPEN = True
 ACCOUNT_ACTIVATION_DAYS = 7
 
 # If True, the user will be automatically logged in.
-REGISTRATION_AUTO_LOGIN = True
+REGISTRATION_AUTO_LOGIN = True   #but aa use nathi kairu
 
 # The page you want users to arrive at after they successfully log in
-LOGIN_REDIRECT_URL = '/jportal/'
-LOGOUT_REDIRECT_URL = '/jportal/'
+LOGIN_REDIRECT_URL = '/jportal/' #aa use kairu che
  
 # The page users are directed to if they are not logged in,
 # and are trying to access pages requiring authentication
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = '/accounts/login/' #aa pan use kairu che
 
 
 
@@ -94,7 +94,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'job_portal_project.wsgi.application'
-
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
@@ -146,7 +145,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+
 STATICFILES_DIRS = [STATIC_DIR, ]
+
 STATIC_URL = '/static/'
 
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
