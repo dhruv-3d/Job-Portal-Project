@@ -3,9 +3,8 @@ from django.forms import ModelForm, ModelChoiceField
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-from jportal.models import Employer, EmployerCompanyProfile
+from jportal.models import Employer, EmployerCompanyProfile, AddJob
 from jportal.models import JobSeekers, JobSeekersProfile
-from jportal.models import AddJob, Depend
 from jportal.models import Category, SubCategory, State, City, Education
 from jportal.models import Graduation, Post_Graduation, PhD, Search
 
@@ -91,10 +90,10 @@ class JobseekerprofileForm(forms.ModelForm):
 
 
 
-class SearchForm(forms.ModelForm):
+class SearchByCategory(forms.ModelForm):
     class Meta:
-        model = Depend
-        exclude = ('id',)
+        model = Search
+        fields = ('category','subcategory')
 
 
 #------
@@ -156,10 +155,10 @@ class ClassXForm(forms.ModelForm):
         model = Education
         fields = ('board','year','medium','percentage',)
     
-class SearchJobseeker(forms.ModelForm):
+class SearchByLocation(forms.ModelForm):
     class Meta:
         model = Search
-        fields = ('category','subcategory','state','city')
+        fields = ('state','city')
 
 class UploadResume(forms.ModelForm):
     class Meta:

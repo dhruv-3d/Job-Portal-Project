@@ -5,14 +5,27 @@
     Search - Jobseeker 
 {% endblock %}
 {% block body_block %} 
+
 {% include "jportal/sidebar_emp.html" %}
-    <div class="container" style="width:70%; padding-top:50px;">
-        <form method="post" action="." enctype="multipart/form-data" id="form">   
-                {% csrf_token %}
-                {% bootstrap_form form %}
-                {{form.media.js}}
+    <div class="container" style="margin-top:100px;margin-left: 150px; padding: 0px 20px;">
+        <div class="col-sm-6 col-md-6 col-lg-6" style="border-right:1px solid #ddd">
+            <h3>Search By Category</h3>
+            <form method="post" action="." enctype="multipart/form-data" id="form">   
+                    {% csrf_token %}
+                    {% bootstrap_form form1 %}
+                    {{form1.media.js}}
+                    <input type="submit" name="submit" value="Search">
+            </form>
+        </div>  
+        <div class="col-sm-6 col-md-6 col-lg-6">
+            <h3>Search By Location</h3>
+            <form method="post" action="." enctype="multipart/form-data" id="form">   
+                    {% csrf_token %}
+                    {% bootstrap_form form2 %}
+                    {{form2.media.js}}
                 <input type="submit" name="submit" value="Search">
-        </form>
+            </form>
+        </div>  
         <br>
         <br>
         <div class="container">

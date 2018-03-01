@@ -152,17 +152,6 @@ class JobSeekersProfile(models.Model):
     def __str__(self):
         return self.jobseeker.user.username
 
-class Depend(models.Model):
-
-    category=models.ForeignKey(Category, blank=True)
-    subcategory= ChainedForeignKey(
-        SubCategory,
-        chained_field="category",
-        chained_model_field="category",
-        show_all=False,
-        auto_choose=True,
-        sort=True, blank=True)
-
 class AddJob(models.Model):
     category=models.ForeignKey(Category)
     subcategory= ChainedForeignKey(

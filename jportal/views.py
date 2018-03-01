@@ -9,13 +9,12 @@ from django.contrib.auth.hashers import make_password
 from jportal.models import Category, SubCategory, State, City
 from jportal.models import Education, Graduation, Post_Graduation, PhD, AddJob
 from jportal.models import Employer, EmployerCompanyProfile
-from jportal.models import JobSeekers, JobSeekersProfile
-from jportal.models import Depend, Appliers
+from jportal.models import JobSeekers, JobSeekersProfile, Appliers
 from jportal.models import Subscribtion, Newsletter
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm, EmployerCompanyProfileForm
 from jportal.forms import UserEditForm, EmployerEditForm, JobSeekerEditForm
-from jportal.forms import SearchForm, SearchJobseeker, JobseekerprofileForm, UploadResume
+from jportal.forms import SearchByCategory, SearchByLocation, JobseekerprofileForm, UploadResume
 from jportal.forms import GraduationForm,PostGraduationForm,PhDForm,ClassXIIForm,ClassXForm
 
 from datetime import datetime
@@ -55,7 +54,7 @@ def index(request):
     context_dict = {}
     context_dict['usertype'] = user_type(request)
 
-    context_dict['searchform'] = SearchForm()
+    context_dict['searchform'] = SearchByCategory()
     context_dict['jobs'] = job_listing(request)
 
     return render(request, 'jportal/index.html', context_dict)
@@ -811,9 +810,10 @@ def add_education(request,username):
 
 #--------------------------Search Jobseeker--------------------        
 def search(request):
-    form = SearchJobseeker()
+    form1 = SearchByCategory()
+    form2 = SearchByLocation()
     usertype=user_type(request)
-    context_dict={'form':form, 'usertype':usertype}
+    context_dict={'form1':form1,'form2':form2,'usertype':usertype}
     if request.method == 'POST':
         try:
             cat = request.POST['category']

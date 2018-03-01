@@ -1,5 +1,5 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
+{% load bootstrap3 %}
 
 {% block title_block %}
 
@@ -15,16 +15,8 @@
 				<!-- Job Search functionality -->
 				
 				<form id="searchjob" method="GET" action=".">
-						<script type="text/javascript" src="/static/smart-selects/admin/js/chainedfk.js"></script>
-						<script type="text/javascript" src="/static/smart-selects/admin/js/bindfields.js"></script>
-						{% csrf_token %}
-						<div class="form-group">
-							<input name ="jobtitle" type="text" class="form-control" placeholder="Search Jobs">
-						</div>
-						<br>
-						<!--- Search with category & subcategory-->					
-						
-						{{ searchform.as_p }}
+						{% csrf_token %}				
+						{% bootstrap_form searchform %}
 						{{ searchform.media.js }}
 						<br>
 						<button id="butt" type="submit" class="btn btn-default">Submit</button>
