@@ -164,7 +164,7 @@ class AddJob(models.Model):
     title=models.CharField(max_length=100,blank=False,unique=True)
     employer = models.ForeignKey(Employer)
     last_date = models.DateField(blank=True)
-    salary = models.PositiveIntegerField(blank=True)
+    salary = models.CharField(max_length=50,blank=True)
     Job_responsibility = models.TextField(blank=False)
     candidate_profile = models.TextField(blank=False)
     posted_date= models.DateTimeField(auto_now=True, blank=True)

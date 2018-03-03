@@ -1,20 +1,18 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
+{% load bootstrap3 %}
 
 {% block title_block %}
 	Job Search - Edit Job
 {% endblock %}
 {% block body_block %}
-    <div>
-    <form method="POST" action=".">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {{ form.media.js }}
+    <div class="container">
+        <form method="POST" action=".">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {{ form.media.js }}
+            <button class="btn btn-primary" type="submit" value="submit">Submit</button>
+        </form>
     </div>
-    <div>
-        <button type="submit" value="submit">Submit</button>
-        <br/>
-    
-    </div>
-</form>
+    <br/>
+    <br/>
 {% endblock %}

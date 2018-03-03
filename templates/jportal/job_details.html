@@ -17,13 +17,15 @@
             <h2 style="padding-left:2%;">{{ job_info.title }}</h2>
             <br>
             <div class="container" style="border:1px solid; border-radius:10px; padding:1%;">
-                <p>Salary: {{ job_info.salary }}</p>
-                &nbsp; &nbsp; &nbsp; &nbsp;
-                <p>Last date for application: {{ job_info.last_date }}</p>
-                &nbsp; &nbsp; &nbsp; &nbsp;
                 <p>Candidate Profile: {{ job_info.candidate_profile }}</p>
                 &nbsp; &nbsp; &nbsp; &nbsp;
                 <p>Job Responsibility: {{ job_info.job_responsibility }}</p> 
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <p>Salary: {{ job_info.salary }}</p>
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <p>Last date for application: {{ job_info.last_date }}</p>
+               
+                <strong>Posted On: {{ job_info.posted_date }}</strong>
             </div>
         </div>
             {% if applier %}
@@ -62,21 +64,23 @@
         <!-- If the employer has posted that job -->
             {% if job_info %}
             <!-- job details for employer -->
-                <h2>{{ job_info.title }}</h2>
+            <div class="container">
+                <div class="page-header">
+                    <h3 style="display:inline">{{job_info.title}}</h3>
+                    <a class="btn btn-border-d btn-round" href="{% url 'edit_job' job_info.slug %}" style="float:right;">
+                        <span class="glyphicon glyphicon-pencil"></span></a>
+                </div>
                 <br>
-                <p>Salary: {{ job_info.salary }}</p>
-                &nbsp; &nbsp; &nbsp; &nbsp;
-                <p>Last date for application: {{ job_info.last_date }}</p>
-                &nbsp; &nbsp; &nbsp; &nbsp;
                 <p>Candidate Profile: {{ job_info.candidate_profile }}</p>
-                &nbsp; &nbsp; &nbsp; &nbsp;
-                <p>Job Responsibility: {{ job_info.job_responsibility }}</p> 
-                
+    
+                <p>Job Responsibility: {{ job_info.Job_responsibility }}</p> 
+
+                <p>Salary: {{ job_info.salary }}</p>
+
+                <p>Last date for application: {{ job_info.last_date }}</p>
                 <strong>You posted this job on: {{ job_info.posted_date }}</strong>
                 <!-- Redirect to Edit Job Section -->
-                <a href="{% url 'edit_job' job_info.slug %}">
-                    <button type="button" class="btn btn-info btn-lg">Edit Job Info</button>    
-                </a>
+            </div>
                 {% endif %}
         {% endif %}
     {% endif %}

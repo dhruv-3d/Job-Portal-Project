@@ -539,39 +539,17 @@ def manage_job(request):
 def edit_job(request,addjob_title_slug):
     
     context_dict = {}
-    try:
-        b = AddJob.objects.get(slug=addjob_title_slug)
-    except AddJob.DoesNotExist:
-        return redirect('add_job.html')
-    
     b = AddJob.objects.get(slug=addjob_title_slug)
-    print(b)
-    form = JobForm({'category':b.category, 'subcategory':b.subcategory, 'title':b.title,'last_date':b.last_date,'Job_responsibility':b.Job_responsibility,'candidate_profile':b.candidate_profile})
-    print(form)
     if request.method == 'POST':
-        form = JobForm(request.POST)
+        form = JobForm(request.POST, instance=b)
         if form.is_valid():
-            a = form.save(commit=False)
-            if a.category:
-                b.category = a.category
-            if a.subcategory:
-                b.subcategory = a.subcategory
-            if a.last_date:
-                b.last_date = a.last_date
-            if a.salary:
-                b.salary = a.salary
-            if a.title:
-                b.title = a.title
-            if a.Job_responsibility:
-                b.Job_responsibility = a.Job_responsibility            
-            if a.candidate_profile:
-                b.candidate_profile = a.candidate_profile
-  
-            b.save()
-            return redirect('/jportal/managejob/')
-            
+            form.save(commit=True)
+            return redirect('managejob')
+                
         else:
             print(form.errors)
+    else:
+        form = JobForm(instance=b)
 
     context_dict['form'] = form
     context_dict['usertype'] = user_type(request)
@@ -591,6 +569,8 @@ def delete_job(request,addjob_title_slug):
     
     return redirect('managejob')
 
+
+#-------------------------Newsletter-------------------
 def subscribe(request):
     
     if request.method == 'POST':
