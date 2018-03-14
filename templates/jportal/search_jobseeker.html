@@ -5,7 +5,43 @@
     Search - Jobseeker 
 {% endblock %}
 {% block body_block %} 
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    margin-top: 100px;
+    text-align: center;
+}
 
+    .title {
+        color: grey;
+        font-size: 18px;
+    }
+
+    .button {
+        border: none;
+        outline: 0;
+        display: inline-block;
+        padding: 8px;
+        color: white;
+        background-color: #000;
+        text-align: center;
+        cursor: pointer;
+        width: 100%;
+        font-size: 18px;
+    }
+</style>
 {% include "jportal/sidebar_emp.html" %}
     <div class="container" style="margin-top:100px;margin-left: 150px; padding: 0px 20px;">
         <div class="col-sm-6 col-md-6 col-lg-6" style="border-right:1px solid #ddd">
@@ -28,29 +64,46 @@
         </div>  
         <br>
         <br>
-        <div class="container">
-        <table>
-    
+        <div style="margin-top:100px;">
         {% if state %}
             {% if city %}
                 {% get_city city.id as js %}
-                    {% if js %}
-                        <tr>
+                    {% if js %}                   
+    
                         {% for i in js %}
-                           <td><b><a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.username }}</a></b></td>
+                            {% get_profile i.id as jp %}
+
+                                <div class="card">
+                                    <img src="{{ MEDIA_URL }}{{i.profile_img}}" style="width:50%">
+                                    <h1>{{ i.user.first_name }} {{ i.user.last_name }}</h1>
+                                    <p class="title">{{jp.designation}}</p>
+                                    <p class="title">{{jp.experience}}</p>
+                                    <a href="{{jp.linkedin_profile}}"><i class="fa fa-linkedin"></i></a> 
+                                    <p><a href="{% url 'jobseeker_profile' i.user.username %}" 
+                                        class="button" role="button">View Details</a></p>
+                                </div>
+                      
                         {% endfor%}
-                        </tr>
                     {% else %}
                         <h3> No Jobseekers found </h3>
                     {% endif %}
             {% else %}
                 {% get_state state.id as js %}
                 {% if js %}
-                    <tr>
                     {% for i in js %}
-                        <td><b><a href="{% url 'jobseeker_profile' i.user.username %}">{{ i.user.username }}</a></b></td>
+                        {% get_profile i.id as jp %}
+
+                            <div class="card">
+                                <img src="{{ MEDIA_URL }}{{i.profile_img}}" style="width:50%">
+                                <h1>{{ i.user.first_name }} {{ i.user.last_name }}</h1>
+                                <p class="title">{{jp.designation}}</p>
+                                <p class="title">{{jp.experience}}</p>
+                                <a href="{{jp.linkedin_profile}}"><i class="fa fa-linkedin"></i></a> 
+                                <p><a href="{% url 'jobseeker_profile' i.user.username %}" 
+                                    class="button" role="button">View Details</a></p>
+                            </div>
+            
                     {% endfor%}
-                    </tr>
                 {% else %}
                     <h3> No Jobseekers found </h3>
                 {% endif %}
@@ -63,7 +116,15 @@
                     {% if J_see %}
                         <tr>
                         {% for i in J_see %}
-                           <td><b><a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}">{{ i.jobseeker.user.username }}</a></b></td>
+                        <div class="card">
+                            <img src="{{ MEDIA_URL }}{{i.jobseeker.profile_img}}" style="width:50%">
+                            <h1>{{ i.jobseeker.user.first_name }} {{ i.jobseeker.user.last_name }}</h1>
+                            <p class="title">{{i.designation}}</p>
+                            <p class="title">{{i.experience}}</p>
+                            <a href="{{i.linkedin_profile}}"><i class="fa fa-linkedin"></i></a> 
+                            <p><a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}" 
+                                class="button" role="button">View Details</a></p>
+                        </div>
                         {% endfor%}
                         </tr>
                     {% else %}
@@ -74,7 +135,15 @@
                 {% if J_see %}
                     <tr>
                     {% for i in J_see %}
-                       <td><b><a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}">{{ i.jobseeker.user.username }}</a></b></td>
+                    <div class="card">
+                        <img src="{{ MEDIA_URL }}{{i.jobseeker.profile_img}}" style="width:50%">
+                        <h1>{{ i.jobseeker.user.first_name }} {{ i.jobseeker.user.last_name }}</h1>
+                        <p class="title">{{i.designation}}</p>
+                        <p class="title">{{i.experience}}</p>
+                        <a href="{{i.linkedin_profile}}"><i class="fa fa-linkedin"></i></a> 
+                        <p><a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}" 
+                            class="button" role="button">View Details</a></p>
+                    </div>
                     {% endfor%}
                     </tr>
                 {% else %}
@@ -82,7 +151,6 @@
                 {% endif %}
             {% endif %}
         {% endif %}
-        </table>
     </div>
 </div>
 {% endblock %}

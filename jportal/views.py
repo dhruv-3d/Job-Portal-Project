@@ -171,7 +171,7 @@ def employer_profile(request,username):
         emp_usr = User.objects.get(username=username)
         print(emp_usr.username)
         emp_data = Employer.objects.get(user_id=emp_usr.id)
-        company_form = EmployerCompanyProfileForm(request.FILES,request.POST)
+        company_form = EmployerCompanyProfileForm(request.POST,request.FILES)
 
         if company_form.is_valid():
             company_data= company_form.save(commit=False) 

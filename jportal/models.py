@@ -94,7 +94,7 @@ class EmployerCompanyProfile(models.Model):
         return self.company_name
 
 class JobSeekers(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     state = models.ForeignKey(State,on_delete=models.SET_NULL,null=True,blank=False)
     city = ChainedForeignKey(
             City,
@@ -103,7 +103,7 @@ class JobSeekers(models.Model):
             show_all=False,
             auto_choose=True,
             sort=True)
-    profile_img = models.ImageField(blank=True)
+    profile_img = models.ImageField(blank=True,upload_to='jobseeker_pic')
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
     contact_no = models.CharField(max_length=10, blank=False)
@@ -144,7 +144,7 @@ class JobSeekersProfile(models.Model):
         show_all=False,
         auto_choose=True,
         sort=True)
-    education =  models.ForeignKey(Education,on_delete=models.SET_NULL, null=True)
+    designation = models.CharField(max_length=30, blank=False, null=True)
     key_skills = models.TextField(blank=False)
     total_workexp = models.CharField(max_length=20,blank=False)
     current_drawn_sal = models.PositiveIntegerField(blank=True)

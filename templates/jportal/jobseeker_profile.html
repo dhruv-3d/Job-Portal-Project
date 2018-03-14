@@ -17,7 +17,7 @@
             </div>
             <div class="col-md-3 col-lg-3" style="border-right: 1px solid #ddd;">
                 <h3 class="work-details-title font-alt">Personal Details</h3>
-                <h4><i class="fa fa-user fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i>{{user.first_name}} {{user.last_name}}</h4>
+                <h4><i class="fa fa-user fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{user.first_name}} {{user.last_name}}</h4>
                 <h4>
                     {% if seeker.gender == 'Male' %}
                     <i class="fa fa-male fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.gender}}
@@ -25,13 +25,13 @@
                     <i class="fa fa-female fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.gender}}
                     {% endif %}
                 </h4>
-                <h4><i class="glyphicon glyphicon-calendar fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.dob}}</h4>
+                <h4><i class="fa fa-birthday-cake fa-fw w3-hover-text-black w3-margin-right"></i> {{seeker.dob}}</h4>
             </div>  
             <div class="col-md-3 col-lg-3" style="border-right: 1px solid #ddd;">
                 <h3 class="work-details-title font-alt">Contact Details</h3>
                 <h4><i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.city}}, {{seeker.state}}</h4>
-                <h4><i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Phone: {{seeker.contact_no}}</h4>
-                <h4><i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: {{user.email}}</h4>
+                <h4><i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{seeker.contact_no}}</h4>
+                <h4><i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{user.email}}</h4>
             </div>  
         </div>
         </div>

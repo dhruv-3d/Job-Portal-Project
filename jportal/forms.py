@@ -76,17 +76,17 @@ class JobSeekerForm(forms.ModelForm):
 
     class Meta:
         model = JobSeekers
-        fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no', 'captcha', 'tc',)
+        fields = ('gender','state', 'city','profile_img', 'dob', 'contact_no', 'captcha', 'tc',)
 class JobSeekerEditForm(forms.ModelForm):
     gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
     dob = forms.DateField(widget=forms.DateInput())
     class Meta:
         model = JobSeekers
-        fields = ('state', 'city', 'profile_img', 'gender', 'dob', 'contact_no')
+        fields = ('gender','state', 'city', 'profile_img', 'dob', 'contact_no')
 class JobseekerprofileForm(forms.ModelForm):
     class Meta:
        model = JobSeekersProfile
-       exclude = ('jobseeker','resume','education',)
+       exclude = ('jobseeker','resume',)
 
 
 

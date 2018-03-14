@@ -83,4 +83,8 @@ def get_state(stateid):
 def get_city(cityid):
     js = JobSeekers.objects.filter(city_id=cityid)   
     return js
-
+    
+@register.assignment_tag
+def get_profile(id):
+    j = JobSeekersProfile.objects.get(jobseeker_id=id)
+    return j
