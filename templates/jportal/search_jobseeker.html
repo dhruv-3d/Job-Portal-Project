@@ -69,10 +69,8 @@
             {% if city %}
                 {% get_city city.id as js %}
                     {% if js %}                   
-    
                         {% for i in js %}
                             {% get_profile i.id as jp %}
-
                                 <div class="card">
                                     <img src="{{ MEDIA_URL }}{{i.profile_img}}" style="width:50%">
                                     <h1>{{ i.user.first_name }} {{ i.user.last_name }}</h1>
@@ -82,7 +80,6 @@
                                     <p><a href="{% url 'jobseeker_profile' i.user.username %}" 
                                         class="button" role="button">View Details</a></p>
                                 </div>
-                      
                         {% endfor%}
                     {% else %}
                         <h3> No Jobseekers found </h3>
@@ -92,7 +89,6 @@
                 {% if js %}
                     {% for i in js %}
                         {% get_profile i.id as jp %}
-
                             <div class="card">
                                 <img src="{{ MEDIA_URL }}{{i.profile_img}}" style="width:50%">
                                 <h1>{{ i.user.first_name }} {{ i.user.last_name }}</h1>
@@ -114,7 +110,6 @@
             {% if subcategory%}
                 {% get_subcat subcategory.id as J_see %}
                     {% if J_see %}
-                        <tr>
                         {% for i in J_see %}
                         <div class="card">
                             <img src="{{ MEDIA_URL }}{{i.jobseeker.profile_img}}" style="width:50%">
@@ -126,14 +121,12 @@
                                 class="button" role="button">View Details</a></p>
                         </div>
                         {% endfor%}
-                        </tr>
                     {% else %}
                         <h3> No Jobseekers found </h3>
                     {% endif %}
             {% else %}
                 {% get_cate category.id as J_see %}
                 {% if J_see %}
-                    <tr>
                     {% for i in J_see %}
                     <div class="card">
                         <img src="{{ MEDIA_URL }}{{i.jobseeker.profile_img}}" style="width:50%">
@@ -145,7 +138,6 @@
                             class="button" role="button">View Details</a></p>
                     </div>
                     {% endfor%}
-                    </tr>
                 {% else %}
                     <h3> No Jobseekers found </h3>
                 {% endif %}
