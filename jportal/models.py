@@ -216,3 +216,7 @@ class Search(models.Model):
             auto_choose=True,
             sort=True,
             blank=True)
+
+class SaveJobseeker(models.Model):
+    emp = models.ForeignKey(Employer, on_delete=models.CASCADE, blank=True)
+    jobseeker = models.ForeignKey(JobSeekers, on_delete=models.CASCADE, blank=True)

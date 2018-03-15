@@ -10,7 +10,7 @@ from jportal.models import Category, SubCategory, State, City
 from jportal.models import Education, Graduation, Post_Graduation, PhD, AddJob
 from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile, Appliers
-from jportal.models import Subscribtion, Newsletter
+from jportal.models import Subscribtion, Newsletter, SaveJobseeker
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm, EmployerCompanyProfileForm
 from jportal.forms import UserEditForm, EmployerEditForm, JobSeekerEditForm
@@ -67,7 +67,7 @@ def about(request):
 def register(request):
     context_dict = {}
     
-    return render(request, 'registration/register.html', context_dict)\
+    return render(request, 'registration/register.html', context_dict)
 
 #---------------------EMPLOYER REGISTRATION
 def employer_reg(request):
@@ -789,7 +789,7 @@ def add_education(request,username):
 
 
 #--------------------------Search Jobseeker--------------------        
-def search(request):
+def search(request,username):
     form1 = SearchByCategory()
     form2 = SearchByLocation()
     usertype=user_type(request)
@@ -832,3 +832,26 @@ def search(request):
                     context_dict['city'] = city
         except: pass
     return render(request,'jportal/search_jobseeker.html',context_dict)
+
+def save_seek(request, user_id):
+    try:
+        a = Employer.objects.get(user_id = request.user.id)
+        t = JobSeekers.objects.get(user_id= user_id)
+        print(type(request.user.id), ":" , type(user_id))
+    except:
+        a = None
+        t = None
+    if a:
+        SaveJobseeker.objects.get_or_create(emp = a, jobseeker=t)
+        return redirect('search_jobseeker',username=request.user.username)
+    return HttpResponse('Ni thay')
+
+def saved_jobseekers(request, username):
+    usertype=user_type(request)
+    emp = Employer.objects.get(user_id=request.user.id)
+    try:
+        sj = SaveJobseeker.objects.filter(emp_id=emp.id)
+    except:
+        sj = None
+    context_dict={'usertype':usertype, 'list':sj}
+    return render(request,'jportal/saved_jobseekers.html',context_dict)

@@ -1,0 +1,68 @@
+{% extends 'jportal/base.html' %}
+{% load bootstrap3 %}
+{% load app_tags %}
+{% block title %}
+    Search - Jobseeker 
+{% endblock %}
+{% block body_block %} 
+{% include "jportal/sidebar_emp.html" %}
+<style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        max-width: 300px;
+        margin: auto;
+        margin-top: 100px;
+        text-align: center;
+    }
+    
+        .title {
+            color: grey;
+            font-size: 18px;
+        }
+    
+        .button {
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+</style>
+<div class="container" style="margin-left: 150px;font-size: 28px; padding: 0px 20px;">
+    {% if list %}
+    <div class="row">
+        {% for i in list %}
+        <div class="col-lg-3">
+            {% get_profile i.jobseeker_id as jp %}
+            <div class="card">
+                <img src="{{ MEDIA_URL }}{{jp.jobseeker.profile_img}}" style="width:100px;height:150px;">
+                <h1>{{ jp.jobseeker.user.first_name }} {{ jp.jobseeker.user.last_name }}</h1>
+                <p class="title">{{jp.designation}}</p>
+                <p class="title">{{jp.experience}}</p>
+                <a href="{{jp.linkedin_profile}}"><i class="fa fa-linkedin"></i></a> 
+                <p><a href="{% url 'jobseeker_profile' jp.jobseeker.user.username %}" 
+                    class="button" role="button">View Details</a></p>
+            </div>
+            </div>
+        {% endfor%}
+        </div>
+    {% else %}
+        <h1>  No Saved Jobseekers </h1>
+    {% endif %}
+</div>
+{% endblock %}

@@ -29,7 +29,9 @@ urlpatterns = [
     url(r'^employer_profile/(?P<username>[\w\@\.]+)/$', views.employer_profile, name='employer_profile'), #e
     url(r'^emp_edit/(?P<username>[\w\@\.]+)/$', views.edit_employer_profile, name='emp_edit'), #e
     url(r'^company_edit/$', views.edit_company_details, name='company_edit'), #e
-    url(r'^search_jobseeker/$', views.search, name='search_jobseeker'), #e
+    url(r'^(?P<username>[\w\@\.]+)/search_jobseeker/$', views.search, name='search_jobseeker'), #e
+    url(r'^search_jobseeker/(?P<user_id>[\d]+)/save/$', views.save_seek, name='save_jobseeker'), #e
+    url(r'^(?P<username>[\w\@\.]+)/saved_jobseekers/$', views.saved_jobseekers, name='saved_jobseekers'), #e
 
     #links related to jobs-----
     url(r'^add_job/$',views.add_job,name='add_job'), #e

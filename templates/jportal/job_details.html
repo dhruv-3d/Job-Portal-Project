@@ -1,6 +1,5 @@
 {% extends 'jportal/base.html' %}
 {% load staticfiles %}
-
 {% block title_block %}
     Job Details
 {% endblock %}
@@ -9,10 +8,13 @@
 {% endblock %}
 
 {% block body_block %}
+
     
     {% if user_type == 'j' %}
+        {% include "jportal/sidebar_js.html" %}
     <!-- job details for jobseeker -->
         {% if job_info %}
+        <div class="container" style="margin-left: 150px;font-size: 28px; padding: 0px 20px;">
         <div class="jumbotron">
             <h2 style="padding-left:2%;">{{ job_info.title }}</h2>
             <br>
@@ -58,8 +60,11 @@
                     </div>
                 </div>
             {% endif %}
+            </div>
         {% endif %}
     {% elif user_type == 'e' %}
+        {% include "jportal/sidebar_emp.html" %}
+        <div class="container" style="margin-left: 150px; padding: 0px 20px;">
         {% if postedjob %}
         <!-- If the employer has posted that job -->
             {% if job_info %}
@@ -84,4 +89,5 @@
                 {% endif %}
         {% endif %}
     {% endif %}
+    </div>
 {% endblock %}

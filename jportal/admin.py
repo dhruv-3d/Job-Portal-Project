@@ -1,5 +1,5 @@
 from django.contrib import admin
-from jportal.models import Category, SubCategory, Employer, JobSeekers, AddJob, Appliers
+from jportal.models import Category, SubCategory, Employer, JobSeekers, AddJob, Appliers, SaveJobseeker
 from jportal.models import Graduation, Post_Graduation, PhD, State, City
 
 class ApplierAdmin(admin.ModelAdmin):
@@ -30,3 +30,4 @@ admin.site.register(City,CitiesAdmin)
 admin.site.register(Graduation)
 admin.site.register(Post_Graduation)
 admin.site.register(PhD)
+admin.site.register(SaveJobseeker)

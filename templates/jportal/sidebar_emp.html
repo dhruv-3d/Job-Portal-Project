@@ -6,8 +6,8 @@
                     <li class="active"><a href="{% url 'employer_profile' user.username %}">Profile Details</a></li>
                     <li><a href="{% url 'managejob' %}">Manage Jobs</a></li>
                     <li><a href="{% url 'job_applications' %}">Manage Applications</a></li>
-                    <li><a href="{% url 'search_jobseeker' %}">Search Jobseekers</a></li>
-                    <li><a href="#">Saved Jobseekers</a></li>
+                    <li><a href="{% url 'search_jobseeker' user.username %}">Search Jobseekers</a></li>
+                    <li><a href="{% url 'saved_jobseekers' user.username %}">Saved Jobseekers</a></li>
                 </ul>    
             </nav>
         </div>
