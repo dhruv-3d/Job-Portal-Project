@@ -363,6 +363,8 @@ def add_job(request):
         if form.is_valid():
             a = form.save(commit=False) 
             a.employer = emp
+            a.state = emp.state
+            a.city = emp.city
             a.posted_date = datetime.now()
             a.save()
 
@@ -392,7 +394,7 @@ def job_listing(request):
         except AddJob.DoesNotExist:
             return HttpResponse("No Jobs Posted")
     
-    #will be executed when 
+    #will be executed while job searching
     elif request.method == 'GET'  and "jobtitle" in request.GET: 
         try:
             cat_title = request.GET['category']

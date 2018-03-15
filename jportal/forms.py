@@ -43,7 +43,7 @@ class EmployerForm(forms.ModelForm):
     company_name = forms.CharField(max_length=30,required=True )
     profile_img = forms.ImageField(required=False)
     gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
-    dob = forms.DateField(widget=forms.DateInput())
+    dob = forms.DateField(widget=forms.DateInput(),help_text='MM/DD/YYYY')
     captcha = CaptchaField()
     tc = forms.BooleanField(widget=forms.CheckboxInput(), required=True)
     admin_approval = False
@@ -57,7 +57,7 @@ class EmployerEditForm(forms.ModelForm):
     company_name = forms.CharField(max_length=30,required=True )
     profile_img = forms.ImageField(required=False)
     gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
-    dob = forms.DateField(widget=forms.DateInput())
+    dob = forms.DateField(widget=forms.DateInput(),help_text='MM/DD/YYYY')
     class Meta:
         model = Employer
         fields = ('designation','company_name','state', 'city', 'profile_img', 'gender', 'dob', 'contact_no',)    
@@ -70,7 +70,7 @@ class EmployerCompanyProfileForm(forms.ModelForm):
 class JobSeekerForm(forms.ModelForm):
     profile_img = forms.ImageField(required=False)
     gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
-    dob = forms.DateField(widget=forms.DateInput())
+    dob = forms.DateField(widget=forms.DateInput(),help_text='MM/DD/YYYY')
     captcha = CaptchaField()
     tc = forms.BooleanField(widget=forms.CheckboxInput(), required=True)
 
@@ -79,7 +79,7 @@ class JobSeekerForm(forms.ModelForm):
         fields = ('gender','state', 'city','profile_img', 'dob', 'contact_no', 'captcha', 'tc',)
 class JobSeekerEditForm(forms.ModelForm):
     gender = forms.CharField(widget=forms.RadioSelect(choices=GENDER), required=True)
-    dob = forms.DateField(widget=forms.DateInput())
+    dob = forms.DateField(widget=forms.DateInput(),help_text='MM/DD/YYYY')
     class Meta:
         model = JobSeekers
         fields = ('gender','state', 'city', 'profile_img', 'dob', 'contact_no')
@@ -101,7 +101,7 @@ class SearchByCategory(forms.ModelForm):
 class JobForm(forms.ModelForm):
     class Meta:
        model = AddJob
-       exclude = ('posted_date','employer','slug',)
+       exclude = ('posted_date','employer','slug','state','city')
 
 
 class GraduationForm(forms.ModelForm):

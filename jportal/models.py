@@ -169,6 +169,8 @@ class AddJob(models.Model):
     candidate_profile = models.TextField(blank=False)
     posted_date= models.DateTimeField(auto_now=True, blank=True)
     slug=models.SlugField(unique=True)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL,null=True,blank=True)
+    city = models.ForeignKey(City,on_delete=models.SET_NULL,null=True,blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title) 

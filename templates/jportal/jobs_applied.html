@@ -10,6 +10,8 @@
 {% endblock %}
 
 {% block body_block %}
+{% include "jportal/sidebar_js.html" %}
+<div class="container" style="margin-left: 200px; margin-top:70px;">
     {% if applied_jobs %}
     <h2 style="background-color:grey; color:ghostwhite;" >Jobs you have applied for</h2>
         <div class="jumbotron"> 
@@ -50,4 +52,5 @@
     {% else %}
         <h3>You haven't applied for any jobs yet.</h3>
     {% endif %}
+</div>
 {% endblock %}

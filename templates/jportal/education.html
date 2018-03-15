@@ -1,24 +1,26 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
-
-{% block title %}Education{% endblock %}
+{% load bootstrap3 %}
+{% block title %}
+    Education
+{% endblock %}
 
 {% block body_block %}
+{% include "jportal/sidebar_js.html" %}
 
-<div class="container">
-    <a type="button" href="{% url 'graduation' user.username %}"><button>Graduation</button></a>
+<div class="container" style="margin-left: 200px; margin-top:70px;">
+    <a type="button" href="{% url 'graduation' user.username %}"><button class="btn btn-primary btn-circle">Graduation</button></a>
     <br>
     <br>
-    <a type="button" href="{% url 'post_graduation' user.username %}"><button>Add Post Graduation</button></a>
+    <a type="button" href="{% url 'post_graduation' user.username %}"><button class="btn btn-primary btn-circle">Add Post Graduation</button></a>
     <br>
     <br>
-    <a type="button" href="{% url 'phd' user.username %}"><button>Add PhD/Doctorate</button></a>
+    <a type="button" href="{% url 'phd' user.username %}"><button class="btn btn-primary btn-circle">Add PhD/Doctorate</button></a>
     <br>
     <br>
-    <a type="button" href="{% url 'class_xii' user.username %}"><button>Add Class 12th</button></a>
+    <a type="button" href="{% url 'class_xii' user.username %}"><button class="btn btn-primary btn-circle">Add Class 12th</button></a>
     <br>
     <br>
-    <a type="button" href="{% url 'class_x' user.username %}"><button>Add Class 10th</button></a>
+    <a type="button" href="{% url 'class_x' user.username %}"><button class="btn btn-primary btn-circle">Add Class 10th</button></a>
 </div>
 
 {% endblock %}
