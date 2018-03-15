@@ -1,0 +1,52 @@
+{% extends 'jportal/base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}
+    {{ j.user.username }}
+{% endblock %}
+
+{% block body_block %}
+    {% include "jportal/sidebar_emp.html" %}
+
+    <main>
+        <div class="container row" style="margin-left: 150px;font-size: 28px; padding: 0px 20px;">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="page-header">
+                <h3 style="font-size:1em;">{{j.user.first_name}} {{j.user.last_name}}</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-lg-3" style="padding-left:50px;">
+                    <img src="{{ MEDIA_URL }}{{j.profile_img}}" class="img-thumbnail img-responsive" style="width:200px;"/>
+                </div>
+                <div class="col-sm-4 col-md-5 col-lg-4" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd; padding:0px 0px 0px 50px;">
+                    <h3 class="work-details-title font-alt">Profile Details</h3>
+                    <h4><i class="fa fa-user fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{j.user.first_name}} {{j.user.last_name}}</h4>
+                    <h4>
+                        {% if j.gender == 'Male' %}
+                        <i class="fa fa-male fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{j.gender}}
+                        {% else %}
+                        <i class="fa fa-female fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{j.gender}}
+                        {% endif %}
+                    </h4>
+                    <h4><i class="fa fa-birthday-cake fa-fw w3-hover-text-black w3-margin-right"></i> {{j.dob}}</h4>
+                    <h4><i class="fa fa-info-circle fa-fw w3-hover-text-black w3-margin-right"></i> I am a <i>{{jp.designation}}</i></h4>
+                    <br/>
+                    
+                </div>  
+                <div class="col-md-4 col-lg-4" style="padding:0px 0px 0px 50px;">
+                    <h3 class="work-details-title font-alt">Contact Details</h3>
+                    <h4><i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{j.city}}, {{j.state}}</h4>
+                    <h4><i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{j.contact_no}}</h4>
+                    <h4><i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{j.user.email}}</h4>
+                    {% if jp.linkedin %}
+                    <h4><i class="fa fa-linkedin fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> {{jp.linkedin}}</h4>
+                    {%endif%}
+                </div>  
+            </div>
+            </div>
+        </div>
+        <div class="container row" style="margin-left: 150px;font-size: 28px; padding: 50px 20px;">
+            <h3 class="work-details-title font-alt">Educational Details</h3>
+        </div>
+    </main>
+    {% endblock %}

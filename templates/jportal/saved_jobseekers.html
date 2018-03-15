@@ -55,7 +55,9 @@
                 <p class="title">{{jp.designation}}</p>
                 <p class="title">{{jp.experience}}</p>
                 <a href="{{jp.linkedin_profile}}"><i class="fa fa-linkedin"></i></a> 
-                <p><a href="{% url 'jobseeker_profile' jp.jobseeker.user.username %}" 
+                <a href="{{jp.linkedin_profile}}"><i class="fa fa-google-plus"></i></a>
+                <a href="{{jp.linkedin_profile}}"><i class="fa fa-twitter"></i></a>
+                <p><a href="{% url 'view_jobseeker' emp_username=user.username  username=jp.jobseeker.user.username %}" 
                     class="button" role="button">View Details</a></p>
             </div>
             </div>

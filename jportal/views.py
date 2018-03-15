@@ -47,6 +47,7 @@ def user_type(ek_req):
 
     return usertype
 
+
 #index for testing purpose...!!!
 def index(request):
     print(request.user)
@@ -377,8 +378,6 @@ def add_job(request):
 
 def job_listing(request):
     print(request)
-
-    context_dict = {}
     usertype = None
     usertype = user_type(request)
 
@@ -709,7 +708,6 @@ def add_doctorate(request,username):
     return render(request,'jportal/phd.html',{'form':form})
 
 def add_classxii(request,username):
-    usertype = user_type(request)
     user = User.objects.get(username=username)
     print(user.username)
     seeker = JobSeekers.objects.get(user_id=user.id)
@@ -745,7 +743,6 @@ def add_classxii(request,username):
     return render(request,'jportal/class_xii.html',{'class_xii':class_xii})
 
 def add_classx(request,username):
-    usertype = user_type(request)
     user = User.objects.get(username=username)
     print(user.username)
     seeker = JobSeekers.objects.get(user_id=user.id)
@@ -788,6 +785,30 @@ def add_education(request,username):
     return render(request, 'jportal/education.html', context_dict)
 
 
+def show_education(user_id):
+    j = JobSeekers.objects.get(user_id=user_id)
+    try:
+        gr = Education.objects.get(jobseeker_id=j.id, category='graduation')
+    except:
+        gr = ''
+    try:
+        pg = Education.objects.get(jobseeker_id=j.id, category='post_graduation')
+    except:
+        pg = ''
+    try:
+        phd = Education.objects.get(jobseeker_id=j.id, category='phd')
+    except:
+        phd = ''
+    try:
+        xii = Education.objects.get(jobseeker_id=j.id, category='class XII')
+    except:
+        xii = ''
+    try:
+        x = Education.objects.get(jobseeker_id=j.id, category='class X')
+    except:
+        x = ''
+    context_dict={'gr':gr, 'pg':pg, 'phd':phd, 'xii':xii, 'x':x}
+    return context_dict
 #--------------------------Search Jobseeker--------------------        
 def search(request,username):
     form1 = SearchByCategory()
@@ -846,12 +867,21 @@ def save_seek(request, user_id):
         return redirect('search_jobseeker',username=request.user.username)
     return HttpResponse('Ni thay')
 
-def saved_jobseekers(request, username):
+def saved_jobseekers(request,username):
     usertype=user_type(request)
     emp = Employer.objects.get(user_id=request.user.id)
     try:
         sj = SaveJobseeker.objects.filter(emp_id=emp.id)
     except:
-        sj = None
+        sj = ''
     context_dict={'usertype':usertype, 'list':sj}
     return render(request,'jportal/saved_jobseekers.html',context_dict)
+
+def view_jobseeker(request,emp_username,username):
+    usertype=user_type(request)
+    juser = User.objects.get(username=username)
+    j = JobSeekers.objects.get(user_id=juser.id)
+    jp = JobSeekersProfile.objects.get(jobseeker_id=j.id)
+    ed = show_education(juser.id)
+    context_dict={'usertype':usertype, 'j':j, 'jp':jp, 'ed':ed}
+    return render(request,'jportal/view_jobseeker.html',context_dict)

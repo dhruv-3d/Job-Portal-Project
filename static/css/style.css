@@ -45,7 +45,12 @@ html {
   .btn {
     transition: all 0.125s ease-in-out 0s;
   }
-  
+  .page-header {
+    padding-bottom: 9px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #eee;
+    text-transform: capitalize;
+  }
   .client-logo,
   .gallery-caption,
   .gallery-image:after,
