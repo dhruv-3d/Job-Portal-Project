@@ -916,4 +916,3 @@ def view_jobseeker(request,emp_username,username):
     ed = show_education(juser.id)
     context_dict={'usertype':usertype, 'j':j, 'jp':jp, 'ed':ed}
     return render(request,'jportal/view_jobseeker.html',context_dict)
-
