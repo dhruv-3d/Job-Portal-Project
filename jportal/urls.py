@@ -44,7 +44,8 @@ urlpatterns = [
     url(r'^job_apply/(?P<jobslug_name>[\w\-]+)/$',views.job_apply, name='job_apply'), #j
     url(r'^jobs_applied/$',views.jobs_applied, name='jobs_applied'), #j
     url(r'^job_applications/$',views.job_applications, name='job_applications'), #e
-
+    url(r'^search_job/$',views.search_job, name='search_job'), #j
+    url(r'^recomm_job/$',views.recomm_job, name='recomm_job'), #j
     # is idle---can be used!
     #url(r'^employer_page/$', views.employer_page, name='employer_page'),
     

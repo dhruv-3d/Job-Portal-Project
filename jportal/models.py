@@ -220,3 +220,16 @@ class Search(models.Model):
 class SaveJobseeker(models.Model):
     emp = models.ForeignKey(Employer, on_delete=models.CASCADE, blank=True)
     jobseeker = models.ForeignKey(JobSeekers, on_delete=models.CASCADE, blank=True)
+
+
+class Banners_state(models.Model):
+    state = models.ForeignKey(State, on_delete=models.CASCADE, blank=True)
+    img =  models.ImageField(blank=False)
+    name = models.CharField(max_length=200,blank=False)
+
+class Banners_category(models.Model):
+    category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,blank=True)
+    img = models.ImageField(blank=False)
+    name = models.CharField(max_length=200,blank=False)
+
+

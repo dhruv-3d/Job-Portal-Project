@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
-from jportal.models import Category, SubCategory, State, City
+from jportal.models import Category, SubCategory, State, City, Banners_state, Banners_category
 from jportal.models import Education, Graduation, Post_Graduation, PhD, AddJob
 from jportal.models import Employer, EmployerCompanyProfile
 from jportal.models import JobSeekers, JobSeekersProfile, Appliers
@@ -57,6 +57,11 @@ def index(request):
 
     context_dict['searchform'] = SearchByCategory()
     context_dict['jobs'] = job_listing(request)
+
+    ban_state = Banners_state.objects.all()
+    ban_cat = Banners_category.objects.all()
+    context_dict['stb'] = ban_state
+    context_dict['ctb'] = ban_cat
 
     return render(request, 'jportal/index.html', context_dict)
 
@@ -329,6 +334,7 @@ def create_resume(request,username):
     context_dict['education'] = education
     context_dict['file'] = resumefile
     return render(request,'jportal/create_resume.html', context_dict)
+
 def view_resume(request,username):
     context_dict = {}
     usertype = user_type(request)
@@ -567,6 +573,31 @@ def delete_job(request,addjob_title_slug):
         AddJob.objects.get(slug=addjob_title_slug).delete()
     
     return redirect('managejob')
+
+
+def search_job(request):
+    context_dict = {}
+    context_dict['searchform'] = SearchByCategory()
+    context_dict['jobs'] = job_listing(request)
+
+    return render(request, 'jportal/search_job.html', context_dict)
+
+def recomm_job(request):
+    context_dict = {}
+    if request.method == 'GET':
+        try:
+           a = AddJob.objects.all()
+           print(a)
+        except:
+            return redirect('index.html')
+    
+        context_dict['all_job'] = a
+        context_dict['usertype'] = user_type(request)
+    return render(request,'jportal/recomm_job.html',context_dict)
+
+    
+
+
 
 
 #-------------------------Newsletter-------------------
@@ -885,3 +916,4 @@ def view_jobseeker(request,emp_username,username):
     ed = show_education(juser.id)
     context_dict={'usertype':usertype, 'j':j, 'jp':jp, 'ed':ed}
     return render(request,'jportal/view_jobseeker.html',context_dict)
+
