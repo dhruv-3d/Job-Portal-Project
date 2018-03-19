@@ -2131,7 +2131,7 @@ width: auto;
   .gallery-image img {
     display: block;
     overflow: hidden;
-    width: 100%;
+    width: 75%;
   }
   
   .gallery-image:after {
@@ -2140,7 +2140,7 @@ width: auto;
     content: " ";
     display: block;
     height: 100%;
-    width: 100%;
+    width: 75%;
     top: 0;
     left: 0;
     z-index: 1;
@@ -2148,7 +2148,8 @@ width: auto;
   
   .gallery-caption {
     position: absolute;
-    width: 100%;
+    width: 75%;
+    height: 75%;
     opacity: 0;
     bottom: 100%;
     left: 0;
@@ -2180,7 +2181,7 @@ width: auto;
   
   .gallery-item:hover .gallery-caption {
     opacity: 1;
-    bottom: 50%;
+    bottom: 40%;
     -webkit-transform: translateY(50%);
     -ms-transform: translateY(50%);
     transform: translateY(50%);

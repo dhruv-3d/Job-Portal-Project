@@ -25,7 +25,11 @@
 			</div>
 		</div>
 	</div>
-</section><section class="module">
+</section>
+
+
+<section class="module">
+		<h2 style="text-align:center;color:black; ">Jobs in Popular Cities</h2>
 	<div class="container">
 	  <div class="row multi-columns-row">
 			{% for i in stb %}
@@ -34,10 +38,8 @@
 		  <div class="gallery-item">
 			<div class="gallery-image">
 				<a class="gallery" href="#" title="Title 1">
-				<img src="{{ MEDIA_URL }}{{ i.img }}" alt="Gallery Image 1"/>
-				<div class="gallery-caption">
-				  <div class="gallery-icon"><span class="icon-magnifying-glass"></span></div>
-				</div>
+				<img src="{{ MEDIA_URL }}{{ i.img }}" alt="{{i.city}}"/>
+				<div class="gallery-caption">{{i.city}}</div>
 				</a>
 			</div>
 			</div>
@@ -45,7 +47,28 @@
 		{% endfor %}
 	  </div>
 	</div>
-  </section>
+	</section>
+	
+	<section class="module">
+			<h2 style="text-align:center;color:black; ">Jobs in Popular Categories</h2>
+		<div class="container">
+			<div class="row multi-columns-row">
+				{% for i in ctb %}
+				
+			<div class="col-sm-6 col-md-3 col-lg-3">
+				<div class="gallery-item">
+				<div class="gallery-image">
+					<a class="gallery" href="#" title="Title 1">
+					<img src="{{ MEDIA_URL }}{{ i.img }}" alt="{{i.category}}"/>
+					<div class="gallery-caption">{{i.category}}</div>
+					</a>
+				</div>
+				</div>
+			</div>
+			{% endfor %}
+			</div>
+		</div>
+		</section>
 
 
 

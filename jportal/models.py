@@ -224,12 +224,20 @@ class SaveJobseeker(models.Model):
 
 class Banners_state(models.Model):
     state = models.ForeignKey(State, on_delete=models.CASCADE, blank=True)
-    img =  models.ImageField(blank=False)
-    name = models.CharField(max_length=200,blank=False)
+    city = ChainedForeignKey(
+            City,
+            chained_field="state",
+            chained_model_field="state",
+            show_all=False,
+            auto_choose=True,
+            sort=True,
+            blank=True)
+    img =  models.ImageField(upload_to='banners/state/',blank=False)
+    name = models.CharField(max_length=200,blank=True)
 
 class Banners_category(models.Model):
     category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,blank=True)
-    img = models.ImageField(blank=False)
-    name = models.CharField(max_length=200,blank=False)
+    img = models.ImageField(upload_to='banners/category/',blank=False)
+    name = models.CharField(max_length=200,blank=True)
 
 
