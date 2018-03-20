@@ -579,6 +579,7 @@ def search_job(request):
     context_dict = {}
     context_dict['searchform'] = SearchByCategory()
     context_dict['jobs'] = job_listing(request)
+    context_dict['usertype'] = user_type(request)
 
     return render(request, 'jportal/search_job.html', context_dict)
 
