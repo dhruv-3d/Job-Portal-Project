@@ -13,74 +13,69 @@
 				<h3 style="font-size:calc(5.65476vw + 11.90476px); font-weight:400;">Your skills are in demand</h3>
 				<p><h4 style="font-size: 18px;color: #c2c2c2; font-weight:600;">Over 300,000 jobs in 14,000 companies</h4></p>
 				<!-- Job Search functionality -->
-				{% if usertype == j %}
-				<form id="searchjob" method="GET" action=".">
-						{% csrf_token %}				
-						{% bootstrap_form searchform %}
-						{{ searchform.media.js }}
-						<br>
+				{% if usertype != e %}
+				<div class="container" style="width:50%;">
+					<form id="searchjob" method="GET" action=".">
+						{% csrf_token %}
+						<div class="form-group">
+							<input type="text" class="form-control" name="jobtitle" placeholder="Search Jobs">
+						</div>
+						<div class="container" style="width:40%;">				
+							{% bootstrap_form searchform %}
+							{{ searchform.media.js }}
+						</div>
+						
 						<button id="butt" type="submit" class="btn btn-default">Submit</button>
-				</form>
+					</form>
+				</div>
 				{% endif %}
 			</div>
 		</div>
 	</div>
 </section>
 
-
 <section class="module">
 		<h2 style="text-align:center;color:black; ">Jobs in Popular Cities</h2>
 	<div class="container">
 	  <div class="row multi-columns-row">
-			{% for i in stb %}
-			
-		<div class="col-sm-6 col-md-3 col-lg-3">
-		  <div class="gallery-item">
-			<div class="gallery-image">
-				<a class="gallery" href="#" title="Title 1">
-				<img src="{{ MEDIA_URL }}{{ i.img }}" alt="{{i.name}}"/>
-				<div class="gallery-caption">{{i.city}}</div>
-				</a>
+		{% for i in stb %}
+			<div class="col-sm-6 col-md-3 col-lg-3">
+				<div class="gallery-item">
+					<div class="gallery-image">
+						<a class="gallery" href="#" title="Title 1">
+						<img src="{{ MEDIA_URL }}{{ i.img }}" alt="{{i.name}}"/>
+						<div class="gallery-caption">{{i.name}}</div>
+						</a>
+					</div>
+				</div>
 			</div>
-			</div>
-		</div>
 		{% endfor %}
 	  </div>
 	</div>
-	</section>
-	
-	<section class="module">
-			<h2 style="text-align:center;color:black; ">Jobs in Popular Categories</h2>
+
+	<h2 style="text-align:center;color:black; ">Jobs in Popular Categories</h2>
 		<div class="container">
 			<div class="row multi-columns-row">
 				{% for i in ctb %}
-				
-			<div class="col-sm-6 col-md-3 col-lg-3">
-				<div class="gallery-item">
-				<div class="gallery-image">
-					<a class="gallery" href="#" title="Title 1">
-					<img src="{{ MEDIA_URL }}{{ i.img }}" alt="{{i.category}}"/>
-					<div class="gallery-caption">{{i.category}}</div>
-					</a>
-				</div>
-				</div>
-			</div>
-			{% endfor %}
+					<div class="col-sm-6 col-md-3 col-lg-3">
+						<div class="gallery-item">
+							<div class="gallery-image">
+								<a class="gallery" href="#" title="Title 1">
+								<img src="{{ MEDIA_URL }}{{ i.img }}" alt="{{i.category}}"/>
+								<div class="gallery-caption">{{i.category}}</div>
+								</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
 			</div>
 		</div>
-		</section>
-
-
-
-
+	</section>
 
 {% if jobs %}
 	<div class="container" style="width:70%; border:1px solid; border-radius:20px; padding-bottom:40px; padding-top:40px;">
 		{% include 'jportal/job_listing.html' %}
 	</div>
 {% endif %}
-
-
-
 
 {% endblock %}

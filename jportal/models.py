@@ -13,7 +13,7 @@ class Category(models.Model):
         return self.title
 
 class SubCategory(models.Model):
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
     class Meta:
@@ -153,7 +153,7 @@ class JobSeekersProfile(models.Model):
         return self.jobseeker.user.username
 
 class AddJob(models.Model):
-    category=models.ForeignKey(Category)
+    category=models.ForeignKey(Category,on_delete=models.CASCADE)
     subcategory= ChainedForeignKey(
         SubCategory,
         chained_field="category",
@@ -162,7 +162,7 @@ class AddJob(models.Model):
         auto_choose=True,
         sort=True)
     title=models.CharField(max_length=100,blank=False,unique=True)
-    employer = models.ForeignKey(Employer)
+    employer = models.ForeignKey(Employer,on_delete=models.CASCADE)
     last_date = models.DateField(blank=True)
     salary = models.CharField(max_length=50,blank=True)
     Job_responsibility = models.TextField(blank=False)
@@ -178,8 +178,8 @@ class AddJob(models.Model):
         return self.title
 
 class Appliers(models.Model):
-    jobseeker = models.ForeignKey(JobSeekers)
-    job = models.ForeignKey(AddJob)
+    jobseeker = models.ForeignKey(JobSeekers,on_delete=models.CASCADE)
+    job = models.ForeignKey(AddJob,on_delete=models.CASCADE)
     date_apply = models.DateField()
     status = models.CharField(max_length=50)
 
