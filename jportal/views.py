@@ -11,12 +11,12 @@ from django.contrib.auth.hashers import make_password
 
 from jportal.models import Category, SubCategory, State, City, Banners_state, Banners_category
 from jportal.models import Education, Graduation, Post_Graduation, PhD, AddJob
-from jportal.models import Employer, EmployerCompanyProfile
+from jportal.models import Employer, EmployerCompanyProfile, Contact_Us
 from jportal.models import JobSeekers, JobSeekersProfile, Appliers
 from jportal.models import Subscribtion, Newsletter, SaveJobseeker
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm, EmployerCompanyProfileForm
-from jportal.forms import UserEditForm, EmployerEditForm, JobSeekerEditForm, Contact_Us
+from jportal.forms import UserEditForm, EmployerEditForm, JobSeekerEditForm, ContactForm
 from jportal.forms import SearchByCategory, SearchByLocation, JobseekerprofileForm, UploadResume
 from jportal.forms import GraduationForm,PostGraduationForm,PhDForm,ClassXIIForm,ClassXForm
 
@@ -922,7 +922,14 @@ def view_jobseeker(request,emp_username,username):
 
 def contact(request):
     context_dict = {}
+    contact = ContactForm()
+    if request.method == "POST":
+        contact = ContactForm(request.POST)
+        if contact.is_valid():
+            contact.save()
+            return redirect('index')
+        else:
+            print(form.errors)
 
-    contact = Contact_Us()
     context_dict["form"] = contact
     return render(request, 'jportal/contact.html', context_dict)
