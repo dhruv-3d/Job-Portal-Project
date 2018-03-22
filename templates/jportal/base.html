@@ -51,7 +51,7 @@
 							<a href="{% url 'services' %}">Sevices</a>
 						</li>
 						<li>
-							<a href="#">Contact Us</a>
+							<a href="{% url 'contact' %}">Contact Us</a>
 						</li>
 						{% if user.is_authenticated == False %}
 						<li>

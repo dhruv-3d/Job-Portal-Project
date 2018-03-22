@@ -21,7 +21,6 @@ from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 
 from registration.backends.simple.views import RegistrationView
-
 from jportal import views
 
 urlpatterns = [

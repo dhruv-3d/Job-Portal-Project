@@ -240,4 +240,8 @@ class Banners_category(models.Model):
     img = models.ImageField(upload_to='banners/category/',blank=False)
     name = models.CharField(max_length=200,blank=True)
 
+class Contact_Us(models.Model):
+    name = models.CharField(max_length=50)
+    email = models.EmailField()
+    message = models.TextField(blank=False)
 

@@ -3,6 +3,9 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
+from django.core.mail import EmailMessage
+from django.template import Context
+from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
@@ -13,12 +16,11 @@ from jportal.models import JobSeekers, JobSeekersProfile, Appliers
 from jportal.models import Subscribtion, Newsletter, SaveJobseeker
 
 from jportal.forms import EmployerForm, JobSeekerForm, UserForm, JobForm, EmployerCompanyProfileForm
-from jportal.forms import UserEditForm, EmployerEditForm, JobSeekerEditForm
+from jportal.forms import UserEditForm, EmployerEditForm, JobSeekerEditForm, Contact_Us
 from jportal.forms import SearchByCategory, SearchByLocation, JobseekerprofileForm, UploadResume
 from jportal.forms import GraduationForm,PostGraduationForm,PhDForm,ClassXIIForm,ClassXForm
 
 from datetime import datetime
-
 
 def user_type(ek_req):
     usertype=''
@@ -917,3 +919,10 @@ def view_jobseeker(request,emp_username,username):
     ed = show_education(juser.id)
     context_dict={'usertype':usertype, 'j':j, 'jp':jp, 'ed':ed}
     return render(request,'jportal/view_jobseeker.html',context_dict)
+
+def contact(request):
+    context_dict = {}
+
+    contact = Contact_Us()
+    context_dict["form"] = contact
+    return render(request, 'jportal/contact.html', context_dict)

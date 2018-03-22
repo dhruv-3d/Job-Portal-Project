@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^jobseeker_register/$', views.jobseeker_reg, name='jobseeker_register'), #common
     url(r'^services/$', views.services, name='services'), #common   
     url(r'^about/$', views.about, name='about'), #common
+    url(r'^contact/$', views.contact, name='contact'), #common
 
     #jobseekers
     url(r'^(?P<username>[\w\@\.]+)/jobseeker_profile/$', views.jobseeker_profile, name='jobseeker_profile'),

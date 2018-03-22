@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 from jportal.models import Employer, EmployerCompanyProfile, AddJob
-from jportal.models import JobSeekers, JobSeekersProfile
+from jportal.models import JobSeekers, JobSeekersProfile, Contact_Us
 from jportal.models import Category, SubCategory, State, City, Education
 from jportal.models import Graduation, Post_Graduation, PhD, Search
 
@@ -95,7 +95,6 @@ class SearchByCategory(forms.ModelForm):
         model = Search
         fields = ('category','subcategory')
 
-
 #------
 #karishma's form
 class JobForm(forms.ModelForm):
@@ -103,7 +102,6 @@ class JobForm(forms.ModelForm):
     class Meta:
        model = AddJob
        exclude = ('posted_date','employer','slug',)
-
 
 class GraduationForm(forms.ModelForm):
     graduation = forms.ModelChoiceField(queryset=Graduation.objects.all(), required=True)
@@ -165,3 +163,8 @@ class UploadResume(forms.ModelForm):
     class Meta:
         model = JobSeekersProfile
         fields = ('resume',)
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact_Us
+        fields = ('name', 'email', 'message',)
