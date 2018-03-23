@@ -1,0 +1,29 @@
+{% extends 'jportal/base.html' %}
+{% load bootstrap3 %}
+
+{% block title_block %}
+Job Hunt - Jobs in {{i.category}}
+{% endblock %}
+
+{% block body_block %}
+    {% if usertype == 'j' %}
+        {% include "jportal/sidebar_js.html" %}
+    {% endif %}
+
+    <div class="container row" style="margin-left: 150px; margin-top:100px;padding: 0px 20px;">
+        {% if jobs %}
+        <div class="panel-group" style="width:50%;">
+        {% for job in jobs %}
+            <div class="panel panel-primary" style="border-radius:10px;">
+                <div class="panel-heading" style="border-radius:10px;">
+                    <a style="color:rgb(255, 255, 255);" href="{% url 'job_details' job.slug %}">{{ job.title }}</a>
+                </div>
+                <div class="panel-body">{{ job.Job_responsibility }}</div>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <h4>No Jobs Found</h4>    
+    </div>
+    {% endif %}
+{% endblock %}

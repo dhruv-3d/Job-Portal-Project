@@ -14,14 +14,14 @@
         {% include "jportal/sidebar_js.html" %}
     <!-- job details for jobseeker -->
         {% if job_info %}
-        <div class="container" style="margin-left: 150px;font-size: 28px; padding: 0px 20px;">
+        <div class="container" style="margin-left: 150px;padding: 0px 20px;">
         <div class="jumbotron">
             <h2 style="padding-left:2%;">{{ job_info.title }}</h2>
             <br>
             <div class="container" style="border:1px solid; border-radius:10px; padding:1%;">
                 <p>Candidate Profile: {{ job_info.candidate_profile }}</p>
                 &nbsp; &nbsp; &nbsp; &nbsp;
-                <p>Job Responsibility: {{ job_info.job_responsibility }}</p> 
+                <p>Job Responsibility: {{ job_info.Job_responsibility }}</p> 
                 &nbsp; &nbsp; &nbsp; &nbsp;
                 <p>Salary: {{ job_info.salary }}</p>
                 &nbsp; &nbsp; &nbsp; &nbsp;
@@ -88,6 +88,28 @@
             </div>
                 {% endif %}
         {% endif %}
+    {% else %}
+    {% if job_info %}
+    <div class="container" style="margin-left: 150px;padding: 0px 20px;">
+    <div class="jumbotron">
+        <h2 style="padding-left:2%;">{{ job_info.title }}</h2>
+        <br>
+        <div class="container" style="border:1px solid; border-radius:10px; padding:1%;">
+            <p>Candidate Profile: {{ job_info.candidate_profile }}</p>
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <p>Job Responsibility: {{ job_info.Job_responsibility }}</p> 
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <p>Salary: {{ job_info.salary }}</p>
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <p>Last date for application: {{ job_info.last_date }}</p>
+           
+            <strong>Posted On: {{ job_info.posted_date }}</strong>
+            <a href="{% url 'job_apply' job_info.slug %}">
+                    <button type="button" class="btn btn-info btn-lg">Apply</button>
+                </a>
+        </div>
+    </div>
+    {% endif %}
     {% endif %}
     </div>
 {% endblock %}

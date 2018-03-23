@@ -161,6 +161,16 @@ class AddJob(models.Model):
         show_all=False,
         auto_choose=True,
         sort=True)
+    state = models.ForeignKey(State, on_delete=models.CASCADE, blank=True,null=True)
+    city = ChainedForeignKey(
+            City,
+            chained_field="state",
+            chained_model_field="state",
+            show_all=False,
+            auto_choose=True,
+            sort=True,
+            blank=True,
+            null=True)
     title=models.CharField(max_length=100,blank=False,unique=True)
     employer = models.ForeignKey(Employer,on_delete=models.CASCADE)
     last_date = models.DateField(blank=True)

@@ -77,6 +77,20 @@ def register(request):
     
     return render(request, 'registration/register.html', context_dict)
 
+
+def banner_city(request,city_id):
+    usertype = user_type(request)
+    c=City.objects.get(id=city_id)
+    jobs = AddJob.objects.filter(city_id=city_id)
+    context_dict={'jobs':jobs,'usertype':usertype}
+    return render(request,"jportal/jobsbycities.html",context_dict)
+
+def banner_cat(request,cat_id):
+    usertype = user_type(request)
+    c = Category.objects.get(id=cat_id)
+    jobs = AddJob.objects.filter(category_id=cat_id)
+    context_dict={'jobs':jobs,'usertype':usertype}
+    return render(request,"jportal/jobsbycategory.html",context_dict)
 #---------------------EMPLOYER REGISTRATION
 def employer_reg(request):
     context_dict = {}
@@ -372,9 +386,10 @@ def add_job(request):
         if form.is_valid():
             a = form.save(commit=False) 
             a.employer = emp
+            a.state = emp.state
+            a.city = emp.city
             a.posted_date = datetime.now()
             a.save()
-
             return redirect('managejob')
         else:
             print(form.errors)
@@ -464,7 +479,7 @@ def job_details(request, jobslug_name):
 
             except AddJob.DoesNotExist:
                 context_dict['employer'] = employer
-        
+    
     context_dict['job_info'] = job_info
     context_dict['usertype'] = user_type(request)
 
@@ -933,3 +948,8 @@ def contact(request):
 
     context_dict["form"] = contact
     return render(request, 'jportal/contact.html', context_dict)
+
+
+
+
+

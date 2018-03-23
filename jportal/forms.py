@@ -101,7 +101,7 @@ class JobForm(forms.ModelForm):
     last_date = forms.DateField(widget=forms.DateInput(),help_text='Please enter date in this format: DD/MM/YYYY',input_formats=['%d/%m/%Y'])
     class Meta:
        model = AddJob
-       exclude = ('posted_date','employer','slug',)
+       exclude = ('state','city','posted_date','employer','slug',)
 
 class GraduationForm(forms.ModelForm):
     graduation = forms.ModelChoiceField(queryset=Graduation.objects.all(), required=True)

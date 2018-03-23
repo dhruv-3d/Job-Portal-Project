@@ -5,7 +5,8 @@ from django.shortcuts import render
 
 urlpatterns = [
     url(r'^$', views.index, name='index'), #common
-
+    url(r'^jobsbycities/(?P<city_id>[\d]+)/$', views.banner_city, name='banner_city'),
+    url(r'^jobsbycategory/(?P<cat_id>[\d]+)/$', views.banner_cat, name='banner_cat'),
     # Common
     url(r'^regsiter/$', views.register, name='register'), #common
     url(r'^employer_register/$', views.employer_reg, name='employer_register'), #common
