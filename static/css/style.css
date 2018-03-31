@@ -5,6 +5,7 @@ html {
     overflow-y: scroll;
     overflow-x: hidden;
     -ms-overflow-style: scrollbar;
+    height:100%;
   }
   
   body {
@@ -12,6 +13,7 @@ html {
     font: 400 12px/1.8 "Open Sans", sans-serif;
     color: #666;
     -webkit-font-smoothing: antialiased;
+    height:100%;
   }
   
   img {
@@ -1547,6 +1549,7 @@ width: auto;
   --------------------------------------------------------------*/
   .footer {
     padding: 10px 0;
+    position: absolute;
   }
   
   .footer .copyright {
