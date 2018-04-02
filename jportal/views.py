@@ -265,9 +265,11 @@ def jobseeker_profile(request,username):
         user = User.objects.get(username=username)
         print(user.username)
         seeker = JobSeekers.objects.get(user_id=user.id)
+        ed = show_education(user.id)
         context_dict['user'] = user
         context_dict['seeker'] = seeker
         context_dict['usertype'] = usertype 
+        context_dict['ed'] = ed
     return render(request, 'jportal/jobseeker_profile.html', context_dict)
 
 def jobseeker_edit(request,username):
