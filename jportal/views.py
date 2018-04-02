@@ -120,7 +120,7 @@ def employer_reg(request):
             emp_user.save()
             login(request,user)
 
-            return index(request)
+            return redirect('index')
 
         else:
             print(employer_form.errors)
@@ -158,7 +158,7 @@ def jobseeker_reg(request):
             seeker_user.save()
             login(request, user)
 
-            return index(request)
+            return redirect('index')
 
         else:
             print(user_form.errors)

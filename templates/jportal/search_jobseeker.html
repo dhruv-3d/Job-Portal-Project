@@ -90,7 +90,7 @@
                                     <p class="title">{{jp.experience}}</p>
                                     <p><a href="{{jp.linkedin_profile}}"><i class="fa fa-linkedin"></i></a></p> 
                                     <p>
-                                            <a class="btn btn-d btn-sm" href="{% url 'jobseeker_profile' i.user.username %}" 
+                                            <a class="btn btn-d btn-sm" href="{% url 'view_jobseeker' emp_username=user.username username=i.user.username %}" 
                                             style="font-size:18px;"> View Details</a>
                                             <a class="btn" href="{% url 'save_jobseeker' i.user.id %}" style="float:right; font-size:18px; padding:8px;">
                                             <span class="glyphicon glyphicon-bookmark"></span></a>
@@ -112,7 +112,7 @@
                                 <p class="title">{{jp.experience}}</p>
                                 <a href="{{jp.linkedin_profile}}"><i class="fa fa-linkedin"></i></a>
                                 <p>
-                                    <a class="btn btn-d btn-sm" href="{% url 'jobseeker_profile' i.user.username %}" 
+                                    <a class="btn btn-d btn-sm" href="{% url 'view_jobseeker' emp_username=user.username username=i.user.username %}" 
                                     style="font-size:18px;"> View Details</a>
                                     <a class="btn" href="{% url 'save_jobseeker' i.user.id %}" style="float:right; font-size:18px; padding:8px;">
                                     <span class="glyphicon glyphicon-bookmark"></span></a>
@@ -137,7 +137,7 @@
                             <p class="title">{{i.designation}}</p>
                             <p class="title">{{i.experience}}</p>
                             <a href="{{i.linkedin_profile}}"><i class="fa fa-linkedin"></i></a> 
-                            <p><a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}" 
+                            <p><a href="{% url 'view_jobseeker' emp_username=user.username username=i.jobseeker.user.username %}" 
                                 class="btn btn-d btn-sm" role="button" style="font-size:18px;">View Details</a>
                                 <a class="btn" href="{% url 'save_jobseeker' i.jobseeker.user.id %}" style="float:right; font-size:18px; padding:8px;">
                                         <span class="glyphicon glyphicon-bookmark"></span></a>
@@ -157,7 +157,7 @@
                         <p class="title">{{i.designation}}</p>
                         <p class="title">{{i.experience}}</p>
                         <a href="{{i.linkedin_profile}}"><i class="fa fa-linkedin"></i></a> 
-                        <p><a href="{% url 'jobseeker_profile' i.jobseeker.user.username %}" 
+                        <p><a href="{% url 'view_jobseeker' emp_username=user.username username=i.jobseeker.user.username %}" 
                             class="btn btn-d btn-sm" role="button" style="font-size:18px;margin-bottom:10px;">View Details</a>
                             <a class="btn" href="{% url 'save_jobseeker' i.jobseeker.user.id %}" style="float:right; font-size:18px; padding:8px;">
                                     <span class="glyphicon glyphicon-bookmark"></span></a>

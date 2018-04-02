@@ -140,19 +140,21 @@ class ClassXIIForm(forms.ModelForm):
     board = forms.CharField(max_length=50,required=True)
     year = forms.ChoiceField(choices=get_years(),required=True)
     medium = forms.CharField(max_length=50,required=True)
+    school = forms.CharField(max_length=150,required=True)
     percentage = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
-        fields = ('board','year','medium','percentage',)
+        fields = ('board','year','medium','school','percentage',)
 
 class ClassXForm(forms.ModelForm):
     board = forms.CharField(max_length=50,required=True)
     year = forms.ChoiceField(choices=get_years(),required=True)
     medium = forms.CharField(max_length=50,required=True)
+    school = forms.CharField(max_length=150,required=True)
     percentage = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
-        fields = ('board','year','medium','percentage',)
+        fields = ('board','year','medium','school','percentage',)
     
 class SearchByLocation(forms.ModelForm):
     class Meta:
