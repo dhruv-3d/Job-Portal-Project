@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^services/$', views.services, name='services'), #common   
     url(r'^about/$', views.about, name='about'), #common
     url(r'^contact/$', views.contact, name='contact'), #common
+    url(r'^chat/$', views.chat, name='chat'), #common
 
     #jobseekers
     url(r'^(?P<username>[\w\@\.]+)/jobseeker_profile/$', views.jobseeker_profile, name='jobseeker_profile'),

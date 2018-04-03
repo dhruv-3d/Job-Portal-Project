@@ -26,6 +26,7 @@
                             <h5><span class="glyphicon glyphicon-earphone"></span> : {{emp_data.contact_no}} </h5>
                             <h5><span class="glyphicon glyphicon-envelope"></span> : {{emp_usr.email }} </h5>
                             <h5><span class="glyphicon glyphicon-map-marker color-primary"></span> : {{emp_data.city}}, {{emp_data.state}}</h5>
+                            <a class="btn" href="{% url 'chat' %}">Chat</a>
                         </div>
                     </div>
                 </div>
@@ -47,7 +48,7 @@
                                 <img src="{{ MEDIA_URL }}{{company_data.logo}}" class="img-thumbnail img-responsive" style="width:100%">
                             </div>
                         </div>
-                    {% else %} 
+                    {% else %}
                     <div class="page-header">
                             <h3 style="display:inline">Company Details </h3>
                         </div>
@@ -55,7 +56,7 @@
                         <div id="company_form" class="collapse">
                         <div class="container">
                             <h2>Company Details</h2>
-                            <form method="post" action="." enctype="multipart/form-data" >   
+                            <form method="post" action="." enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {% bootstrap_form company_form %}
                                 <input type="submit" name="submit" value="Confirm">
@@ -65,8 +66,8 @@
 
                     {% endif %}
                 </div>
-            </div>  
-        </div> 
+            </div>
+        </div>
     </main>
     <br/>
     <br/>

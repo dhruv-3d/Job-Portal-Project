@@ -1,0 +1,19 @@
+{% extends 'jportal/base.html' %}
+
+{% block title %}Chat{% endblock %}
+
+{% block nav %} {% endblock %}
+
+{% block body_block %}
+<script>
+    firebase.auth().onAuthStateChanged(function(user) {
+        // Once authenticated, instantiate Firechat with the logged in user
+        if (user) {
+            initChat(user);
+        }
+    });
+    firebase.auth().signInWithCustomToken('{{token}}').catch(function(error) {
+        console.log("Error authenticating user:", error);
+    });
+</script>
+{% endblock %}

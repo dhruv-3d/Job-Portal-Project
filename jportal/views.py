@@ -22,6 +22,9 @@ from jportal.forms import GraduationForm,PostGraduationForm,PhDForm,ClassXIIForm
 
 from datetime import datetime
 
+import firebase_admin
+from firebase_admin import credentials, auth
+
 def user_type(ek_req):
     usertype=''
     #checking the type of user. i.e Employer or JobSeeker
@@ -831,7 +834,7 @@ def add_education(request,username):
 
     context_dict ={}
     context_dict['usertype'] = user_type(request)
-    return render(request, 'jportal/education.html', context_dict)
+    return render(request, 'jportal/education.html', context_dict) 
 
 
 def show_education(user_id):
@@ -950,6 +953,16 @@ def contact(request):
     return render(request, 'jportal/contact.html', context_dict)
 
 
+def chat(request):
+    context_dict = {}
 
+    if request.method == 'GET':
+        cred = credentials.Certificate('./static/jportal-chat-232ee-firebase-adminsdk-rydqi-3b893d0496.json')
+        default_app = firebase_admin.initialize_app(cred)
+        print("Chat app name:", default_app.name)
 
+        uid = request.user.username
+        custom_token = auth.create_custom_token(uid)
 
+        context_dict['token'] = custom_token
+    return render(request, 'jportal/chat.html', context_dict)

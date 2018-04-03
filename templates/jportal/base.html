@@ -7,9 +7,11 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<!-- Bootstrap CSS -->
-	
+	<!-- Bootstrap CSS -->	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- Firechat -->
+	<link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">
@@ -129,6 +131,28 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<!-- jQuery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+	<!-- Firebase -->
+	<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+	<script>
+			// Initialize Firebase
+			var config = {
+				apiKey: "AIzaSyC76fKMUinE13_h6GBj_oJCJJRMIepqSAE",
+				authDomain: "jportal-chat-232ee.firebaseapp.com",
+				databaseURL: "https://jportal-chat-232ee.firebaseio.com",
+				projectId: "jportal-chat-232ee",
+				storageBucket: "jportal-chat-232ee.appspot.com",
+				messagingSenderId: "957803959222"
+			};
+			firebase.initializeApp(config);
+	</script>
+
+	<!-- Firechat -->
+	<script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
+
+
 
 </body>
 
