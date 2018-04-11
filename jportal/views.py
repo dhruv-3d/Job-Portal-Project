@@ -308,10 +308,6 @@ def create_resume(request,username):
     context_dict={'usertype':usertype}
     jseek = JobSeekers.objects.get(user_id=request.user.id)
     try:
-        education=Education.objects.filter(jobseeker_id=jseek.id).first()
-    except:
-        education=''
-    try:
         jp = JobSeekersProfile.objects.get(jobseeker_id=jseek.id)
         a=1
     except:
@@ -320,8 +316,6 @@ def create_resume(request,username):
         if a:
             form = JobseekerprofileForm(request.POST,instance=jp)
             if form.is_valid():
-                pro = form.save(commit=False)
-                pro.education = education
                 pro.save()
                 return redirect('resume', username=username)
             else:
@@ -342,14 +336,28 @@ def create_resume(request,username):
             form = JobseekerprofileForm()
         usertype=user_type(request)
     if request.method == 'POST' and 'upload' in request.POST:
-        resumefile = UploadResume(request.POST, request.FILES)
-        if resumefile.is_valid():
-            resumefile.save()
-            return redirect('resume', username=username)
+        if a:
+            resumefile = UploadResume(request.POST, request.FILES, instance=jp)
+            if resumefile.is_valid():
+                resumefile.save()
+                return redirect('resume', username=username)
+            else:
+                print(resumefile.errors)
+        else:
+            resumefile = UploadResume(request.POST, request.FILES)
+            if resumefile.is_valid():
+                resumefile = form.save(commit=False)
+                resumefile.jobseeker = jseek
+                resumefile.save()
+                return redirect('resume', username=username)
+            else:
+                print(resumefile.errors)
     else:
-        resumefile = UploadResume()
+        if a:
+            resumefile = UploadResume(instance=jp)
+        else:
+            resumefile = UploadResume(instance=jp)
     context_dict['form'] = form
-    context_dict['education'] = education
     context_dict['file'] = resumefile
     return render(request,'jportal/create_resume.html', context_dict)
 
@@ -835,6 +843,15 @@ def add_education(request,username):
     context_dict['usertype'] = user_type(request)
     return render(request, 'jportal/education.html', context_dict)
 
+def delete_education(request,username,ed_id):
+
+    try:
+        e = Education.objects.get(id=ed_id)
+    except Education.DoesNotExist:
+        return redirect('jobseeker_profile',request.user.username)
+    if e:
+        Education.objects.get(id=ed_id).delete()
+    return redirect('jobseeker_profile',request.user.username)
 
 def show_education(user_id):
     j = JobSeekers.objects.get(user_id=user_id)
@@ -934,7 +951,17 @@ def view_jobseeker(request,emp_username,username):
     j = JobSeekers.objects.get(user_id=juser.id)
     jp = JobSeekersProfile.objects.get(jobseeker_id=j.id)
     ed = show_education(juser.id)
-    context_dict={'usertype':usertype, 'j':j, 'jp':jp, 'ed':ed}
+    col={}
+    sch={}
+    for i in ed:
+        if i=='gr' or i=='pg' or i=='phd':
+            if ed[i]!='':
+                col[i]=ed[i]
+                print(col[i].category)
+        else:
+            if ed[i]!='':
+                sch[i]=ed[i]
+    context_dict={'usertype':usertype, 'j':j, 'jp':jp, 'ed':ed, 'col':col, 'sch':sch}
     return render(request,'jportal/view_jobseeker.html',context_dict)
 
 def contact(request):

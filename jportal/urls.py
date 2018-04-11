@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^(?P<username>[\w\@\.]+)/phd/$',views.add_doctorate,name='phd'),
     url(r'^(?P<username>[\w\@\.]+)/class_xii/$',views.add_classxii,name='class_xii'),
     url(r'^(?P<username>[\w\@\.]+)/class_x/$',views.add_classx,name='class_x'),
+    url(r'^(?P<username>[\w\@\.]+)/delete_education/(?P<ed_id>[\d]+)/$',views.delete_education,name='delete_education'),
     #employer links----
     url(r'^employer_profile/(?P<username>[\w\@\.]+)/$', views.employer_profile, name='employer_profile'), #e
     url(r'^emp_edit/(?P<username>[\w\@\.]+)/$', views.edit_employer_profile, name='emp_edit'), #e
