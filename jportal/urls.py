@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^regsiter/$', views.register, name='register'), #common
     url(r'^employer_register/$', views.employer_reg, name='employer_register'), #common
     url(r'^jobseeker_register/$', views.jobseeker_reg, name='jobseeker_register'), #common
+    url(r'^acc_active_email/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',views.activate, name='acc_active_email'), #common
     url(r'^services/$', views.services, name='services'), #common   
     url(r'^about/$', views.about, name='about'), #common
     url(r'^contact/$', views.contact, name='contact'), #common

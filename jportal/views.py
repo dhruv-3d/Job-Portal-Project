@@ -20,6 +20,13 @@ from jportal.forms import UserEditForm, EmployerEditForm, JobSeekerEditForm, Con
 from jportal.forms import SearchByCategory, SearchByLocation, JobseekerprofileForm, UploadResume
 from jportal.forms import GraduationForm,PostGraduationForm,PhDForm,ClassXIIForm,ClassXForm
 
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from .tokens import account_activation_token
+
 from datetime import datetime
 
 def user_type(ek_req):
@@ -108,18 +115,31 @@ def employer_reg(request):
             user.username = user.email
             user.password = user_form.cleaned_data.get('password')
             user.password = make_password(user.password)
-            print(user.password)
+            user.is_active = False
             user.save()
             usr_obj = User.objects.get(username=user.username)
             print("aa user obj:",usr_obj)
-
             emp_user = employer_form.save(commit=False)
             #emp_user.contact_no = str(employer_form.contact_no)
             emp_user.user = usr_obj
-
             emp_user.save()
-            login(request,user)
-
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your blog account.'
+            message = render_to_string('registration/acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+            print(message)
+            to_email = user_form.cleaned_data.get('email')
+            print("aa email:",to_email)
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            print("email object:",email)
+            if(email.send()):
+                print("email sent")
+            else:
+                print("kai error che!!")
             return redirect('index')
 
         else:
@@ -130,6 +150,26 @@ def employer_reg(request):
     context_dict['user_form'] = user_form
     
     return render(request, 'registration/employer_register.html', context_dict)
+
+def activate(request, uidb64, token):
+    usertype = user_type(request)
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+        if usertype=='e':
+            usr_obj = Employer.objects.get(user_id=user.id)
+        else:
+            usr_obj = JobSeekers.objects.get(user_id=user.id)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        usr_obj.email_verify = True
+        login(request, user)
+        return redirect('index')
+    else:
+        return HttpResponse('Activation link is invalid!')
 
 #--------------------JOB SEEKER REGISTRATION
 def jobseeker_reg(request):
@@ -143,21 +183,33 @@ def jobseeker_reg(request):
         job_seek = JobSeekerForm(request.POST, request.FILES)
         if user_form.is_valid() and job_seek.is_valid():
             user = user_form.save(commit=False)
-            seeker_user = job_seek.save(commit=False)
-            #seeker_user.contact_no = str(job_seek.contact_no)
-
             user.username = user.email
             user.password = user_form.cleaned_data.get('password')
             user.password = make_password(user.password)
-            
+            user.is_active = False
             user.save()
             usr_obj = User.objects.get(username=user.username)
             print("aa user obj:",usr_obj)
-            
-            seeker_user.user_id = usr_obj.id
+            seeker_user = job_seek.save(commit=False)
+            seeker_user.user = usr_obj
             seeker_user.save()
-            login(request, user)
-
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your blog account.'
+            message = render_to_string('registration/acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+            print(message)
+            to_email = user_form.cleaned_data.get('email')
+            print("aa email:",to_email)
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            print("email object:",email)
+            if(email.send()):
+                print("email sent")
+            else:
+                print("kai error che!!")
             return redirect('index')
 
         else:
@@ -168,6 +220,7 @@ def jobseeker_reg(request):
     context_dict['user_form'] = user_form
 
     return render(request, 'registration/jobseeker_register.html', context_dict)
+
 
 #--------------------Employer--------------
 def employer_profile(request,username):
