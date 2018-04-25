@@ -1,4 +1,4 @@
-#!/Users/c100-56/Desktop/JP/Job-Portal-Project/job_env/bin/python3
+#!/Users/c100-56/Desktop/Job-Portal-Project/job_env/bin/python3
 from django.core import management
 
 if __name__ == "__main__":

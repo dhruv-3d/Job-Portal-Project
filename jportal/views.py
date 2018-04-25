@@ -1033,5 +1033,7 @@ def contact(request):
 
 
 
+def job_approval(request):
 
+    return HttpResponse("3d")
 

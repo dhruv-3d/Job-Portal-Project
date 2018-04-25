@@ -62,7 +62,6 @@ def get_category(cat):
 
     return user.username
 
-
 #----------------for search jobseeker by (category,subcategory,state,city)
 @register.assignment_tag
 def get_cate(catid):

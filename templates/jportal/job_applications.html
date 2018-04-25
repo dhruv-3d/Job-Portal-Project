@@ -33,7 +33,11 @@
                                     <ul>
                                         {% for apps in application %}
                                         <li>   <!-- ahiya profile link will be there instead of index -->
-                                            <a href="{% url 'index' %}">{% get_appliers apps %}</a> 
+                                            {% get_appliers apps as ap_name %}
+                                            <a href="{% url 'jobseeker_profile' ap_name %}">{{ap_name}}</a>
+                                            <button>Approve</button>
+                                            or
+                                            <button>Reject</button>
                                         </li>
                                         {% endfor %}
                                     </ul>

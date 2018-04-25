@@ -1,0 +1,7 @@
+django==1.11.4
+django-smart-selects
+django-bootstrap3
+django-bootstrap-toolkit
+django-registration-redux
+django-simple-captcha
+firebase-admin

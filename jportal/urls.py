@@ -15,7 +15,8 @@ urlpatterns = [
     url(r'^services/$', views.services, name='services'), #common   
     url(r'^about/$', views.about, name='about'), #common
     url(r'^contact/$', views.contact, name='contact'), #common
-
+    url(r'^job_approval/$', views.job_approval, name='job_approval'), #common
+    
     #jobseekers
     url(r'^(?P<username>[\w\@\.]+)/jobseeker_profile/$', views.jobseeker_profile, name='jobseeker_profile'),
     url(r'^(?P<username>[\w\@\.]+)/jobseeker_edit/$',views.jobseeker_edit,name='jobseeker_edit'),
