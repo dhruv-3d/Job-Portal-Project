@@ -20,6 +20,7 @@ from jportal.forms import UserEditForm, EmployerEditForm, JobSeekerEditForm, Con
 from jportal.forms import SearchByCategory, SearchByLocation, JobseekerprofileForm, UploadResume
 from jportal.forms import GraduationForm,PostGraduationForm,PhDForm,ClassXIIForm,ClassXForm
 
+import json
 import firebase_admin
 from firebase_admin import credentials, auth
 from datetime import datetime
@@ -51,7 +52,6 @@ def user_type(ek_req):
 
     return usertype
 
-
 #index for testing purpose...!!!
 def index(request):
     print(request.user)
@@ -79,12 +79,12 @@ def register(request):
     
     return render(request, 'registration/register.html', context_dict)
 
-
 def banner_city(request,city_id):
     usertype = user_type(request)
     c=City.objects.get(id=city_id)
     jobs = AddJob.objects.filter(city_id=city_id)
     context_dict={'jobs':jobs,'usertype':usertype}
+
     return render(request,"jportal/jobsbycities.html",context_dict)
 
 def banner_cat(request,cat_id):
@@ -92,7 +92,9 @@ def banner_cat(request,cat_id):
     c = Category.objects.get(id=cat_id)
     jobs = AddJob.objects.filter(category_id=cat_id)
     context_dict={'jobs':jobs,'usertype':usertype}
+
     return render(request,"jportal/jobsbycategory.html",context_dict)
+
 #---------------------EMPLOYER REGISTRATION
 def employer_reg(request):
     context_dict = {}
@@ -966,3 +968,17 @@ def chat(request):
 
         context_dict['token'] = custom_token
     return render(request, 'jportal/chat.html', context_dict)
+
+
+def job_approval(request):
+    context_dict = {}
+    
+    context_dict['status'] = request.GET['status']
+    context_dict['seeker_id'] = request.GET['seeker']
+    context_dict['job_id'] = request.GET['job']
+
+    applier = Appliers.objects.get(jobseeker_id=context_dict['seeker_id'], job_id=context_dict['job_id'])
+    applier.status = context_dict['status']
+    applier.save()
+
+    return HttpResponse(json.dumps(context_dict))
