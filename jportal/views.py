@@ -87,14 +87,12 @@ def register(request):
 
 def banner_city(request,city_id):
     usertype = user_type(request)
-    c=City.objects.get(id=city_id)
     jobs = AddJob.objects.filter(city_id=city_id)
     context_dict={'jobs':jobs,'usertype':usertype}
     return render(request,"jportal/jobsbycities.html",context_dict)
 
 def banner_cat(request,cat_id):
     usertype = user_type(request)
-    c = Category.objects.get(id=cat_id)
     jobs = AddJob.objects.filter(category_id=cat_id)
     context_dict={'jobs':jobs,'usertype':usertype}
     return render(request,"jportal/jobsbycategory.html",context_dict)
@@ -365,11 +363,12 @@ def create_resume(request,username):
         a=1
     except:
         a=0
+        jp=None
     if request.method == 'POST' and 'create' in request.POST:
         if a:
             form = JobseekerprofileForm(request.POST,instance=jp)
             if form.is_valid():
-                pro.save()
+                form.save()
                 return redirect('resume', username=username)
             else:
                 print(form.errors)
@@ -424,10 +423,8 @@ def view_resume(request,username):
             js = JobSeekersProfile.objects.get(jobseeker_id=j.id)
         except:
             js=''
-        try:
-            ed=Education.objects.filter(jobseeker_id=j.id).first()
-        except:
-            ed=''
+        ed = {}
+        ed = show_education(user.id)
         context_dict['user'] = user
         context_dict['j'] = j
         context_dict['js'] = js

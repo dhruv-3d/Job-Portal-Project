@@ -4,7 +4,7 @@
 
 <head>
      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-     <title>One Page Resume</title>
+     <title>{{user.username}} - Resume</title>
      <style type="text/css">
         * { margin: 0; padding: 0; }
         body { font: 16px Helvetica, Sans-Serif; line-height: 24px; background: url(images/noise.jpg); }
@@ -23,6 +23,7 @@
         dt { font-style: italic; font-weight: bold; font-size: 18px; text-align: right; padding: 0 26px 0 0; width: 150px; float: left; height: 100px; border-right: 1px solid #999;  }
         dd { width: 600px; float: right; }
         dd.clear { float: none; margin: 0; height: 15px; }
+        .school {color:#666}
      </style>
 </head>
 <body>
@@ -36,3 +37,82 @@
                 Email: <a class="email" href="mailto:{{user.email}}">{{user.email}}</a>
             </p>   
         </div>
+
+        <div class="clear"></div>
+            <dl>
+                <dd class="clear"></dd>
+                
+                <dt>Education</dt>
+                <dd>
+                    {% if ed.phd %}
+                    <div style="text-transform:uppercase"><b>{{ed.phd.phd}}, {{ed.phd.specialization}} | <span class="school">{{ed.phd.university}}</span></b></div>
+                    <p><i class="fa fa-calendar"></i>{{ed.phd.start_year}} - {{ed.phd.end_year}}</p>
+                    <br/>
+                    CGPA: {{ed.phd.marks}}</p>
+                    {% endif %}
+
+                    {% if ed.pg %}
+                    <div style="text-transform:uppercase"><b>{{ed.pg.post_graduation}}, {{ed.pg.specialization}} | <span class="school">{{ed.pg.university}}</span></b></div>
+                    <p><i class="fa fa-calendar"></i>{{ed.pg.start_year}} - {{ed.pg.end_year}}
+                    <br/>
+                    CGPA: {{ed.pg.marks}}</p>
+                    {% endif %}
+
+                    {% if ed.gr %}
+                    <div style="text-transform:uppercase"><b>{{ed.gr.graduation}}, {{ed.gr.specialization}} | <span class="school">{{ed.gr.university}}</span></b></div>
+                    <p><i class="fa fa-calendar"></i>{{ed.gr.start_year}} - {{ed.gr.end_year}}
+                    <br/>
+                    CGPA: {{ed.gr.marks}}</p>
+                    {% endif %}
+
+                    {% if ed.xii %}
+                    <div style="text-transform:uppercase"><b>XII(Senior Secondary), {{ed.xii.stream}} | <span class="school">{{ed.xii.school}}</span></b></div>
+                    <p><i class="fa fa-calendar"></i>{{ed.xii.start_year}} - {{ed.xii.end_year}}
+                    <br/>
+                        {{ed.xii.board}} Board
+                    <br/>
+                    Percentage: {{ed.xii.percentage}}%</p>
+                    {% endif %}
+
+                    {% if ed.x %}
+                    <div style="text-transform:uppercase"><b>X(Secondary) | <span class="school">{{ed.x.school}}</span></b></div>
+                    <p><i class="fa fa-calendar"></i>{{ed.x.start_year}} - {{ed.x.end_year}}
+                    <br/>
+                        {{ed.x.board}} Board
+                    <br/>
+                    Percentage: {{ed.x.percentage}}%</p>
+                    {% endif %}
+                </dd>
+                
+                <dd class="clear"></dd>
+                
+                <dt>Skills</dt>
+                <dd>
+                    <p>{{js.key_skills}}</p>
+                </dd>
+                
+                <dd class="clear"></dd>
+                
+                <dt>Experience</dt>
+                <dd>
+                    <p>{{js.experience}}</p>
+                </dd>
+                
+                <dd class="clear"></dd>
+                
+                <dt>Hobbies</dt>
+                <dd>{{js.hobbies}}</dd>
+                
+                <dd class="clear"></dd>
+                
+                <dt>References</dt>
+                <dd>Available on request</dd>
+                
+                <dd class="clear"></dd>
+            </dl>
+
+        <div class="clear"></div>
+        </div>
+</body>
+
+</html>

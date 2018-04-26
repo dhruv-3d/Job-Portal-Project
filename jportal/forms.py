@@ -19,7 +19,7 @@ GRADING_SYSTEM = [
     ('1','Select'), ('2','Scale 10 Grading System'), ('3','Scale 4 Grading System'), 
     ('4', '% Marks of 100 Maximum'), ('5', 'Course Requires a Pass')
 ]
-
+STREAM = [('Science','Science'),('Commerce','Commerce'),('Arts','Arts')]
 def get_years(initial=1970):
     return [(year, year) for year in range(datetime.datetime.now().year, initial, -1)]  
 YEAR=get_years()
@@ -85,6 +85,7 @@ class JobSeekerEditForm(forms.ModelForm):
         model = JobSeekers
         fields = ('gender','state', 'city', 'profile_img', 'dob', 'contact_no')
 class JobseekerprofileForm(forms.ModelForm):
+    experience = forms.CharField(widget=forms.Textarea(attrs={'placeholder': "Enter your work experience including Company's name, Year and your designation there."}))
     class Meta:
        model = JobSeekersProfile
        exclude = ('jobseeker','resume',)
@@ -138,27 +139,30 @@ class PhDForm(forms.ModelForm):
     marks = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
-        fields = ('phd','specialization','university','start_year','end_year','grading_system','marks',)
+        fields = ('phd','specialization','university','start_year','end_year','grading_system','marks')
 
 class ClassXIIForm(forms.ModelForm):
+    stream = forms.ChoiceField(choices=STREAM,required=True)
     board = forms.CharField(max_length=50,required=True)
+    start_year = forms.ChoiceField(choices=get_years(),required=True)
     end_year = forms.ChoiceField(choices=get_years(),required=True)
     medium = forms.CharField(max_length=50,required=True)
     school = forms.CharField(max_length=150,required=True)
     percentage = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
-        fields = ('board','end_year','medium','school','percentage',)
+        fields = ('stream','board','start_year','end_year','medium','school','percentage')
 
 class ClassXForm(forms.ModelForm):
     board = forms.CharField(max_length=50,required=True)
+    start_year = forms.ChoiceField(choices=get_years(),required=True)
     end_year = forms.ChoiceField(choices=get_years(),required=True)
     medium = forms.CharField(max_length=50,required=True)
     school = forms.CharField(max_length=150,required=True)
     percentage = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
-        fields = ('board','end_year','medium','school','percentage',)
+        fields = ('board','start_year','end_year','medium','school','percentage',)
     
 class SearchByLocation(forms.ModelForm):
     class Meta:

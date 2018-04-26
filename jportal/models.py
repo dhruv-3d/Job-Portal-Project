@@ -73,7 +73,7 @@ class Employer(models.Model):
             show_all=False,
             auto_choose=True,
             sort=True)
-    profile_img = models.ImageField(blank=True, upload_to='employer_pic')
+    profile_img = models.ImageField(blank=True, upload_to='employer_pic',default='user.png')
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
     contact_no = models.PositiveIntegerField(blank=False,validators=[MaxValueValidator(9999999999)])
@@ -103,7 +103,7 @@ class JobSeekers(models.Model):
             show_all=False,
             auto_choose=True,
             sort=True)
-    profile_img = models.ImageField(blank=True,upload_to='jobseeker_pic')
+    profile_img = models.ImageField(blank=True,upload_to='jobseeker_pic',default='user.png')
     gender = models.CharField(max_length=10, blank=False)
     dob = models.DateField(blank=True)
     contact_no = models.CharField(max_length=10, blank=False)
@@ -124,6 +124,7 @@ class Education(models.Model):
     start_year = models.CharField(max_length=10,blank=True)
     end_year = models.CharField(max_length=10,blank=True)
     grading_system = models.CharField(max_length=50,blank=True)
+    stream =  models.CharField(max_length = 50, blank=True)
     marks = models.DecimalField(max_digits=4,decimal_places=2,default=0,blank=True)
     school = models.CharField(max_length=200,blank=True)
     board = models.CharField(max_length=10,blank=True)
@@ -144,11 +145,13 @@ class JobSeekersProfile(models.Model):
         chained_model_field="category",
         show_all=False,
         auto_choose=True,
-        sort=True)
+        sort=True,
+        null=True)
     designation = models.CharField(max_length=30, blank=False, null=True)
     key_skills = models.TextField(blank=False,  default='', null=True)
-    total_workexp = models.CharField(max_length=20,blank=False, default='', null=True)
-    current_drawn_sal = models.PositiveIntegerField(blank=True, default=0)
+    experience = models.TextField(blank=False, default='', null=True)
+    hobbies = models.TextField(blank=False, default='', null=True)
+    current_drawn_salary = models.PositiveIntegerField(blank=True, default=0)
 
     def __str__(self):
         return self.jobseeker.user.username
