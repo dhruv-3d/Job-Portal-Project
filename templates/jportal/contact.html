@@ -1,4 +1,7 @@
-{% extends 'jportal/base.html' %} {% block title_block %} Contact Us {% endblock %} {% block body_block %}
+{% extends 'jportal/base.html' %} 
+{% load staticfiles %}
+{% block title_block %} Contact Us {% endblock %} 
+{% block body_block %}
 <main>
     <div class="main">
         <section class="module" id="contact">
@@ -10,7 +13,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-sm-6">
                         <form id="contactForm" role="form" role="form" action="." method="post">
                             <input name="csrfmiddlewaretoken" value="X6e8BaQWu5EdESdBBalDOtofJoSXGvQFFjchBPGE8lYbZlCzhXtIb8aUhBSS3xiS" type="hidden">
                             <div class="form-group">
@@ -28,25 +31,42 @@
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="text-center">
-                            <button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Submit</button>
+                                <button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Submit</button>
+                            </div>
                         </form>
                     </div>
-                    <!--<div class="col-sm-4 col-md-4 col-lg-4">
+                    <div class="col-sm-4 ">
                         <div class="alt-features-item mt-0">
-                            <div class="alt-features-icon"><span class="icon-megaphone"></span></div>
-                            <h3 class="alt-features-title font-alt">Where to meet</h3>Titan Company<br/>23 Greate Street<br/>Los Angeles, 12345 LS
+                            <div class="alt-features-icon"><span class="fa fa-map-marker" style="font-size:30px;"></span></div>
+                            <h3 class="alt-features-title font-alt">Where to meet</h3>JobHunt Pvt. Ltd.<br/>101, Regent Square<br/> Adajan, 395009 - Surat
                         </div>
                         <div class="alt-features-item mt-xs-60">
-                            <div class="alt-features-icon"><span class="icon-map"></span></div>
-                            <h3 class="alt-features-title font-alt">Say Hello</h3>Email: somecompany@example.com<br/>Phone: +1 234 567 89 10
+                            <div class="alt-features-icon"><span class="fa fa-bullhorn" style="font-size:30px;"></span></div>
+                            <h3 class="alt-features-title font-alt">Say Hello</h3>Email: jobportal@gmail.com<br/>Phone: +91 7894561230
                         </div>
-                    </div>-->
+                    </div>
                 </div>
             </div>
         </section>
+        <section id="map-section">
+            <div id="map"></div>
+        </section>
     </div>
 </main>
-
+<script>
+    function initMap() {
+        var uluru = {lat:  21.1926, lng: 72.7997};
+        var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: uluru
+        });
+        var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjJL8OlCw71wlZB4iDmLYBtf0tVwWX0xY&callback=initMap" async defer></script>
 <!--<div class="container jumbotron">
     <form role="form" action="." method="post">
         {% csrf_token %} {{ form.as_p }}
