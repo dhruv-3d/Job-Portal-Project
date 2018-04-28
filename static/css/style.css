@@ -41,7 +41,6 @@ html {
     right: 0 !important;
     left: auto !important;
   }
-  
   /* Transition elsements */
   a,
   .btn {
@@ -170,7 +169,7 @@ html {
   .module,
   .module-small {
     position: relative;
-    padding: 140px 0;
+    padding-bottom: 140px;
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
@@ -2968,4 +2967,19 @@ width: auto;
       width: 100%;
     }
   }
-  
+
+  dd {
+    margin-left:25px !important;
+  }
+  dd, dt {
+    line-height: 2.0 !important;
+}
+dt{
+  font-size: 15px;
+}
+
+.about-title {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}

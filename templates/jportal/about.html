@@ -4,78 +4,90 @@
 {% block title_block %}
 	About Us
 {% endblock %}
-
 {% block body_block %}
-    <!-- Page Content -->
-    <div class="container">
-
-      <!-- Page Heading/Breadcrumbs -->
-      <h1 class="mt-4 mb-3 breadcrumb">About</h1>
-
-      <!-- Intro Content -->
-      <div class="row">
-        <div class="col-lg-6">
-          <img class="img-fluid rounded mb-4" src="http://placehold.it/750x450" alt="">
+<main>
+  <div class="main">
+    <section class="about-title module module-medium bg-dark-60 about-page-header" style="background-image: url(../../static/images/about_bg.jpg); height:400px;">
+      <div class="container">
+        <h2 class="module-title font-alt">About Us</h2>
+      </div>
+    </section>
+    <section class="module" style="padding-top: 140px; padding-bottom: 80px;">
+      <div class="container">
+        <h4 class="font-alt">About Job Portal</h4><br/>
+        <p>Tired searching for a job? Feeling helpless? Tired of waiting for a response after applying on those job portals? We are there to help you out. We have come up with an amazing job portal where candidates can apply for desired jobs and even employers can post their requirements. With two separate registrations, this portal allows both candidates and the employers, an ease in searching for the suitable match for each other. It allows the employers to send an email or sms to the candidates they feel are fit for the vacancy they have.</p>
+        <dl>
+          <dt>Features for Job Seekers:</dt>
+          <dd>Job Seekers can search for a job according to their preferred city.</dd>
+          <dd>Job Seekers can send their resumes to the companies which are located in their preferred cities.</dd>
+          <dd>Job Seekers can fill the bio data form which is designed for them in the portal with an attachment of their resume.</dd>
+          <dd>Job Seekers shall receive an email or sms if they are being short listed for the interview by an employer.</dd>
+          <br/>
+          <dt>Features for Employers:</dt>
+          <dd>Employers can find suitable candidates by searching with the desired key words for the vacancy.</dd>
+          <dd>Employers can post the vacancies by filling up a form designed for the same. They can mention the job description and salary offered in that.</dd>
+          <dd>Employers will be allowed to send out an email or sms to those candidates directly who found to fit the criteria of the job opening.</dd>
+        </dl>
+      </div>
+    </section>
+    <hr class="divider-w">
+    <section class="module" id="team">
+      <div class="container" style="padding-top: 80px;">
+        <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+            <h2 class="module-title font-alt">Meet Our Team</h2>
+          </div>
         </div>
-        <div class="col-lg-6">
-          <h2>About Job Hunt</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et, consequuntur, modi mollitia corporis ipsa voluptate corrupti eum ratione ex ea praesentium quibusdam? Aut, in eum facere corrupti necessitatibus perspiciatis quis?</p>
-          <p>With verified, up-to-date job listings directly from employer websites,
-
-            we create a premium experience for job seekers, employers,
-            
-            and data seekers alike.</p>
+        <div class="row">
+          <div class="mb-sm-20 wow fadeInUp col-sm-6 col-md-4" onclick="wow fadeInUp">
+            <div class="team-item">
+              <div class="team-image"><img src="{% static 'images/female2.png' %}" alt="Member Photo"/>
+                <div class="team-detail">
+                  <h5 class="font-alt">Hi all</h5>
+                  <p class="font-serif">Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a&amp;nbsp;iaculis diam.</p>
+                  <div class="team-social"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-dribbble"></i></a><a href="#"><i class="fa fa-skype"></i></a></div>
+                </div>
+              </div>
+              <div class="team-descr font-alt">
+                <div class="team-name">Vidushi Agrawal</div>
+                <div class="team-role">Software Developer</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-sm-20 wow fadeInUp col-sm-6 col-md-4" onclick="wow fadeInUp">
+            <div class="team-item">
+              <div class="team-image"><img src="{% static 'images/female3.png' %}" alt="Member Photo"/>
+                <div class="team-detail">
+                  <h5 class="font-alt">Good day</h5>
+                  <p class="font-serif">Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a&amp;nbsp;iaculis diam.</p>
+                  <div class="team-social"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-dribbble"></i></a><a href="#"><i class="fa fa-skype"></i></a></div>
+                </div>
+              </div>
+              <div class="team-descr font-alt">
+                <div class="team-name">Karishma Bardoliya</div>
+                <div class="team-role">Software Developer</div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-sm-20 wow fadeInUp col-sm-6 col-md-4" onclick="wow fadeInUp">
+            <div class="team-item">
+              <div class="team-image"><img src="{% static 'images/male.png' %}" alt="Member Photo"/>
+                <div class="team-detail">
+                  <h5 class="font-alt">Hello</h5>
+                  <p class="font-serif">Lorem ipsum dolor sit amet, consectetur adipiscing elit lacus, a&amp;nbsp;iaculis diam.</p>
+                  <div class="team-social"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-dribbble"></i></a><a href="#"><i class="fa fa-skype"></i></a></div>
+                </div>
+              </div>
+              <div class="team-descr font-alt">
+                <div class="team-name">Dhruv Desai</div>
+                <div class="team-role">Software Developer</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <!-- /.row -->
-
-      <!-- Team Members -->
-      <h2>Our Team</h2>
-
-      <div class="row">
-        <div class="col-lg-4 mb-4">
-          <div class="card h-100 text-center">
-            <img class="card-img-top" src="http://placehold.it/750x450" alt="">
-            <div class="card-body">
-              <h4 class="card-title">Karishma Bardoliya</h4>
-              <h6 class="card-subtitle mb-2 text-muted">Position</h6>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#">name@example.com</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 mb-4">
-          <div class="card h-100 text-center">
-            <img class="card-img-top" src="http://placehold.it/750x450" alt="">
-            <div class="card-body">
-              <h4 class="card-title">Vidushi Agarawal</h4>
-              <h6 class="card-subtitle mb-2 text-muted">Position</h6>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#">name@example.com</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 mb-4">
-          <div class="card h-100 text-center">
-            <img class="card-img-top" src="http://placehold.it/750x450" alt="">
-            <div class="card-body">
-              <h4 class="card-title">Dhruv Desai</h4>
-              <h6 class="card-subtitle mb-2 text-muted">Position</h6>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus aut mollitia eum ipsum fugiat odio officiis odit.</p>
-            </div>
-            <div class="card-footer">
-              <a href="#">name@example.com</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- /.row -->
-
-    </div>
-    <!-- /.container -->
-
+    </section>
+  </div>
+</main>
+    
 {% endblock %}
