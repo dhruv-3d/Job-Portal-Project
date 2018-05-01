@@ -50,8 +50,5 @@ urlpatterns = [
     url(r'^job_applications/$',views.job_applications, name='job_applications'), #e
     url(r'^search_job/$',views.search_job, name='search_job'), #j
     url(r'^recomm_job/$',views.recomm_job, name='recomm_job'), #j
-    # is idle---can be used!
-    #url(r'^employer_page/$', views.employer_page, name='employer_page'),
-    
-    #url(r'^detail_employer/$', views.detail_employer, name='detail_employer'),
+
 ]

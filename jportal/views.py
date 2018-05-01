@@ -542,7 +542,6 @@ def job_applications(request):
     context_dict={}
 
     if request.method == 'GET':
-        
         employer = Employer.objects.get(user_id=request.user.id)
         jobs = AddJob.objects.filter(employer_id=employer.id)
 
@@ -564,8 +563,8 @@ def manage_job(request):
     return render(request, 'jportal/managejob.html', context_dict) 
 
 @login_required
-def edit_job(request,addjob_title_slug):
-    
+def edit_job(request, addjob_title_slug):
+
     context_dict = {}
     b = AddJob.objects.get(slug=addjob_title_slug)
     if request.method == 'POST':
@@ -573,7 +572,7 @@ def edit_job(request,addjob_title_slug):
         if form.is_valid():
             form.save(commit=True)
             return redirect('managejob')
-                
+
         else:
             print(form.errors)
     else:
@@ -581,7 +580,7 @@ def edit_job(request,addjob_title_slug):
 
     context_dict['form'] = form
     context_dict['usertype'] = user_type(request)
-    
+
     return render(request, 'jportal/edit_job.html', context_dict)
 
 @login_required
@@ -968,7 +967,6 @@ def chat(request):
 
         context_dict['token'] = custom_token
     return render(request, 'jportal/chat.html', context_dict)
-
 
 def job_approval(request):
     context_dict = {}

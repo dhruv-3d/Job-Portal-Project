@@ -32,12 +32,10 @@ def has_app(job):
 
     application = Appliers.objects.filter(job_id=job.id)
 
-    count = application.count()
-
     return application
 
 @register.assignment_tag
-def get_appliers(Appliers):    
+def get_appliers(Appliers):
     app = Appliers
 
     applier = JobSeekers.objects.get(id=app.jobseeker_id)

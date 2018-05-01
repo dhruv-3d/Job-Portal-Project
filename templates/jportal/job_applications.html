@@ -45,8 +45,8 @@
                         <div>
                           <a href="{% url 'jobseeker_profile' ap_name %}">{{ap_name}}</a>
                           <button id="{{ apps.jobseeker_id }}" data-toggle="modal"
-                            data-target="#appAction" class="action btn-info" value="{{ job.id }}"
-                            style="margin: 5px;">
+                            data-target="#appAction" class="action btn-info"
+                            value="{{ job.id }}" style="margin: 5px;">
                             Action
                           </button>
                         </div>
@@ -78,10 +78,10 @@
         <h4 class="modal-title">What do you want to do with this application?</h4>
       </div>
       <div class="modal-footer">
-        <button value="approved" type="button" class="approve btn btn-primary">Approve</button>
-        <button value="rejected" type="button" class="reject btn btn-primary">Reject</button>
+        <button value="approved" type="button" data-dismiss="modal" class="approve btn btn-primary">Approve</button>
+        <button value="rejected" type="button" data-dismiss="modal" class="reject btn btn-primary">Reject</button>
       </div>
-    </div>    
+    </div>
   </div>
 </div>
 {% endblock %}
