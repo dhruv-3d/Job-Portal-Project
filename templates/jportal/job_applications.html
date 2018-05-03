@@ -40,17 +40,17 @@
                     Appliers are
                     <ul>
                       {% for apps in application %}
-                      {% get_appliers apps as ap_name %}
-                      <li>
-                        <div>
-                          <a href="{% url 'jobseeker_profile' ap_name %}">{{ap_name}}</a>
-                          <button id="{{ apps.jobseeker_id }}" data-toggle="modal"
-                            data-target="#appAction" class="action btn-info"
-                            value="{{ job.id }}" style="margin: 5px;">
-                            Action
-                          </button>
-                        </div>
-                      </li>
+                        {% get_appliers apps as ap_name %}
+                        <li>
+                          <div>
+                            <a href="{% url 'jobseeker_profile' ap_name %}">{{ap_name}}</a>
+                            <button id="applicant_{{ apps.id }}" data-toggle="modal"
+                              data-target="#appAction" class="action btn-info"
+                              value="{{ job.id }}" style="margin: 5px;">
+                              Action
+                            </button>
+                          </div>
+                        </li>
                       {% endfor %}
                     </ul>
                   {% else %}

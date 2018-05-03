@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse 
+from django.db import connection
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -109,7 +110,7 @@ def employer_reg(request):
         
         if employer_form.is_valid() and user_form.is_valid():    
             user = user_form.save(commit=False)
-            user.username = user.email
+            user.username = user.email.split('@')[0]
             user.password = user_form.cleaned_data.get('password')
             user.password = make_password(user.password)
             print(user.password)
@@ -150,7 +151,7 @@ def jobseeker_reg(request):
             seeker_user = job_seek.save(commit=False)
             #seeker_user.contact_no = str(job_seek.contact_no)
 
-            user.username = user.email
+            user.username = user.email.split('@')[0]
             user.password = user_form.cleaned_data.get('password')
             user.password = make_password(user.password)
             
@@ -544,9 +545,15 @@ def job_applications(request):
     if request.method == 'GET':
         employer = Employer.objects.get(user_id=request.user.id)
         jobs = AddJob.objects.filter(employer_id=employer.id)
+        
+        with connection.cursor() as cursor:
+            cursor.execute('select jportal_addjob.id,title, count(jportal_appliers.id) as total_applicants from jportal_addjob, jportal_appliers where jportal_addjob.employer_id = %s AND jportal_appliers.job_id = jportal_addjob.id group by jportal_addjob.id',[employer.id])
+            app_info = cursor.fetchall()
+            print(app_info)
 
         context_dict['employer'] = employer
         context_dict['jobs'] = jobs
+        context_dict['app_info'] = app_info
         context_dict['usertype'] = user_type(request)
 
         return render(request, 'jportal/job_applications.html', context_dict)
@@ -975,8 +982,13 @@ def job_approval(request):
     context_dict['seeker_id'] = request.GET['seeker']
     context_dict['job_id'] = request.GET['job']
 
-    applier = Appliers.objects.get(jobseeker_id=context_dict['seeker_id'], job_id=context_dict['job_id'])
-    applier.status = context_dict['status']
-    applier.save()
+    s_id = context_dict['seeker_id'].split('_')
+    
+    try:
+        applier = Appliers.objects.get(id=int(s_id[1]))
+        applier.status = context_dict['status']
+        applier.save()
+    except:
+        print("Something went wrong in Appliers.")
 
     return HttpResponse(json.dumps(context_dict))

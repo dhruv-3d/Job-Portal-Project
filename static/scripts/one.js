@@ -15,9 +15,8 @@ $(document).ready( function() {
             $.ajax({url: "/jportal/job_approval/",
                 data: { status: ap_action, seeker: seeker_id, job: job_id },
                 success: function(result){
-                    let a = '#' + seeker_id.toString();
-                    $(a).html("Approved");
-                    console.log("Server response",result);
+                    $(document).find('#' + 'applicant_' + seeker_id).text('Approved');
+                    console.log("Server response", JSON.parse(result));
                 }
             });
         });
@@ -29,9 +28,8 @@ $(document).ready( function() {
             $.ajax({url: "/jportal/job_approval/",
                 data: { status: ap_action, seeker: seeker_id, job: job_id },
                 success: function(result){
-                    let a = '#' + seeker_id.toString();
-                    $(a).html("Rejected");
-                    console.log("Server response",result);
+                    $(document).find('#' + 'applicant_' + seeker_id).text('Rejected');
+                    console.log("Server response", JSON.parse(result));
                 }
             });
         });
