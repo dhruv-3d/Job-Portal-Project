@@ -21,10 +21,15 @@ from jportal.forms import UserEditForm, EmployerEditForm, JobSeekerEditForm, Con
 from jportal.forms import SearchByCategory, SearchByLocation, JobseekerprofileForm, UploadResume
 from jportal.forms import GraduationForm,PostGraduationForm,PhDForm,ClassXIIForm,ClassXForm
 
-import json
-import firebase_admin
-from firebase_admin import credentials, auth
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from .tokens import account_activation_token
+
 from datetime import datetime
+import json
 
 def user_type(ek_req):
     usertype=''
@@ -113,18 +118,31 @@ def employer_reg(request):
             user.username = user.email.split('@')[0]
             user.password = user_form.cleaned_data.get('password')
             user.password = make_password(user.password)
-            print(user.password)
+            user.is_active = False
             user.save()
             usr_obj = User.objects.get(username=user.username)
             print("aa user obj:",usr_obj)
-
             emp_user = employer_form.save(commit=False)
             #emp_user.contact_no = str(employer_form.contact_no)
             emp_user.user = usr_obj
-
             emp_user.save()
-            login(request,user)
-
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your blog account.'
+            message = render_to_string('registration/acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+            print(message)
+            to_email = user_form.cleaned_data.get('email')
+            print("aa email:",to_email)
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            print("email object:",email)
+            if(email.send()):
+                print("email sent")
+            else:
+                print("kai error che!!")
             return redirect('index')
 
         else:
@@ -135,6 +153,26 @@ def employer_reg(request):
     context_dict['user_form'] = user_form
     
     return render(request, 'registration/employer_register.html', context_dict)
+
+def activate(request, uidb64, token):
+    usertype = user_type(request)
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+        if usertype=='e':
+            usr_obj = Employer.objects.get(user_id=user.id)
+        else:
+            usr_obj = JobSeekers.objects.get(user_id=user.id)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        usr_obj.email_verify = True
+        login(request, user)
+        return redirect('index')
+    else:
+        return HttpResponse('Activation link is invalid!')
 
 #--------------------JOB SEEKER REGISTRATION
 def jobseeker_reg(request):
@@ -154,15 +192,30 @@ def jobseeker_reg(request):
             user.username = user.email.split('@')[0]
             user.password = user_form.cleaned_data.get('password')
             user.password = make_password(user.password)
-            
+            user.is_active = False
             user.save()
             usr_obj = User.objects.get(username=user.username)
             print("aa user obj:",usr_obj)
-            
-            seeker_user.user_id = usr_obj.id
+            seeker_user = job_seek.save(commit=False)
+            seeker_user.user = usr_obj
             seeker_user.save()
-            login(request, user)
-
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your blog account.'
+            message = render_to_string('registration/acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':account_activation_token.make_token(user),
+            })
+            print(message)
+            to_email = user_form.cleaned_data.get('email')
+            print("aa email:",to_email)
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            print("email object:",email)
+            if(email.send()):
+                print("email sent")
+            else:
+                print("kai error che!!")
             return redirect('index')
 
         else:
@@ -173,6 +226,7 @@ def jobseeker_reg(request):
     context_dict['user_form'] = user_form
 
     return render(request, 'registration/jobseeker_register.html', context_dict)
+
 
 #--------------------Employer--------------
 def employer_profile(request,username):
@@ -313,10 +367,6 @@ def create_resume(request,username):
     context_dict={'usertype':usertype}
     jseek = JobSeekers.objects.get(user_id=request.user.id)
     try:
-        education=Education.objects.filter(jobseeker_id=jseek.id).first()
-    except:
-        education=''
-    try:
         jp = JobSeekersProfile.objects.get(jobseeker_id=jseek.id)
         a=1
     except:
@@ -325,8 +375,6 @@ def create_resume(request,username):
         if a:
             form = JobseekerprofileForm(request.POST,instance=jp)
             if form.is_valid():
-                pro = form.save(commit=False)
-                pro.education = education
                 pro.save()
                 return redirect('resume', username=username)
             else:
@@ -347,14 +395,28 @@ def create_resume(request,username):
             form = JobseekerprofileForm()
         usertype=user_type(request)
     if request.method == 'POST' and 'upload' in request.POST:
-        resumefile = UploadResume(request.POST, request.FILES)
-        if resumefile.is_valid():
-            resumefile.save()
-            return redirect('resume', username=username)
+        if a:
+            resumefile = UploadResume(request.POST, request.FILES, instance=jp)
+            if resumefile.is_valid():
+                resumefile.save()
+                return redirect('resume', username=username)
+            else:
+                print(resumefile.errors)
+        else:
+            resumefile = UploadResume(request.POST, request.FILES)
+            if resumefile.is_valid():
+                resumefile = form.save(commit=False)
+                resumefile.jobseeker = jseek
+                resumefile.save()
+                return redirect('resume', username=username)
+            else:
+                print(resumefile.errors)
     else:
-        resumefile = UploadResume()
+        if a:
+            resumefile = UploadResume(instance=jp)
+        else:
+            resumefile = UploadResume(instance=jp)
     context_dict['form'] = form
-    context_dict['education'] = education
     context_dict['file'] = resumefile
     return render(request,'jportal/create_resume.html', context_dict)
 
@@ -550,6 +612,17 @@ def job_applications(request):
             cursor.execute('select jportal_addjob.id,title, count(jportal_appliers.id) as total_applicants from jportal_addjob, jportal_appliers where jportal_addjob.employer_id = %s AND jportal_appliers.job_id = jportal_addjob.id group by jportal_addjob.id',[employer.id])
             app_info = cursor.fetchall()
             print(app_info)
+
+'''
+select au.username, jportal_addjob.title, jportal_appliers.*
+from auth_user, jportal_employer , jportal_addjob, jportal_appliers, jportal_jobseekers, auth_user au
+where auth_user.id = jportal_employer.user_id 
+and jportal_appliers.jobseeker_id=jportal_jobseekers.id
+and au.id = jportal_jobseekers.user_id
+and jportal_employer.id=jportal_addjob.employer_id 
+and jportal_addjob.id=jportal_appliers.job_id
+and auth_user.id=7
+'''
 
         context_dict['employer'] = employer
         context_dict['jobs'] = jobs
@@ -845,6 +918,15 @@ def add_education(request,username):
     context_dict['usertype'] = user_type(request)
     return render(request, 'jportal/education.html', context_dict)
 
+def delete_education(request,username,ed_id):
+
+    try:
+        e = Education.objects.get(id=ed_id)
+    except Education.DoesNotExist:
+        return redirect('jobseeker_profile',request.user.username)
+    if e:
+        Education.objects.get(id=ed_id).delete()
+    return redirect('jobseeker_profile',request.user.username)
 
 def show_education(user_id):
     j = JobSeekers.objects.get(user_id=user_id)
@@ -944,7 +1026,17 @@ def view_jobseeker(request,emp_username,username):
     j = JobSeekers.objects.get(user_id=juser.id)
     jp = JobSeekersProfile.objects.get(jobseeker_id=j.id)
     ed = show_education(juser.id)
-    context_dict={'usertype':usertype, 'j':j, 'jp':jp, 'ed':ed}
+    col={}
+    sch={}
+    for i in ed:
+        if i=='gr' or i=='pg' or i=='phd':
+            if ed[i]!='':
+                col[i]=ed[i]
+                print(col[i].category)
+        else:
+            if ed[i]!='':
+                sch[i]=ed[i]
+    context_dict={'usertype':usertype, 'j':j, 'jp':jp, 'ed':ed, 'col':col, 'sch':sch}
     return render(request,'jportal/view_jobseeker.html',context_dict)
 
 def contact(request):
@@ -960,20 +1052,6 @@ def contact(request):
 
     context_dict["form"] = contact
     return render(request, 'jportal/contact.html', context_dict)
-
-def chat(request):
-    context_dict = {}
-
-    if request.method == 'GET':
-        cred = credentials.Certificate('./static/jportal-chat-232ee-firebase-adminsdk-rydqi-3b893d0496.json')
-        default_app = firebase_admin.initialize_app(cred)
-        print("Chat app name:", default_app.name)
-
-        uid = request.user.username
-        custom_token = auth.create_custom_token(uid)
-
-        context_dict['token'] = custom_token
-    return render(request, 'jportal/chat.html', context_dict)
 
 def job_approval(request):
     context_dict = {}

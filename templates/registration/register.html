@@ -6,21 +6,24 @@
 {% endblock %}
 {% block body_block %}
     <center>
-        <div class="jumbotron">
-            <h2 class="display-3">Job Hunt Registration</h2>
-        
+        <div class="container jumbotron">
+            <h2 class="display-3">Register Yourself!</h2>
+            <br/>
             <a href="{% url 'employer_register' %}">
                 <button class="btn btn-lg btn-primary">Register as Employer</button>
             </a>
             <br />
             <br />
-            Or
+            <b>Or</b>
             <br />
             <br />
             <a href="{% url 'jobseeker_register' %}">
                 <button class="btn btn-lg btn-primary">Register as Jobseeker</button>
             </a>
-        </div>
+            <br/>
+            <br/>
+                Already a member? <a href="{% url 'login' %}">Login Here</a>
+            </div>
 
     </center>
 {% endblock %}

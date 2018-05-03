@@ -9,10 +9,12 @@
     {% include "jportal/sidebar_emp.html" %}
 
     <main>
-        <div class="container row" style="margin-left: 150px;font-size: 28px; padding: 0px 20px;">
+        <div class="container" style="margin-left: 200px;font-size: 28px; padding: 0px 20px; border:2px solid;">
+        <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
             <div class="page-header">
-                <h3 style="font-size:1em;">{{j.user.first_name}} {{j.user.last_name}}</h3>
+                <h3 style="font-size:1em;display:inline;">{{j.user.first_name}} {{j.user.last_name}}</h3>
+                <a class="btn btn-border-d btn-round" type="button" href="#" style="float:right"><span class="glyphicon glyphicon-eye-open"></span> View Resume</a>
             </div>
             <div class="row">
                 <div class="col-md-3 col-lg-3" style="padding-left:50px;">
@@ -45,60 +47,87 @@
             </div>
             </div>
         </div>
-        <div class="container row" style="margin-left: 150px; padding: 50px 20px;">
-            <h3 class="work-details-title font-alt">Educational Details</h3>
+
+
+        <div class="container" style="padding: 50px 20px;">
+                <h3 class="work-details-title font-alt">Education Details</h3>
             <div class="panel-group">
-                {% if ed.gr %}
-                <div class="panel panel-primary">
-                    <div class="panel-heading"><h4 class="panel-title font-alt">Graduation: {{ed.gr.year}}</h4></div>
-                    <div class="panel-body">
-                        <h5><b>{{ ed.gr.graduation }} in  {{ ed.gr.specialization }}</b></h5>
-                        <h5>{{ ed.gr.university }}</h5>
-                        <h5>CGPA: <b>{{ed.gr.marks}}</b></h5>
+                <div class="row" style="margin-bottom:10px;">
+                    {% if ed.gr %}
+                    <div class="col-md-4 col-lg-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title font-alt">Graduation: {{ed.gr.start_year}} - {{ed.gr.end_year}}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <h5><b>{{ ed.gr.graduation }}</b> in <b>{{ ed.gr.specialization }}</b></h5>
+                                <h5>{{ ed.gr.university }}</h5>
+                                <h5>CGPA: <b>{{ed.gr.marks}}</b></h5>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                {% endif %}
-                {% if ed.pg %}
-                <div class="panel panel-primary">
-                    <div class="panel-heading"><h4 class="panel-title font-alt">Post Graduation: {{ed.pg.year}</h4></div>
-                    <div class="panel-body">
-                        <h5><b>{{ ed.pg.post_graduation }} in  {{ ed.pg.specialization }}</b></h5>
-                        <h5>{{ ed.pg.university }}</h5>
-                        <h5>CGPA: <b>{{ed.pg.marks}}</b></h5>
+                    {% endif %}
+                    {% if ed.pg %}
+                    <div class="col-md-4 col-lg-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title font-alt">Post Graduation: {{ed.pg.start_year}} - {{ed.pg.end_year}}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <h5><b>{{ ed.pg.post_graduation }}</b> in <b>{{ ed.pg.specialization }}</b></h5>
+                                <h5>{{ ed.pg.university }}</h5>
+                                <h5>CGPA: <b>{{ed.pg.marks}}</b></h5>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                {% endif %}
-                {% if ed.phd %}
-                <div class="panel panel-primary">
-                    <div class="panel-heading"><h4 class="panel-title font-alt">PhD: {{ed.phd.year}}</h4></div>
-                    <div class="panel-body">
-                        <h5><b>{{ ed.phd.phd }} in  {{ ed.phd.specialization }}</b></h5>
-                        <h5>{{ ed.phd.university }}</h5>
-                        <h5>CGPA: <b>{{ed.phd.marks}}</b></h5>
+                    {% endif %}
+                    {% if ed.phd %}
+                    <div class="col-md-4 col-lg-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title font-alt">PhD: {{ed.phd.start_year}} - {{ed.phd.end_year}}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <h5><b>{{ ed.phd.phd }}</b> in <b>{{ ed.phd.specialization }}</b></h5>
+                                <h5>{{ ed.phd.university }}</h5>
+                                <h5>CGPA: <b>{{ed.phd.marks}}</b></h5>
+                            </div>
+                        </div>
                     </div>
+                    {% endif %}
                 </div>
-                {% endif %}
-                {% if ed.xii %}
-                <div class="panel panel-primary">
-                    <div class="panel-heading"><h4 class="panel-title font-alt">Class 12<sup>th</sup>: {{ed.xii.year}}</h4></div>
-                    <div class="panel-body">
-                        <h5>Board: <b>{{ ed.xii.board }}</b> Medium: <b>{{ ed.xii.medium }}</b></h5>
-                        <h5>{{ ed.xii.school }}</h5>
-                        <h5>Score: <b>{{ed.xii.percentage}}</b></h5>
+                <div class="row" style="margin-top:10px;">
+                    {% if ed.xii %}
+                    <div class="col-md-4 col-lg-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title font-alt">Class 12<sup>th</sup>: {{ed.xii.end_year}}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <h5>Board: <b>{{ ed.xii.board }}</b> Medium: <b>{{ ed.xii.medium }}</b></h5>
+                                <h5>{{ ed.xii.school }}</h5>
+                                <h5>Score: <b>{{ed.xii.percentage}}</b></h5>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                {% endif %}
-                {% if ed.x %}
-                <div class="panel panel-primary">
-                    <div class="panel-heading"><h4 class="panel-title font-alt">Class 10<sup>th</sup>: {{ed.x.year}}</h4></div>
-                    <div class="panel-body">
-                        <h5>Board: <b>{{ ed.x.board }}</b> Medium: <b>{{ ed.x.medium }}</b></h5>
-                        <h5>{{ ed.x.school }}</h5>
-                        <h5>Score: <b>{{ed.x.percentage}}</b></h5>
+                    {% endif %}
+                    {% if ed.x %}
+                    <div class="col-md-4 col-lg-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title font-alt">Class 10<sup>th</sup>: {{ed.x.end_year}}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <h5>Board: <b>{{ ed.x.board }}</b> Medium: <b>{{ ed.x.medium }}</b></h5>
+                                <h5>{{ ed.x.school }}</h5>
+                                <h5>Score: <b>{{ed.x.percentage}}</b></h5>
+                            </div>
+                        </div>
                     </div>
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
+        </div>
         </div>
     </main>
     {% endblock %}

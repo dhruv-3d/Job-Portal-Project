@@ -21,8 +21,9 @@ GRADING_SYSTEM = [
 ]
 
 def get_years(initial=1970):
-    return [(year, year) for year in range(datetime.datetime.now().year, initial, -1)]
-    
+    return [(year, year) for year in range(datetime.datetime.now().year, initial, -1)]  
+YEAR=get_years()
+YEAR.insert(0, ('Present','PRESENT')) 
 class UserForm(forms.ModelForm):
     email = forms.EmailField(widget=forms.EmailInput,required=True)
     password = forms.CharField(widget=forms.PasswordInput())
@@ -107,54 +108,57 @@ class GraduationForm(forms.ModelForm):
     graduation = forms.ModelChoiceField(queryset=Graduation.objects.all(), required=True)
     specialization = forms.CharField(max_length=50,required=True)
     university = forms.CharField(max_length=200,required=True)
-    year = forms.ChoiceField(choices=get_years(),required=True)
+    start_year = forms.ChoiceField(choices=get_years(),required=True)
+    end_year = forms.ChoiceField(choices=YEAR,required=True)
     grading_system = forms.ChoiceField(choices=GRADING_SYSTEM)
     marks = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
-        fields = ('graduation','specialization','university','year','grading_system','marks',)
+        fields = ('graduation','specialization','university','start_year','end_year','grading_system','marks',)
 
 class PostGraduationForm(forms.ModelForm):
     post_graduation = forms.ModelChoiceField(queryset=Post_Graduation.objects.all(), required=True)
     specialization = forms.CharField(max_length=50,required=True)
     university = forms.CharField(max_length=200,required=True)
-    year = forms.ChoiceField(choices=get_years(),required=True)
+    start_year = forms.ChoiceField(choices=get_years(),required=True)
+    end_year = forms.ChoiceField(choices=YEAR,required=True)
     grading_system = forms.ChoiceField(choices=GRADING_SYSTEM)
     marks = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
-        fields = ('post_graduation','specialization','university','year','grading_system','marks',)
+        fields = ('post_graduation','specialization','university','start_year','end_year','grading_system','marks',)
 
 class PhDForm(forms.ModelForm):
     phd = forms.ModelChoiceField(queryset=PhD.objects.all(), required=True)
     specialization = forms.CharField(max_length=50,required=True)
     university = forms.CharField(max_length=200,required=True)
-    year = forms.ChoiceField(choices=get_years(),required=True)
+    start_year = forms.ChoiceField(choices=get_years(),required=True)
+    end_year = forms.ChoiceField(choices=YEAR,required=True)
     grading_system = forms.ChoiceField(choices=GRADING_SYSTEM)
     marks = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
-        fields = ('phd','specialization','university','year','grading_system','marks',)
+        fields = ('phd','specialization','university','start_year','end_year','grading_system','marks',)
 
 class ClassXIIForm(forms.ModelForm):
     board = forms.CharField(max_length=50,required=True)
-    year = forms.ChoiceField(choices=get_years(),required=True)
+    end_year = forms.ChoiceField(choices=get_years(),required=True)
     medium = forms.CharField(max_length=50,required=True)
     school = forms.CharField(max_length=150,required=True)
     percentage = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
-        fields = ('board','year','medium','school','percentage',)
+        fields = ('board','end_year','medium','school','percentage',)
 
 class ClassXForm(forms.ModelForm):
     board = forms.CharField(max_length=50,required=True)
-    year = forms.ChoiceField(choices=get_years(),required=True)
+    end_year = forms.ChoiceField(choices=get_years(),required=True)
     medium = forms.CharField(max_length=50,required=True)
     school = forms.CharField(max_length=150,required=True)
     percentage = forms.DecimalField(max_digits=4,decimal_places=2)
     class Meta:
         model = Education
-        fields = ('board','year','medium','school','percentage',)
+        fields = ('board','end_year','medium','school','percentage',)
     
 class SearchByLocation(forms.ModelForm):
     class Meta:

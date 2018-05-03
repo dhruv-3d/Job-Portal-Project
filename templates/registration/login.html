@@ -4,15 +4,51 @@
 {% block title_block %}
 	Login
 {% endblock %}
-
 {% block body_block %}
-    <link href="http://v4-alpha.getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
+<style>
+    .form-signin {
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+    }
+    .form-signin .form-signin-heading,
+    .form-signin .checkbox {
+        margin-bottom: 10px;
+    }
+    .form-signin .checkbox {
+        font-weight: normal;
+    }
+    .form-signin .form-control {
+        position: relative;
+        height: auto;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        padding: 10px;
+        font-size: 16px;
+    }
+    .form-signin .form-control:focus {
+        z-index: 2;
+    }
+    .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+    </style>
     <link rel="import" href="/templates/jportal/employer_register.html">
     <center>
-        <div>
+        <div class="container jumbotron">
+            <div class="alert alert-danger">
+                <strong>You can Login only if you have verified your account. Check your mailbox!</strong>
+            </div>
             <form class="form-signin" role="form" method="post" action="."> 
+                    <h2>Login Here</h2>
                 {% csrf_token %}
-                <h2 class="form-signin-heading">Please Log in</h2>
                 <p>
                     <label for="id_username" class="sr-only">Email:</label>
                     <input type="text" name="username" autofocus maxlength="254" required id="id_username" 
@@ -23,14 +59,10 @@
                     <input type="password" name="password" required id="id_password" class="form-control"
                         placeholder="Password" required />
                 </p>
-                <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit" />Login</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">Login</button>
             </form>
-        </div>
-        <br />
-        <div>
-            <p>
-                Not a member? <a href="{% url 'register' %}" >Register Here</a>
-            </p>
+            <br/>
+            Not a member? <a href="{% url 'register' %}" >Register Here</a>
         </div>
     </center>
 {% endblock %}

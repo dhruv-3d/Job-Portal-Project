@@ -11,11 +11,12 @@ urlpatterns = [
     url(r'^regsiter/$', views.register, name='register'), #common
     url(r'^employer_register/$', views.employer_reg, name='employer_register'), #common
     url(r'^jobseeker_register/$', views.jobseeker_reg, name='jobseeker_register'), #common
+    url(r'^acc_active_email/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',views.activate, name='acc_active_email'), #common
     url(r'^services/$', views.services, name='services'), #common   
     url(r'^about/$', views.about, name='about'), #common
     url(r'^contact/$', views.contact, name='contact'), #common
-    url(r'^chat/$', views.chat, name='chat'), #common
-
+    url(r'^job_approval/$', views.job_approval, name='job_approval'), #common
+    
     #jobseekers
     url(r'^(?P<username>[\w\@\.]+)/jobseeker_profile/$', views.jobseeker_profile, name='jobseeker_profile'),
     url(r'^(?P<username>[\w\@\.]+)/jobseeker_edit/$',views.jobseeker_edit,name='jobseeker_edit'),
@@ -28,6 +29,7 @@ urlpatterns = [
     url(r'^(?P<username>[\w\@\.]+)/phd/$',views.add_doctorate,name='phd'),
     url(r'^(?P<username>[\w\@\.]+)/class_xii/$',views.add_classxii,name='class_xii'),
     url(r'^(?P<username>[\w\@\.]+)/class_x/$',views.add_classx,name='class_x'),
+    url(r'^(?P<username>[\w\@\.]+)/delete_education/(?P<ed_id>[\d]+)/$',views.delete_education,name='delete_education'),
     #employer links----
     url(r'^employer_profile/(?P<username>[\w\@\.]+)/$', views.employer_profile, name='employer_profile'), #e
     url(r'^emp_edit/(?P<username>[\w\@\.]+)/$', views.edit_employer_profile, name='emp_edit'), #e

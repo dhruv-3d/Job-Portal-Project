@@ -121,7 +121,8 @@ class Education(models.Model):
     phd = models.ForeignKey(PhD,on_delete=models.SET_NULL,blank=True,null=True)
     specialization = models.CharField(max_length=50,blank=True)
     university = models.CharField(max_length=200,blank=True)
-    year = models.CharField(max_length=10,blank=True)
+    start_year = models.CharField(max_length=10,blank=True)
+    end_year = models.CharField(max_length=10,blank=True)
     grading_system = models.CharField(max_length=50,blank=True)
     marks = models.DecimalField(max_digits=4,decimal_places=2,default=0,blank=True)
     school = models.CharField(max_length=200,blank=True)
@@ -133,9 +134,9 @@ class Education(models.Model):
 
 class JobSeekersProfile(models.Model):
     jobseeker = models.OneToOneField(JobSeekers,on_delete=models.CASCADE)
-    linkedin_profile = models.CharField(max_length=200, blank=True)
-    pref_job_loc = models.CharField(max_length=100, blank=True)
-    resume = models.FileField(blank=True, upload_to='resume')
+    linkedin_profile = models.CharField(max_length=200, blank=True, default='', null=True)
+    pref_job_loc = models.CharField(max_length=100, blank=True, default='', null=True)
+    resume = models.FileField(blank=True, upload_to='resume', default='', null=True)
     category = models.ForeignKey(Category,on_delete=models.SET_NULL, null=True)
     subcategory= ChainedForeignKey(
         SubCategory,
@@ -145,9 +146,9 @@ class JobSeekersProfile(models.Model):
         auto_choose=True,
         sort=True)
     designation = models.CharField(max_length=30, blank=False, null=True)
-    key_skills = models.TextField(blank=False)
-    total_workexp = models.CharField(max_length=20,blank=False)
-    current_drawn_sal = models.PositiveIntegerField(blank=True)
+    key_skills = models.TextField(blank=False,  default='', null=True)
+    total_workexp = models.CharField(max_length=20,blank=False, default='', null=True)
+    current_drawn_sal = models.PositiveIntegerField(blank=True, default=0)
 
     def __str__(self):
         return self.jobseeker.user.username

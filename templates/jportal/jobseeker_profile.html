@@ -3,6 +3,24 @@
 
 {% block title %}{{ user.username }}{% endblock %}
 {% block body_block %}
+<style>
+    .panel-heading,
+    .panel-group .panel {
+        border-radius: 5px;
+    }
+    .panel-title {
+    font-size: 14px;
+    }
+        
+    .panel-heading a {
+        position: relative;
+        display: block;
+        font-family: "FontAwesome";
+        line-height: 1;
+        font-size: 14px;
+    }
+
+</style>
 {% include "jportal/sidebar_js.html" %}
 <main>
     <div class="container row" style="margin-left: 150px;font-size: 28px; padding: 0px 20px;">
@@ -36,59 +54,119 @@
         </div>
         </div>
     </div>
-    <div class="container row" style="margin-left: 150px; padding: 50px 20px;">
-        <h3 class="work-details-title font-alt">Educational Details</h3>
+
+
+
+    <div class="container" style="margin-left: 150px; padding: 50px 20px;">
+        <div class="jumbotron">
+            <h3 style="display:inline;font-size: 28px;">Educational Details</h3>
+            <a class="btn btn-border-d btn-round" href="{% url 'education' username=user.username %}" style="float:right;">Add/Edit</a>
+        </div> 
         <div class="panel-group">
-            {% if ed.gr %}
-            <div class="panel panel-primary">
-                <div class="panel-heading"><h4 class="panel-title font-alt">Graduation: {{ed.gr.year}}</h4></div>
-                <div class="panel-body">
-                    <h5><b>{{ ed.gr.graduation }} in  {{ ed.gr.specialization }}</b></h5>
-                    <h5>{{ ed.gr.university }}</h5>
-                    <h5>CGPA: <b>{{ed.gr.marks}}</b></h5>
+            <div class="row" style="margin-bottom:10px;">
+                {% if ed.gr %}
+                <div class="col-md-4 col-lg-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title font-alt">Graduation: {{ed.gr.start_year}} - {{ed.gr.end_year}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <h5><b>{{ ed.gr.graduation }}</b> in <b>{{ ed.gr.specialization }}</b></h5>
+                            <h5>{{ ed.gr.university }}</h5>
+                            <h5>CGPA: <b>{{ed.gr.marks}}</b></h5>
+                            <a href="{% url 'graduation' user.username %}" style="float:left;">
+                                <button type="button" class="btn btn-g btn-circle btn-sm">Edit</button>
+                            </a>
+                            <a href="{% url 'delete_education' username=user.username ed_id=ed.gr.id %}" style="float:right;">
+                                <button type="button" class="btn btn-d btn-circle btn-sm">Remove</button>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            {% endif %}
-            {% if ed.pg %}
-            <div class="panel panel-primary">
-                <div class="panel-heading"><h4 class="panel-title font-alt">Post Graduation: {{ed.pg.year}</h4></div>
-                <div class="panel-body">
-                    <h5><b>{{ ed.pg.post_graduation }} in  {{ ed.pg.specialization }}</b></h5>
-                    <h5>{{ ed.pg.university }}</h5>
-                    <h5>CGPA: <b>{{ed.pg.marks}}</b></h5>
+                {% endif %}
+                {% if ed.pg %}
+                <div class="col-md-4 col-lg-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title font-alt">Post Graduation: {{ed.pg.start_year}} - {{ed.pg.end_year}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <h5><b>{{ ed.pg.post_graduation }}</b> in <b>{{ ed.pg.specialization }}</b></h5>
+                            <h5>{{ ed.pg.university }}</h5>
+                            <h5>CGPA: <b>{{ed.pg.marks}}</b></h5>
+                            <a href="{% url 'post_graduation' user.username %}" style="float:left;">
+                                <button type="button" class="btn btn-g btn-circle btn-sm">Edit</button>
+                            </a>
+                            <a href="{% url 'delete_education' username=user.username ed_id=ed.pg.id %}" style="float:right;">
+                                <button type="button" class="btn btn-d btn-circle btn-sm">Remove</button>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            {% endif %}
-            {% if ed.phd %}
-            <div class="panel panel-primary">
-                <div class="panel-heading"><h4 class="panel-title font-alt">PhD: {{ed.phd.year}}</h4></div>
-                <div class="panel-body">
-                    <h5><b>{{ ed.phd.phd }} in  {{ ed.phd.specialization }}</b></h5>
-                    <h5>{{ ed.phd.university }}</h5>
-                    <h5>CGPA: <b>{{ed.phd.marks}}</b></h5>
+                {% endif %}
+                {% if ed.phd %}
+                <div class="col-md-4 col-lg-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title font-alt">PhD: {{ed.phd.start_year}} - {{ed.phd.end_year}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <h5><b>{{ ed.phd.phd }}</b> in <b>{{ ed.phd.specialization }}</b></h5>
+                            <h5>{{ ed.phd.university }}</h5>
+                            <h5>CGPA: <b>{{ed.phd.marks}}</b></h5>
+                            <a href="{% url 'phd' user.username %}" style="float:left;">
+                                <button type="button" class="btn btn-g btn-circle btn-sm">Edit</button>
+                            </a>
+                             <a href="{% url 'delete_education' username=user.username ed_id=ed.phd.id %}" style="float:right;">
+                                <button type="button" class="btn btn-d btn-circle btn-sm">Remove</button>
+                            </a>
+                        </div>
+                    </div>
                 </div>
+                {% endif %}
             </div>
-            {% endif %}
-            {% if ed.xii %}
-            <div class="panel panel-primary">
-                <div class="panel-heading"><h4 class="panel-title font-alt">Class 12<sup>th</sup>: {{ed.xii.year}}</h4></div>
-                <div class="panel-body">
-                    <h5>Board: <b>{{ ed.xii.board }}</b> Medium: <b>{{ ed.xii.medium }}</b></h5>
-                    <h5>{{ ed.xii.school }}</h5>
-                    <h5>Score: <b>{{ed.xii.percentage}}</b></h5>
+            <div class="row" style="margin-top:10px;">
+                {% if ed.xii %}
+                <div class="col-md-4 col-lg-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title font-alt">Class 12<sup>th</sup>: {{ed.xii.end_year}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <h5>Board: <b>{{ ed.xii.board }}</b> Medium: <b>{{ ed.xii.medium }}</b></h5>
+                            <h5>{{ ed.xii.school }}</h5>
+                            <h5>Score: <b>{{ed.xii.percentage}}</b></h5>
+                            <a href="{% url 'class_xii' user.username %}" style="float:left;">
+                                <button type="button" class="btn btn-g btn-circle btn-sm">Edit</button>
+                            </a>
+                            <a href="{% url 'delete_education' username=user.username ed_id=ed.xii.id %}" style="float:right;">
+                                <button type="button" class="btn btn-d btn-circle btn-sm">Remove</button>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            {% endif %}
-            {% if ed.x %}
-            <div class="panel panel-primary">
-                <div class="panel-heading"><h4 class="panel-title font-alt">Class 10<sup>th</sup>: {{ed.x.year}}</h4></div>
-                <div class="panel-body">
-                    <h5>Board: <b>{{ ed.x.board }}</b> Medium: <b>{{ ed.x.medium }}</b></h5>
-                    <h5>{{ ed.x.school }}</h5>
-                    <h5>Score: <b>{{ed.x.percentage}}</b></h5>
+                {% endif %}
+                {% if ed.x %}
+                <div class="col-md-4 col-lg-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title font-alt">Class 10<sup>th</sup>: {{ed.x.end_year}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <h5>Board: <b>{{ ed.x.board }}</b> Medium: <b>{{ ed.x.medium }}</b></h5>
+                            <h5>{{ ed.x.school }}</h5>
+                            <h5>Score: <b>{{ed.x.percentage}}</b></h5>
+                            <a href="{% url 'class_x' user.username %}" style="float:left;">
+                                <button type="button" class="btn btn-g btn-circle btn-sm">Edit</button>
+                            </a>
+                            <a href="{% url 'delete_education' username=user.username ed_id=ed.x.id %}" style="float:right;">
+                                <button type="button" class="btn btn-d btn-circle btn-sm">Remove</button>
+                            </a>
+                        </div>
+                    </div>
                 </div>
+                {% endif %}
             </div>
-            {% endif %}
         </div>
     </div>
 </main>

@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
     "python.pythonPath": "/usr/local/bin/python3",
     "workbench.colorTheme": "Atom One Dark",
+=======
+    "python.pythonPath": "${workspaceFolder}/job_env/bin/python"
+>>>>>>> Vidushi
 }
