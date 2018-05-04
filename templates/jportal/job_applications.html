@@ -13,7 +13,8 @@
 
 {% block body_block %}
   {% include "jportal/sidebar_emp.html" %}
-<div class="container" style="width:70%;">
+
+<!-- <div class="container" style="width:70%;">
   {% if jobs %}
     <h2 style="padding: 5px; background-color:grey; color:ghostwhite; border-radius: 2px;">
       Applications for your posted jobs
@@ -66,6 +67,19 @@
   {% else %}
     <h3>You haven't posted any jobs yet.</h3>
   {% endif %}
+</div> -->
+
+<div class="container">
+  <div class="jumbotron">
+    {% if app_info %}
+      <ul>
+        {% for jc in app_count %}
+          {{ jc.1 }}
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
 </div>
 
 <!-- Action Modal -->

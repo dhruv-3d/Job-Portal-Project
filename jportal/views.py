@@ -148,8 +148,8 @@ def employer_reg(request):
         else:
             print(employer_form.errors)
             print(user_form.errors)
-    
-    context_dict['employer_form'] = employer_form 
+
+    context_dict['employer_form'] = employer_form
     context_dict['user_form'] = user_form
     
     return render(request, 'registration/employer_register.html', context_dict)
@@ -605,27 +605,32 @@ def job_applications(request):
     context_dict={}
 
     if request.method == 'GET':
-        employer = Employer.objects.get(user_id=request.user.id)
-        jobs = AddJob.objects.filter(employer_id=employer.id)
-        
         with connection.cursor() as cursor:
-            cursor.execute('select jportal_addjob.id,title, count(jportal_appliers.id) as total_applicants from jportal_addjob, jportal_appliers where jportal_addjob.employer_id = %s AND jportal_appliers.job_id = jportal_addjob.id group by jportal_addjob.id',[employer.id])
-            app_info = cursor.fetchall()
-            print(app_info)
+            cursor.execute('select jportal_addjob.id,title, count(jportal_appliers.id) as total_applicants from jportal_addjob, jportal_appliers where jportal_addjob.employer_id = 3 AND jportal_appliers.job_id = jportal_addjob.id group by jportal_addjob.id')
+            columns = [col[0] for col in cursor.description]
+            app_count = [
+                ict(zip(columns, row))
+                for row in cursor.fetchall()
+            ]
 
-'''
-select au.username, jportal_addjob.title, jportal_appliers.*
-from auth_user, jportal_employer , jportal_addjob, jportal_appliers, jportal_jobseekers, auth_user au
-where auth_user.id = jportal_employer.user_id 
-and jportal_appliers.jobseeker_id=jportal_jobseekers.id
-and au.id = jportal_jobseekers.user_id
-and jportal_employer.id=jportal_addjob.employer_id 
-and jportal_addjob.id=jportal_appliers.job_id
-and auth_user.id=7
-'''
+            cursor.execute(
+                'select au.username, jportal_addjob.title, jportal_appliers.* '\
+                'from auth_user, jportal_employer , jportal_addjob, jportal_appliers, jportal_jobseekers, auth_user au '\
+                'where auth_user.id = jportal_employer.user_id '\
+                'and jportal_appliers.jobseeker_id=jportal_jobseekers.id '\
+                'and au.id = jportal_jobseekers.user_id '\
+                'and jportal_employer.id=jportal_addjob.employer_id  '\
+                'and jportal_addjob.id=jportal_appliers.job_id '\
+                'and auth_user.id=%s '\
+                'group by title', [request.user.id]
+            )
+            columns = [col[0] for col in cursor.description]
+            app_info = [
+                dict(zip(columns, row))
+                for row in cursor.fetchall()
+            ]
 
-        context_dict['employer'] = employer
-        context_dict['jobs'] = jobs
+        context_dict['app_count'] = app_count
         context_dict['app_info'] = app_info
         context_dict['usertype'] = user_type(request)
 
