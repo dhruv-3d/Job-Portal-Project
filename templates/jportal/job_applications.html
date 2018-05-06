@@ -1,18 +1,66 @@
 {% extends 'jportal/base.html' %}
-{% load staticfiles %}
-{% load app_tags %}
-
-{% block title_block %}
-  Job Details
-{% endblock %}
-
+{% load staticfiles %} 
+{% load app_tags %} 
+{% block title_block %} Job Details 
+{% endblock%} 
 {% block scripts_here %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src = "{% static "scripts/one.js" %}"></script>
-{% endblock %}
-
+<script src="{% static " scripts/one.js " %}"></script> 
+{% endblock %} 
 {% block body_block %}
-  {% include "jportal/sidebar_emp.html" %}
+
+<style>
+  #content {
+    display: none;
+  }
+
+  input[type="text"] {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+    padding: 4px 8px;
+    width: 60px;
+    cursor: pointer;
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+  }
+
+  input:focus+div#content {
+    display: block;
+  }
+
+
+  #customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+#tr-username {
+  width: 150px;
+}    
+
+
+</style>
+
+{% include "jportal/sidebar_emp.html" %}
 
 <!-- <div class="container" style="width:70%;">
   {% if jobs %}
@@ -68,20 +116,35 @@
     <h3>You haven't posted any jobs yet.</h3>
   {% endif %}
 </div> -->
-
-<div class="container">
-  <div class="jumbotron">
-    {% if app_info %}
-      <ul>
-        {% for jc in app_count %}
-          {{ jc.1 }}
-        {% endfor %}
-      </ul>
-    {% endif %}
-  </div>
-
-</div>
-
+{% if app_info %} 
+  {% for jc in app_count %}
+    <div class="container">
+      <div class="jumbotron">
+        <ul>
+          {{ jc.title }} &nbsp;
+          <span class="badge badge-info" style="background-color: #3a1996;">{{ jc.total_applicants }} applicants</span>
+          <br><br>
+          {% for i in app_info %}
+          {% if i.job_id == jc.id %}
+          <table id="customers" >
+          
+            <tr>
+            <td id="tr-username"><a href="{% url 'jobseeker_profile' i.username %}">{{ i.username }}</a> &nbsp; </td>
+            <td><b>Status:</b>&nbsp;{{ i.status }}</td>
+            <!--<button value="approved" type="button" class="approve btn btn-primary">Approve</button> -->
+            <td><button class="btn btn-d btn-circle btn-xs" type="submit">Approve</button></td>
+            <td><button class="btn btn-d btn-circle btn-xs" type="submit">Reject</button></td>
+            </tr>
+          
+          </table>
+          {% endif %}
+          {% endfor %}
+          <br/>
+        </ul>
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
 <!-- Action Modal -->
 <div class="modal fade" id="appAction" role="dialog">
   <div class="modal-dialog">
@@ -98,4 +161,29 @@
     </div>
   </div>
 </div>
+
+
+
+<div class="panel-group" style="width:500px;">
+  <!-- {% for job in jobs %} -->
+      <div class="panel panel-primary" style="border-radius:10px;">
+          <div class="panel-heading" style="border-radius:10px;">
+              <b><a style="color:rgb(255, 255, 255);" href="{% url 'job_details' job.slug %}"> job.title</a></b>
+          </div>
+          <div class="panel-body">
+              <h5>
+                  <!-- {{ job.Job_responsibility }} -->
+              </h5>
+              <a href="{% url 'edit_job' job.slug %}">
+                  <button class="btn btn-secondary btn-sm" type="submmit" value="Edit Jobs">Edit Job</button>
+              </a>
+              <a href="{% url 'delete_job' job.slug %}">
+                  <button style="float: right;" class="btn btn-secondary btn-sm" type="submit" value="Delete">Delete</button>
+              </a>
+          </div>
+      </div>
+  <!-- {% endfor %} -->
+</div>
+
+
 {% endblock %}
