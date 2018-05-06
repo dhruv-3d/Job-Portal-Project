@@ -621,8 +621,7 @@ def job_applications(request):
                 'and au.id = jportal_jobseekers.user_id '\
                 'and jportal_employer.id=jportal_addjob.employer_id  '\
                 'and jportal_addjob.id=jportal_appliers.job_id '\
-                'and auth_user.id=%s '\
-                'group by title', [request.user.id]
+                'and auth_user.id =%s' , [request.user.id]
             )
             columns = [col[0] for col in cursor.description]
             app_info = [
