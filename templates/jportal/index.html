@@ -1,158 +1,161 @@
-{% extends 'jportal/base.html' %}
-{% load staticfiles %}
-{% load bootstrap3 %}
-
-{% block title_block %}
-
-{% endblock %}
-
-{% block body_block %}
-
-{% if usertype != 'e' %}
-	<!-- non employer part -->
-	<section class="bg-dark-30 showcase-page-header module parallax-bg" style="background-image: url(../../static/images/slider.jpg);">
-		<div class="titan-caption">
+{% extends 'jportal/base.html' %} {% load staticfiles %} {% load bootstrap3 %} {% block title_block %} {% endblock %} 
+{%block body_block %} {% if usertype != 'e' %}
+<!-- non employer part -->
+<section class="bg-dark-30 showcase-page-header module parallax-bg" style="background-image: url(../../static/images/slider.jpg);">
+	<div class="titan-caption">
 		<div class="caption-content">
-				<div class="container">
-					<h3 style="font-size:calc(5.65476vw + 11.90476px); font-weight:400;">Your skills are in demand</h3>
-					<p><h4 style="font-size: 18px;color: #c2c2c2; font-weight:600;">Over 300,000 jobs in 14,000 companies</h4></p>
-					<!-- Job Search functionality -->
+			<div class="container">
+				<h3 style="font-size:calc(5.65476vw + 11.90476px); font-weight:400;">Your skills are in demand</h3>
+				<p>
+					<h4 style="font-size: 18px;color: #c2c2c2; font-weight:600;">Over 300,000 jobs in 14,000 companies</h4>
+				</p>
+				<!-- Job Search functionality -->
 
-					<div class="container" style="width:50%;">
-						<form id="searchjob" method="GET" action=".">
-							{% csrf_token %}
-							<div class="form-group">
-								<input type="text" class="form-control" name="jobtitle" placeholder="Search Jobs">
-							</div>
-							<div class="container" style="width:40%;">				
-								{% bootstrap_form searchform %}
-								{{ searchform.media.js }}
-							</div>
-							
-							<button id="butt" type="submit" class="btn btn-default">Submit</button>
-						</form>
-					</div>
-				
+				<div class="container" style="width:50%;">
+					<form id="searchjob" method="GET" action=".">
+						{% csrf_token %}
+						<div class="form-group">
+							<input type="text" class="form-control" name="jobtitle" placeholder="Search Jobs">
+						</div>
+						<div class="container" style="width:40%;">
+							{% bootstrap_form searchform %} {{ searchform.media.js }}
+						</div>
+
+						<button id="butt" type="submit" class="btn btn-default">Submit</button>
+					</form>
 				</div>
+
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<section class="module">
-			<h2 style="text-align:center;color:black; ">Jobs in Popular Cities</h2>
-		<div class="container">
+<section class="module">
+	<h2 style="text-align:center;color:black; ">Jobs in Popular Cities</h2>
+	<div class="container">
 		<div class="row multi-columns-row">
 			{% for i in stb %}
-				<div class="col-sm-6 col-md-3 col-lg-3">
-					<div class="gallery-item">
-						<div class="gallery-image">
-							<a class="gallery" href="{% url 'banner_city' i.city.id %}" title="Title 1">
-							<img src="{{ MEDIA_URL }}{{ i.img }}" alt="{{i.name}}"/>
+			<div class="col-sm-6 col-md-3 col-lg-3">
+				<div class="gallery-item">
+					<div class="gallery-image">
+						<a class="gallery" href="{% url 'banner_city' i.city.id %}" title="Title 1">
+							<img src="{{ MEDIA_URL }}{{ i.img }}" alt="{{i.name}}" />
 							<div class="gallery-caption">{{i.name}}</div>
-							</a>
-						</div>
+						</a>
 					</div>
 				</div>
+			</div>
 			{% endfor %}
 		</div>
-		</div>
+	</div>
 
-		<h2 style="text-align:center;color:black; ">Jobs in Popular Categories</h2>
-			<div class="container">
-				<div class="row multi-columns-row">
-					{% for i in ctb %}
-						<div class="col-sm-6 col-md-3 col-lg-3">
-							<div class="gallery-item">
-								<div class="gallery-image">
-									<a class="gallery" href="{% url 'banner_cat' i.category.id %}" title="Title 1">
-									<img src="{{ MEDIA_URL }}{{ i.img }}" alt="{{i.category}}"/>
-									<div class="gallery-caption">{{i.category}}</div>
-									</a>
-								</div>
-							</div>
-						</div>
-					{% endfor %}
+	<h2 style="text-align:center;color:black; ">Jobs in Popular Categories</h2>
+	<div class="container">
+		<div class="row multi-columns-row">
+			{% for i in ctb %}
+			<div class="col-sm-6 col-md-3 col-lg-3">
+				<div class="gallery-item">
+					<div class="gallery-image">
+						<a class="gallery" href="{% url 'banner_cat' i.category.id %}" title="Title 1">
+							<img src="{{ MEDIA_URL }}{{ i.img }}" alt="{{i.category}}" />
+							<div class="gallery-caption">{{i.category}}</div>
+						</a>
+					</div>
 				</div>
 			</div>
-	</section>
-
-	{% if jobs %}
-
-		<div class="container" style="width:60%; border:1px solid; border-radius:20px; padding-bottom:40px; padding-top:40px;">
-			<h2>Jobs found...</h2>
-			{% include 'jportal/job_listing.html' %}
+			{% endfor %}
 		</div>
-	{% endif %}
-	<!-- employer part -->
+	</div>
+</section>
 
-	<section class="module">
-		<div class="jumbotron" style="text-align:center;">
-			<div class="container">
+{% if jobs %}
+
+<div class="container" style="width:60%; border:1px solid; border-radius:20px; padding-bottom:40px; padding-top:40px;">
+	<h2>Jobs found...</h2>
+	{% include 'jportal/job_listing.html' %}
+</div>
+{% endif %}
+<!-- employer part -->
+
+<section class="module">
+	<div class="jumbotron" style="text-align:center;">
+		<div class="container">
 			<div class="row">
 				<div class="col s12 l6 offset-l1">
 					<h2>Verified, up-to-date job listings</h2>
-					<p>Every day we index jobs directly from employers. We’re committed to accurate, high-quality jobs so you won’t find old, duplicated, or spammy listings here.</p>
+					<p>Every day we index jobs directly from employers. We’re committed to accurate, high-quality jobs so you won’t find old,
+						duplicated, or spammy listings here.</p>
 					<a href="#" class="btn btn-primary">FIND JOBS</a>
 				</div>
-	
+
 				<div class="col s12 l3 push-l1" style="width:10%; height:10%; float:right;">
-					<img src="static/images/verified.png" class="story-image">
+					<img src="{% static 'images/verified.png' %}" class="story-image">
 				</div>
 			</div>
-			</div>
 		</div>
-		{% if not user.is_authenticated %}
-		<div class="jumbotron" style="text-align:center;">
-			<div class="container">
+	</div>
+	{% if not user.is_authenticated %}
+	<div class="jumbotron" style="text-align:center;">
+		<div class="container">
 			<div class="row">
 				<div class="col s12 l6 offset-l1">
 					<h2>Job seekers and employers connect</h2>
-					<p>We want job seekers and employers to connect directly. After you find the right job, you’re sent straight to the employer’s site to apply. No signups. No fuss.</p>
+					<p>We want job seekers and employers to connect directly. After you find the right job, you’re sent straight to the employer’s
+						site to apply. No signups. No fuss.</p>
 					<a href="{% url 'register' %}" class="btn btn-primary">GET STARTED</a>
 				</div>
-	
+
 				<div class="col s12 l3 push-l1" style="width:10%; height:10%; float:right;">
-					<img src="static/images/connection.png" class="story-image">
+					<img src="{% static 'images/connection.png' %}" class="story-image">
 				</div>
 			</div>
-			</div>
 		</div>
-		{% endif %}
-	</section>
+	</div>
+	{% endif %}
+</section>
 
 {% else %}
-	<section class="bg-dark-30 showcase-page-header module parallax-bg" style="background-image: url(../../static/images/slider.jpg);">
-		<div class="titan-caption">
+<section class="bg-dark-30 showcase-page-header module parallax-bg" style="background-image: url(../../static/images/slider.jpg);">
+	<div class="titan-caption">
 		<div class="caption-content">
-				<div class="container">
-					<h3 style="font-size:calc(5.65476vw + 11.90476px); font-weight:400;">Recruit the best</h3>
-					<p><h4 style="font-size: 18px;color: #c2c2c2; font-weight:600;">Find your next employee quickly with us.</h4></p>
-				</div>
+			<div class="container">
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<h3 style="font-size:calc(5.65476vw + 11.90476px); font-weight:400;">Recruit The Best</h3>
+				<p>
+					<h4 style="font-size: 18px;color: #c2c2c2; font-weight:600;">Find your next employee quickly with us.</h4>
+				</p>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
 			</div>
 		</div>
-	</section>
-	<section>
-		
-	</section>
-	<section>
-		<div class="jumbotron" style="text-align:center;">
-			<div class="container">
+	</div>
+</section>
+<section>
+	<div class="jumbotron" style="text-align:center;">
+		<div class="container">
 			<div class="row">
 				<div class="col s12 l6 offset-l1">
 					<h2>Job seekers and employers connect</h2>
-					<p>We want job seekers and employers to connect directly. After you find the right job, you’re sent straight to the employer’s site to apply. No signups. No fuss.</p>
+					<p>We want job seekers and employers to connect directly. After you find the right job, you’re sent straight to the employer’s
+						site to apply. No signups. No fuss.</p>
 					<a href="{% url 'register' %}" class="btn btn-primary">GET STARTED</a>
 				</div>
-	
+
 				<div class="col s12 l3 push-l1" style="width:10%; height:10%; float:right;">
-					<img src="static/images/connection.png" class="story-image">
+					<img src="{% static 'images/connection.png' %}" class="story-image">
 				</div>
 			</div>
-			</div>
 		</div>
-	</section>
+	</div>
+</section>
 
-{% endif %}
-
-
-{% endblock %}
+{% endif %} {% endblock %}
