@@ -118,7 +118,7 @@
 </div> -->
 {% if app_info %} 
   {% for jc in app_count %}
-    <div class="container">
+     <div class="container" style="margin-left: 150px; padding: 0px 20px;">
       <div class="jumbotron">
         <ul>
           {{ jc.title }} &nbsp;
@@ -128,7 +128,7 @@
           {% if i.job_id == jc.id %}
           <table id="customers">
             <tr>
-            <td id="tr-username"><a href="{% url 'jobseeker_profile' i.username %}">{{ i.username }}</a> &nbsp; </td>
+            <td id="tr-username"><a href="{% url 'view_jobseeker' emp_username=user.username username=i.username %}">{{ i.username }}</a> &nbsp; </td>
             <td><b>Status:</b>&nbsp;{{ i.status }}</td>
             {% if i.status == 'pending' %}
               <td><button id="{{i.id}}" data-toggle="modal" data-target="#appAction" class="action btn btn-d btn-circle btn-xs" type="submit">Action</button></td>
