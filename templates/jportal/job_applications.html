@@ -5,7 +5,7 @@
 {% endblock%} 
 {% block scripts_here %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="{% static " scripts/one.js " %}"></script> 
+<script src="{% static "scripts/one.js" %}"></script> 
 {% endblock %} 
 {% block body_block %}
 
@@ -126,16 +126,14 @@
           <br><br>
           {% for i in app_info %}
           {% if i.job_id == jc.id %}
-          <table id="customers" >
-          
+          <table id="customers">
             <tr>
             <td id="tr-username"><a href="{% url 'jobseeker_profile' i.username %}">{{ i.username }}</a> &nbsp; </td>
             <td><b>Status:</b>&nbsp;{{ i.status }}</td>
-            <!--<button value="approved" type="button" class="approve btn btn-primary">Approve</button> -->
-            <td><button class="btn btn-d btn-circle btn-xs" type="submit">Approve</button></td>
-            <td><button class="btn btn-d btn-circle btn-xs" type="submit">Reject</button></td>
+            {% if i.status == 'pending' %}
+              <td><button id="{{i.id}}" data-toggle="modal" data-target="#appAction" class="action btn btn-d btn-circle btn-xs" type="submit">Action</button></td>
+            {% endif %}
             </tr>
-          
           </table>
           {% endif %}
           {% endfor %}
@@ -144,6 +142,7 @@
       </div>
     </div>
   {% endfor %}
+  {{result}}
 {% endif %}
 <!-- Action Modal -->
 <div class="modal fade" id="appAction" role="dialog">

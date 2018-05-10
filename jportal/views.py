@@ -603,16 +603,14 @@ def job_apply(request, jobslug_name):
 @login_required
 def job_applications(request):
     context_dict={}
-
     if request.method == 'GET':
         with connection.cursor() as cursor:
             cursor.execute('select jportal_addjob.id,title, count(jportal_appliers.id) as total_applicants from jportal_addjob, jportal_appliers where jportal_addjob.employer_id = 3 AND jportal_appliers.job_id = jportal_addjob.id group by jportal_addjob.id')
             columns = [col[0] for col in cursor.description]
             app_count = [
-                ict(zip(columns, row))
+                dict(zip(columns, row))
                 for row in cursor.fetchall()
             ]
-
             cursor.execute(
                 'select au.username, jportal_addjob.title, jportal_appliers.* '\
                 'from auth_user, jportal_employer , jportal_addjob, jportal_appliers, jportal_jobseekers, auth_user au '\
@@ -621,8 +619,7 @@ def job_applications(request):
                 'and au.id = jportal_jobseekers.user_id '\
                 'and jportal_employer.id=jportal_addjob.employer_id  '\
                 'and jportal_addjob.id=jportal_appliers.job_id '\
-                'and auth_user.id =%s' , [request.user.id]
-            )
+                'and auth_user.id =%s' , [request.user.id])
             columns = [col[0] for col in cursor.description]
             app_info = [
                 dict(zip(columns, row))
@@ -633,7 +630,18 @@ def job_applications(request):
         context_dict['app_info'] = app_info
         context_dict['usertype'] = user_type(request)
 
-        return render(request, 'jportal/job_applications.html', context_dict)
+        try:
+            context_dict['status'] = request.GET['status']
+            context_dict['applier_id'] = request.GET['applier']
+
+            applier = Appliers.objects.get(id=context_dict['applier_id'])
+            applier.status = context_dict['status']
+            applier.save()
+        except:
+            print("Except this in case its performing other fucntion.")
+        # result = json.dumps(context_dict)
+
+    return render(request, 'jportal/job_applications.html', context_dict)
 
 @login_required
 def manage_job(request):
@@ -1061,13 +1069,10 @@ def job_approval(request):
     context_dict = {}
     
     context_dict['status'] = request.GET['status']
-    context_dict['seeker_id'] = request.GET['seeker']
-    context_dict['job_id'] = request.GET['job']
+    context_dict['applier_id'] = request.GET['applier']
 
-    s_id = context_dict['seeker_id'].split('_')
-    
     try:
-        applier = Appliers.objects.get(id=int(s_id[1]))
+        applier = Appliers.objects.get(id=context_dict['applier_id'])
         applier.status = context_dict['status']
         applier.save()
     except:
