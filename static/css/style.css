@@ -1549,7 +1549,7 @@ width: auto;
   --------------------------------------------------------------*/
   .footer {
     padding: 10px 0;
-    position: absolute;
+    position: relative;
   }
   
   .footer .copyright {
