@@ -4,7 +4,6 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
-from django.core.mail import EmailMessage
 from django.template import Context
 from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
@@ -127,7 +126,7 @@ def employer_reg(request):
             emp_user.user = usr_obj
             emp_user.save()
             current_site = get_current_site(request)
-            mail_subject = 'Activate your blog account.'
+            mail_subject = 'Activate your Job Portal account.'
             message = render_to_string('registration/acc_active_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -740,9 +739,6 @@ def services(request):
     subscribe(request)
 
     return render(request, "jportal/services.html", context_dict)
-
-
-
 
 #------------------Education-----------------
 
