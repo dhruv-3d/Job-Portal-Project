@@ -1547,9 +1547,15 @@ width: auto;
   /*--------------------------------------------------------------
       Footer
   --------------------------------------------------------------*/
-  .footer {
+   .footer {
     padding: 10px 0;
-    position: relative;
+    position: fixed;
+    height: 50px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin-bottom: 0px;
+    
   }
   
   .footer .copyright {
