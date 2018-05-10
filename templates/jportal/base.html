@@ -40,7 +40,7 @@
 				<div class="brand-centered">
 					<a class="navbar-brand" href="{% url 'index' %}">
 						<img alt="Job Hunt" src="{% static 'images/logo.png' %}" id="logo" style="width:60px;margin-right: 10px; padding: 0;" />
-						<h3>Job Hunt</h3>
+						<h3>Job Portal</h3>
 					</a>
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
@@ -129,6 +129,21 @@
 		</div>
 		{% endblock %}
 		{% block body_block %} {% endblock %}
+	
+	<hr class="divider-d">
+        <footer class="footer bg-dark">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-6">
+                <p class="copyright font-alt">&copy; 2018&nbsp;<a href="{% url 'index' %}">Job Portal</a>, All Rights Reserved</p>
+              </div>
+              <div class="col-sm-6">
+                <div class="footer-social-links"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-dribbble"></i></a><a href="#"><i class="fa fa-skype"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
