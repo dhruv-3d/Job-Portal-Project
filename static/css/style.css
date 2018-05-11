@@ -1549,7 +1549,7 @@ width: auto;
   --------------------------------------------------------------*/
    .footer {
     padding: 10px 0;
-    position: fixed;
+    position: relative;
     height: 50px;
     bottom: 0px;
     left: 0px;
