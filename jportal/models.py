@@ -65,7 +65,7 @@ class Employer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     designation = models.CharField(max_length=30, blank=False)
     company_name = models.CharField(max_length=150,blank=False)
-    state = models.ForeignKey(State,on_delete=models.SET_NULL,null=True,blank=False)
+    state = models.ForeignKey(State,on_delete=models.SET_NULL,null=True,blank=True)
     city = ChainedForeignKey(
             City,
             chained_field="state",
@@ -144,7 +144,8 @@ class JobSeekersProfile(models.Model):
         chained_model_field="category",
         show_all=False,
         auto_choose=True,
-        sort=True)
+        sort=True,
+        null=True)
     designation = models.CharField(max_length=30, blank=False, null=True)
     key_skills = models.TextField(blank=False,  default='', null=True)
     total_workexp = models.CharField(max_length=20,blank=False, default='', null=True)

@@ -124,6 +124,7 @@ def employer_reg(request):
             emp_user = employer_form.save(commit=False)
             #emp_user.contact_no = str(employer_form.contact_no)
             emp_user.user = usr_obj
+            emp_user.user.city = 'Surat'
             emp_user.save()
             current_site = get_current_site(request)
             mail_subject = 'Activate your Job Portal account.'
@@ -197,6 +198,7 @@ def jobseeker_reg(request):
             print("aa user obj:",usr_obj)
             seeker_user = job_seek.save(commit=False)
             seeker_user.user = usr_obj
+            seeker_user.city = 'Surat'
             seeker_user.save()
             current_site = get_current_site(request)
             mail_subject = 'Activate your blog account.'
@@ -370,6 +372,7 @@ def create_resume(request,username):
         a=1
     except:
         a=0
+    
     if request.method == 'POST' and 'create' in request.POST:
         if a:
             form = JobseekerprofileForm(request.POST,instance=jp)
@@ -486,7 +489,8 @@ def job_listing(request):
     elif request.method == 'GET'  and "jobtitle" in request.GET: 
         try:
             cat_title = request.GET['category']
-            subcat_name = request.GET['subcategory']
+            subcat_name = ''
+            # subcat_name = request.GET['subcategory']
             #print("aa job mailu :",job_title)
 
             if cat_title:   #getting job as per category
