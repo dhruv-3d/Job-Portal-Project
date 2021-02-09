@@ -2,8 +2,7 @@
 
 **A simple job portal website made using Django webframework**
 
-This project was built with Python v3.6 and Django v1.11
->might not work for latest Django version)
+This project was built with Python v3.6 and Django v1.11 __(might not work for latest Django version)__
 
 **First, install dependencies using requirements.txt:**
 > `pip install -r requirements.txt`
